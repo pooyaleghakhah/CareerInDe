@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+
+    <title>
+        My AI Reports
+    </title>
+
+    <style>
+
+        body {
+
+            font-family: Arial;
+
+            background: #f5f5f5;
+
+            padding: 40px;
+        }
+
+        .container {
+
+            max-width: 1100px;
+
+            margin: auto;
+        }
+
+        h1 {
+
+            margin-bottom: 30px;
+        }
+
+        .report-card {
+
+            background: white;
+
+            padding: 25px;
+
+            border-radius: 16px;
+
+            margin-bottom: 25px;
+
+            box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+        }
+
+        .type {
+
+            font-size: 14px;
+
+            font-weight: bold;
+
+            color: #666;
+
+            margin-bottom: 10px;
+        }
+
+        .date {
+
+            font-size: 13px;
+
+            color: #999;
+
+            margin-bottom: 20px;
+        }
+
+        .result {
+
+            white-space: pre-wrap;
+
+            line-height: 1.7;
+        }
+
+    </style>
+
+</head>
+
+<body>
+
+<div class="container">
+
+    <h1>
+        My AI Reports 🚀
+    </h1>
+
+    <div th:each="report : ${reports}"
+         class="report-card">
+
+        <div class="type"
+             th:text="${report.reportType}">
+        </div>
+
+        <div class="date"
+             th:text="${report.createdAt}">
+        </div>
+
+        <div class="result"
+             th:text="${report.result}">
+        </div>
+
+    </div>
+
+</div>
+
+</body>
+
+</html>

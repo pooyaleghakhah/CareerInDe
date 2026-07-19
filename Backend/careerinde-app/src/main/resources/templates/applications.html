@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+
+    <title>
+        Applications
+    </title>
+
+    <style>
+
+        body {
+
+            font-family: Arial;
+
+            background: #f5f5f5;
+
+            padding: 40px;
+        }
+
+        .container {
+
+            max-width: 1100px;
+
+            margin: auto;
+        }
+
+        .topbar {
+
+            display: flex;
+
+            justify-content: space-between;
+
+            align-items: center;
+
+            margin-bottom: 30px;
+        }
+
+        .btn {
+
+            background: black;
+
+            color: white;
+
+            padding: 12px 20px;
+
+            border-radius: 10px;
+
+            text-decoration: none;
+        }
+
+        table {
+
+            width: 100%;
+
+            border-collapse: collapse;
+
+            background: white;
+
+            border-radius: 16px;
+
+            overflow: hidden;
+
+            box-shadow: 0 4px 20px rgba(0,0,0,0.06);
+        }
+
+        th {
+
+            background: black;
+
+            color: white;
+
+            text-align: left;
+
+            padding: 16px;
+        }
+
+        td {
+
+            padding: 16px;
+
+            border-bottom: 1px solid #eee;
+        }
+
+        tr:hover {
+
+            background: #fafafa;
+        }
+
+    </style>
+
+</head>
+
+<body>
+
+<div class="container">
+
+    <div class="topbar">
+
+        <h1>
+            Job Applications 🚀
+        </h1>
+
+        <a href="/applications/add"
+           class="btn">
+
+            + Add Application
+
+        </a>
+
+    </div>
+
+    <table>
+
+        <thead>
+
+        <tr>
+
+            <th>
+                Company
+            </th>
+
+            <th>
+                Position
+            </th>
+
+            <th>
+                Status
+            </th>
+
+            <th>
+                Date
+            </th>
+
+            <th>
+                Notes
+            </th>
+
+        </tr>
+
+        </thead>
+
+        <tbody>
+
+        <tr th:each="app : ${applications}">
+
+            <td th:text="${app.company}">
+            </td>
+
+            <td th:text="${app.position}">
+            </td>
+
+            <td th:text="${app.status}">
+            </td>
+
+            <td th:text="${app.applicationDate}">
+            </td>
+
+            <td th:text="${app.notes}">
+            </td>
+
+        </tr>
+
+        </tbody>
+
+    </table>
+
+</div>
+
+</body>
+
+</html>
