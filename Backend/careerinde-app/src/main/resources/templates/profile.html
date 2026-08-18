@@ -1,166 +1,150 @@
-```html
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html
+    lang="en"
+    xmlns:th="http://www.thymeleaf.org">
 
 <head>
 
-    <title>Careerinde Profile</title>
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0">
+
+    <title>
+        CareerInDe | Profile
+    </title>
 
     <style>
 
         * {
-            margin: 0;
-            padding: 0;
             box-sizing: border-box;
         }
 
         body {
-
+            margin: 0;
             font-family: Arial, sans-serif;
-
-            background: #f5f5f5;
-
-            color: #111;
-
-            padding: 50px;
+            background: #f8fafc;
+            color: #111827;
         }
 
         .container {
-
-            max-width: 800px;
-
-            margin: auto;
-
-            background: white;
-
-            border-radius: 16px;
-
-            padding: 50px;
-
-            box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+            width: 100%;
+            max-width: 1000px;
+            margin: 40px auto;
+            padding: 20px;
         }
 
         .header {
-
-            margin-bottom: 40px;
+            margin-bottom: 30px;
         }
 
-        .title {
-
-            font-size: 32px;
-
-            font-weight: bold;
-
-            margin-bottom: 10px;
+        .header h1 {
+            margin-bottom: 8px;
         }
 
-        .subtitle {
-
-            color: #666;
-
-            font-size: 15px;
+        .header p {
+            color: #6b7280;
         }
 
-        .section-title {
+        .card {
+            background: white;
+            padding: 30px;
+            border-radius: 12px;
+            border: 1px solid #e5e7eb;
+        }
 
-            font-size: 18px;
-
-            font-weight: bold;
-
-            margin-top: 40px;
-
+        .success {
+            background: #dcfce7;
+            color: #166534;
+            padding: 15px;
+            border-radius: 8px;
             margin-bottom: 20px;
         }
 
-        .input-group {
+        .section-title {
+            margin-top: 30px;
+            margin-bottom: 20px;
+            font-size: 20px;
+        }
 
-            margin-bottom: 24px;
+        .grid {
+            display: grid;
+            grid-template-columns:
+                repeat(2, 1fr);
+            gap: 20px;
+        }
+
+        .field {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .full-width {
+            grid-column: 1 / -1;
         }
 
         label {
-
-            display: block;
-
-            margin-bottom: 8px;
-
+            margin-bottom: 7px;
             font-weight: 600;
-
             font-size: 14px;
         }
 
         input,
         textarea,
         select {
-
             width: 100%;
-
-            padding: 14px;
-
-            border: 1px solid #ddd;
-
-            border-radius: 10px;
-
-            font-size: 14px;
-
-            outline: none;
-
-            transition: 0.2s;
+            padding: 12px;
+            border: 1px solid #d1d5db;
+            border-radius: 8px;
+            font-size: 15px;
         }
 
         input:focus,
         textarea:focus,
         select:focus {
-
-            border-color: black;
+            outline: none;
+            border-color: #2563eb;
         }
 
         textarea {
-
-            min-height: 120px;
-
+            min-height: 130px;
             resize: vertical;
         }
 
-        .row {
-
-            display: flex;
-
-            gap: 20px;
-        }
-
-        .row .input-group {
-
-            flex: 1;
-        }
-
-        .save-btn {
-
+        .actions {
             margin-top: 30px;
-
-            width: 100%;
-
-            padding: 16px;
-
-            border: none;
-
-            border-radius: 12px;
-
-            background: black;
-
-            color: white;
-
-            font-size: 16px;
-
-            font-weight: bold;
-
-            cursor: pointer;
-
-            transition: 0.2s;
+            display: flex;
+            justify-content: flex-end;
         }
 
-        .save-btn:hover {
+        button {
+            background: #2563eb;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            padding: 12px 24px;
+            font-size: 15px;
+            cursor: pointer;
+        }
 
-            opacity: 0.9;
+        button:hover {
+            background: #1d4ed8;
+        }
+
+        @media (max-width: 700px) {
+
+            .grid {
+                grid-template-columns: 1fr;
+            }
+
+            .full-width {
+                grid-column: auto;
+            }
+
+            .container {
+                margin: 10px auto;
+            }
         }
 
     </style>
@@ -173,134 +157,345 @@
 
     <div class="header">
 
-        <div class="title">
-            Career Profile 🚀
-        </div>
+        <h1>
+            Career Profile
+        </h1>
 
-        <div class="subtitle">
-            Complete your profile for the German job market
-        </div>
+        <p>
+            Manage your professional information
+            and career goals.
+        </p>
 
     </div>
 
-    <form>
+    <div
+        class="success"
+        th:if="${successMessage}"
+        th:text="${successMessage}">
+    </div>
 
-        <div class="section-title">
-            Personal Information
-        </div>
+    <div class="card">
 
-        <div class="row">
+        <form
+            th:action="@{/profile}"
+            th:object="${profile}"
+            method="post">
 
-            <div class="input-group">
+            <!-- Spring Security CSRF -->
 
-                <label>First Name</label>
+            <input
+                type="hidden"
+                th:if="${_csrf != null}"
+                th:name="${_csrf.parameterName}"
+                th:value="${_csrf.token}">
 
-                <input type="text"
-                       placeholder="Enter your first name">
+            <h2 class="section-title">
+                Personal Information
+            </h2>
 
-            </div>
+            <div class="grid">
 
-            <div class="input-group">
+                <div class="field">
 
-                <label>Last Name</label>
+                    <label>
+                        First Name
+                    </label>
 
-                <input type="text"
-                       placeholder="Enter your last name">
+                    <input
+                        type="text"
+                        th:field="*{firstName}"
+                        placeholder="First name">
 
-            </div>
+                </div>
 
-        </div>
 
-        <div class="row">
+                <div class="field">
 
-            <div class="input-group">
+                    <label>
+                        Last Name
+                    </label>
 
-                <label>Country</label>
+                    <input
+                        type="text"
+                        th:field="*{lastName}"
+                        placeholder="Last name">
 
-                <input type="text"
-                       placeholder="Country">
+                </div>
 
-            </div>
 
-            <div class="input-group">
+                <div class="field">
 
-                <label>City</label>
+                    <label>
+                        Nationality
+                    </label>
 
-                <input type="text"
-                       placeholder="City">
+                    <input
+                        type="text"
+                        th:field="*{nationality}"
+                        placeholder="Nationality">
 
-            </div>
+                </div>
 
-        </div>
 
-        <div class="section-title">
-            Career Information
-        </div>
+                <div class="field">
 
-        <div class="input-group">
+                    <label>
+                        Phone
+                    </label>
 
-            <label>LinkedIn URL</label>
+                    <input
+                        type="text"
+                        th:field="*{phone}"
+                        placeholder="+49 ...">
 
-            <input type="text"
-                   placeholder="https://linkedin.com/in/...">
-
-        </div>
-
-        <div class="input-group">
-
-            <label>About Me</label>
-
-            <textarea placeholder="Tell us about yourself..."></textarea>
-
-        </div>
-
-        <div class="row">
-
-            <div class="input-group">
-
-                <label>German Level</label>
-
-                <select>
-
-                    <option>A1</option>
-                    <option>A2</option>
-                    <option>B1</option>
-                    <option>B2</option>
-                    <option>C1</option>
-                    <option>C2</option>
-
-                </select>
+                </div>
 
             </div>
 
-            <div class="input-group">
 
-                <label>English Level</label>
+            <h2 class="section-title">
+                Location
+            </h2>
 
-                <select>
+            <div class="grid">
 
-                    <option>A1</option>
-                    <option>A2</option>
-                    <option>B1</option>
-                    <option>B2</option>
-                    <option>C1</option>
-                    <option>C2</option>
+                <div class="field">
 
-                </select>
+                    <label>
+                        Country
+                    </label>
+
+                    <input
+                        type="text"
+                        th:field="*{country}"
+                        placeholder="Germany">
+
+                </div>
+
+
+                <div class="field">
+
+                    <label>
+                        Current City
+                    </label>
+
+                    <input
+                        type="text"
+                        th:field="*{city}"
+                        placeholder="Current city">
+
+                </div>
+
+
+                <div class="field">
+
+                    <label>
+                        Target City
+                    </label>
+
+                    <input
+                        type="text"
+                        th:field="*{targetCity}"
+                        placeholder="Target city">
+
+                </div>
 
             </div>
 
-        </div>
 
-        <button class="save-btn" type="submit">
-            Save Profile
-        </button>
+            <h2 class="section-title">
+                Career
+            </h2>
 
-    </form>
+            <div class="grid">
+
+                <div class="field">
+
+                    <label>
+                        Target Job
+                    </label>
+
+                    <input
+                        type="text"
+                        th:field="*{targetJob}"
+                        placeholder="Java Backend Developer">
+
+                </div>
+
+
+                <div class="field">
+
+                    <label>
+                        Experience Years
+                    </label>
+
+                    <input
+                        type="number"
+                        min="0"
+                        th:field="*{experienceYears}"
+                        placeholder="0">
+
+                </div>
+
+
+                <div class="field">
+
+                    <label>
+                        Salary Expectation
+                    </label>
+
+                    <input
+                        type="number"
+                        min="0"
+                        step="0.01"
+                        th:field="*{salaryExpectation}"
+                        placeholder="50000">
+
+                </div>
+
+            </div>
+
+
+            <h2 class="section-title">
+                Languages
+            </h2>
+
+            <div class="grid">
+
+                <div class="field">
+
+                    <label>
+                        German Level
+                    </label>
+
+                    <select
+                        th:field="*{germanLevel}">
+
+                        <option value="">
+                            Select
+                        </option>
+
+                        <option value="A1">A1</option>
+                        <option value="A2">A2</option>
+                        <option value="B1">B1</option>
+                        <option value="B2">B2</option>
+                        <option value="C1">C1</option>
+                        <option value="C2">C2</option>
+
+                    </select>
+
+                </div>
+
+
+                <div class="field">
+
+                    <label>
+                        English Level
+                    </label>
+
+                    <select
+                        th:field="*{englishLevel}">
+
+                        <option value="">
+                            Select
+                        </option>
+
+                        <option value="A1">A1</option>
+                        <option value="A2">A2</option>
+                        <option value="B1">B1</option>
+                        <option value="B2">B2</option>
+                        <option value="C1">C1</option>
+                        <option value="C2">C2</option>
+
+                    </select>
+
+                </div>
+
+            </div>
+
+
+            <h2 class="section-title">
+                Professional Links
+            </h2>
+
+            <div class="grid">
+
+                <div class="field">
+
+                    <label>
+                        LinkedIn
+                    </label>
+
+                    <input
+                        type="url"
+                        th:field="*{linkedinUrl}"
+                        placeholder="https://linkedin.com/in/...">
+
+                </div>
+
+
+                <div class="field">
+
+                    <label>
+                        GitHub
+                    </label>
+
+                    <input
+                        type="url"
+                        th:field="*{githubUrl}"
+                        placeholder="https://github.com/...">
+
+                </div>
+
+
+                <div class="field full-width">
+
+                    <label>
+                        Portfolio
+                    </label>
+
+                    <input
+                        type="url"
+                        th:field="*{portfolioUrl}"
+                        placeholder="https://...">
+
+                </div>
+
+            </div>
+
+
+            <h2 class="section-title">
+                About Me
+            </h2>
+
+            <div class="grid">
+
+                <div class="field full-width">
+
+                    <textarea
+                        th:field="*{aboutMe}"
+                        maxlength="2000"
+                        placeholder="Tell us about your professional background...">
+                    </textarea>
+
+                </div>
+
+            </div>
+
+
+            <div class="actions">
+
+                <button type="submit">
+                    Save Profile
+                </button>
+
+            </div>
+
+        </form>
+
+    </div>
 
 </div>
 
 </body>
-
 </html>
-```
