@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -7,32 +8,61 @@
     <title>CareerInDe | Build Your Career in Germany</title>
 
     <style>
+
+        /* =====================================================
+           GLOBAL
+        ===================================================== */
+
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
         }
 
-        body {
-            font-family: Arial, sans-serif;
-            background: #f8fafc;
-            color: #172033;
+        html {
+            scroll-behavior: smooth;
         }
 
-        /* NAVBAR */
+        body {
+            font-family: Arial, Helvetica, sans-serif;
+            background: #f8fafc;
+            color: #172033;
+            line-height: 1.5;
+        }
+
+        a {
+            text-decoration: none;
+        }
+
+
+        /* =====================================================
+           NAVBAR
+        ===================================================== */
+
         nav {
-            height: 75px;
+            height: 76px;
             display: flex;
             align-items: center;
             justify-content: space-between;
+
             padding: 0 8%;
-            background: white;
+
+            background: rgba(255, 255, 255, 0.97);
             border-bottom: 1px solid #e8edf4;
+
+            position: sticky;
+            top: 0;
+            z-index: 1000;
         }
 
         .logo {
-            font-size: 25px;
+            font-size: 27px;
             font-weight: 800;
+            letter-spacing: -0.8px;
+            color: #172033;
+        }
+
+        .logo span {
             color: #2563eb;
         }
 
@@ -43,327 +73,1827 @@
         }
 
         .nav-links a {
-            text-decoration: none;
             color: #475569;
             font-size: 15px;
+            font-weight: 500;
+            transition: 0.2s ease;
         }
 
-        .login {
-            color: #2563eb !important;
+        .nav-links a:hover {
+            color: #2563eb;
+        }
+
+        .nav-links .login {
+            color: #2563eb;
             font-weight: 600;
         }
 
-        .signup {
+        .nav-links .signup {
             background: #2563eb;
-            color: white !important;
+            color: #ffffff;
+
             padding: 11px 20px;
             border-radius: 9px;
+
             font-weight: 600;
+
+            box-shadow:
+                0 5px 15px rgba(37, 99, 235, 0.15);
         }
 
-        /* HERO */
+        .nav-links .signup:hover {
+            background: #1d4ed8;
+            color: white;
+        }
+
+
+        /* =====================================================
+           HERO
+        ===================================================== */
+
         .hero {
-            min-height: 610px;
+            min-height: 670px;
+
             display: flex;
             align-items: center;
             justify-content: space-between;
-            padding: 70px 8%;
-            gap: 60px;
+
+            padding: 85px 8%;
+
+            gap: 80px;
+
+            position: relative;
+            overflow: hidden;
+
+            background:
+                radial-gradient(
+                    circle at 80% 30%,
+                    rgba(37, 99, 235, 0.08),
+                    transparent 32%
+                ),
+                linear-gradient(
+                    135deg,
+                    #ffffff 0%,
+                    #f8fafc 50%,
+                    #f5f8ff 100%
+                );
+        }
+
+        .hero::before {
+            content: "";
+
+            position: absolute;
+
+            width: 500px;
+            height: 500px;
+
+            border-radius: 50%;
+
+            right: -280px;
+            top: -250px;
+
+            background: rgba(37, 99, 235, 0.05);
         }
 
         .hero-content {
-            max-width: 650px;
+            max-width: 660px;
+            position: relative;
+            z-index: 2;
         }
 
         .badge {
-            display: inline-block;
+            display: inline-flex;
+            align-items: center;
+            gap: 7px;
+
             background: #eaf2ff;
             color: #2563eb;
+
             padding: 8px 14px;
+
             border-radius: 30px;
-            font-size: 14px;
-            font-weight: 600;
-            margin-bottom: 25px;
+
+            font-size: 13px;
+            font-weight: 700;
+
+            margin-bottom: 26px;
+        }
+
+        .badge-dot {
+            width: 7px;
+            height: 7px;
+
+            border-radius: 50%;
+
+            background: #2563eb;
         }
 
         h1 {
-            font-size: 58px;
-            line-height: 1.08;
-            margin-bottom: 25px;
-            letter-spacing: -2px;
+            max-width: 650px;
+
+            font-size: 60px;
+            line-height: 1.06;
+
+            letter-spacing: -2.5px;
+
+            margin-bottom: 26px;
+
+            color: #172033;
         }
 
         h1 span {
             color: #2563eb;
         }
 
-        .hero-content p {
+        .hero-description {
+            max-width: 610px;
+
             font-size: 19px;
             line-height: 1.7;
+
             color: #64748b;
-            max-width: 580px;
-            margin-bottom: 35px;
+
+            margin-bottom: 27px;
         }
+
+
+        /* =====================================================
+           HERO TRUST POINTS
+        ===================================================== */
+
+        .hero-points {
+            display: flex;
+            align-items: center;
+            flex-wrap: wrap;
+
+            gap: 18px;
+
+            margin-bottom: 34px;
+        }
+
+        .hero-point {
+            display: flex;
+            align-items: center;
+            gap: 7px;
+
+            color: #475569;
+
+            font-size: 13px;
+            font-weight: 500;
+        }
+
+        .check {
+            width: 20px;
+            height: 20px;
+
+            border-radius: 50%;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            background: #dcfce7;
+            color: #15803d;
+
+            font-size: 11px;
+            font-weight: 800;
+        }
+
+
+        /* =====================================================
+           BUTTONS
+        ===================================================== */
 
         .buttons {
             display: flex;
-            gap: 15px;
+            align-items: center;
+            gap: 14px;
         }
 
         .primary-btn,
         .secondary-btn {
-            text-decoration: none;
-            padding: 15px 24px;
+            min-height: 52px;
+
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+
+            padding: 0 24px;
+
             border-radius: 10px;
-            font-weight: 600;
+
+            font-size: 15px;
+            font-weight: 700;
+
+            transition: all 0.2s ease;
         }
 
         .primary-btn {
             background: #2563eb;
             color: white;
+
+            box-shadow:
+                0 8px 20px rgba(37, 99, 235, 0.20);
+        }
+
+        .primary-btn:hover {
+            background: #1d4ed8;
+            transform: translateY(-2px);
+
+            box-shadow:
+                0 12px 25px rgba(37, 99, 235, 0.25);
         }
 
         .secondary-btn {
             background: white;
-            color: #1e293b;
+            color: #172033;
+
             border: 1px solid #dbe2ea;
         }
 
-        /* DASHBOARD PREVIEW */
-        .preview {
-            width: 480px;
-            background: white;
-            border-radius: 18px;
-            padding: 25px;
-            box-shadow: 0 25px 70px rgba(15, 23, 42, 0.12);
-            border: 1px solid #e8edf4;
+        .secondary-btn:hover {
+            border-color: #2563eb;
+            color: #2563eb;
         }
 
-        .preview-title {
-            font-weight: 700;
+
+        /* =====================================================
+           ANALYSIS PREVIEW
+        ===================================================== */
+
+        .preview-wrapper {
+            position: relative;
+
+            width: 500px;
+
+            flex-shrink: 0;
+
+            z-index: 2;
+        }
+
+        .preview {
+            width: 100%;
+
+            background: rgba(255, 255, 255, 0.97);
+
+            border: 1px solid #e6ebf2;
+            border-radius: 21px;
+
+            padding: 28px;
+
+            box-shadow:
+                0 30px 80px rgba(15, 23, 42, 0.13);
+        }
+
+        .preview-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+
             margin-bottom: 22px;
         }
 
+        .preview-title {
+            font-size: 18px;
+            font-weight: 750;
+        }
+
+        .demo-badge {
+            padding: 6px 10px;
+
+            border-radius: 20px;
+
+            background: #eff6ff;
+            color: #2563eb;
+
+            font-size: 10px;
+            font-weight: 800;
+
+            letter-spacing: 0.8px;
+        }
+
+
+        /* =====================================================
+           SCORE
+        ===================================================== */
+
         .score-box {
-            background: #f8fafc;
             padding: 25px;
-            border-radius: 14px;
-            margin-bottom: 15px;
+
+            border-radius: 15px;
+
+            margin-bottom: 17px;
+
+            background:
+                linear-gradient(
+                    135deg,
+                    #f8fafc,
+                    #f3f7ff
+                );
+        }
+
+        .score-top {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-end;
         }
 
         .score {
-            font-size: 46px;
-            font-weight: 800;
             color: #2563eb;
+
+            font-size: 50px;
+            font-weight: 800;
+
+            line-height: 1;
+
+            letter-spacing: -2px;
+        }
+
+        .score-status {
+            padding: 6px 10px;
+
+            border-radius: 20px;
+
+            background: #dcfce7;
+            color: #15803d;
+
+            font-size: 11px;
+            font-weight: 700;
         }
 
         .score-label {
             color: #64748b;
-            margin-top: 5px;
-        }
 
-        .item {
-            padding: 15px;
-            border: 1px solid #e8edf4;
-            border-radius: 10px;
-            margin-top: 12px;
-        }
+            margin-top: 9px;
 
-        .item strong {
-            display: block;
-            margin-bottom: 5px;
-        }
-
-        .item span {
-            color: #64748b;
             font-size: 14px;
         }
 
-        /* FEATURES */
-        .features {
-            background: white;
-            padding: 80px 8%;
-            text-align: center;
+        .progress {
+            width: 100%;
+            height: 8px;
+
+            margin-top: 18px;
+
+            background: #e5eaf1;
+
+            border-radius: 20px;
+
+            overflow: hidden;
         }
 
-        .features h2 {
-            font-size: 38px;
+        .progress-value {
+            width: 85%;
+            height: 100%;
+
+            background:
+                linear-gradient(
+                    90deg,
+                    #2563eb,
+                    #4f7df5
+                );
+
+            border-radius: 20px;
+        }
+
+
+        /* =====================================================
+           PREVIEW ITEMS
+        ===================================================== */
+
+        .item {
+            padding: 16px 17px;
+
+            border: 1px solid #e8edf4;
+
+            border-radius: 11px;
+
+            margin-top: 12px;
+
+            background: #ffffff;
+
+            transition: 0.2s ease;
+        }
+
+        .item:hover {
+            border-color: #d7e2f4;
+            background: #fbfdff;
+        }
+
+        .item-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .item strong {
+            color: #172033;
+
+            font-size: 14px;
+            font-weight: 700;
+        }
+
+        .item span {
+            display: block;
+
+            color: #64748b;
+
+            font-size: 13px;
+
+            margin-top: 5px;
+        }
+
+        .match-score {
+            color: #2563eb;
+
+            font-size: 13px;
+            font-weight: 700;
+        }
+
+        .ai-icon {
+            color: #2563eb;
+            margin-right: 4px;
+        }
+
+
+        /* =====================================================
+           COMMON SECTION STYLES
+        ===================================================== */
+
+        .section-label {
+            color: #2563eb;
+
+            font-size: 12px;
+            font-weight: 800;
+
+            text-transform: uppercase;
+
+            letter-spacing: 1.3px;
+
+            margin-bottom: 13px;
+        }
+
+        .section-title {
+            color: #172033;
+
+            font-size: 40px;
+            line-height: 1.15;
+
+            letter-spacing: -1.4px;
+
             margin-bottom: 15px;
         }
 
-        .features-subtitle {
+        .section-subtitle {
+            max-width: 680px;
+
+            margin: 0 auto 55px;
+
             color: #64748b;
-            margin-bottom: 50px;
+
+            font-size: 17px;
+            line-height: 1.7;
+        }
+
+
+        /* =====================================================
+           FEATURES
+        ===================================================== */
+
+        .features {
+            padding: 100px 8%;
+
+            background: #ffffff;
+
+            text-align: center;
         }
 
         .feature-grid {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 25px;
-            max-width: 1100px;
+            max-width: 1150px;
+
             margin: auto;
+
+            display: grid;
+
+            grid-template-columns:
+                repeat(3, 1fr);
+
+            gap: 24px;
         }
 
         .feature {
-            text-align: left;
+            min-height: 235px;
+
             padding: 30px;
+
+            text-align: left;
+
+            background: #ffffff;
+
             border: 1px solid #e8edf4;
-            border-radius: 15px;
+            border-radius: 16px;
+
+            transition: all 0.25s ease;
+        }
+
+        .feature:hover {
+            transform: translateY(-5px);
+
+            border-color: #dbe7fb;
+
+            box-shadow:
+                0 16px 38px rgba(15, 23, 42, 0.07);
         }
 
         .feature-icon {
-            font-size: 28px;
-            margin-bottom: 18px;
+            width: 46px;
+            height: 46px;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            margin-bottom: 20px;
+
+            border-radius: 11px;
+
+            background: #eaf2ff;
+            color: #2563eb;
+
+            font-size: 13px;
+            font-weight: 800;
         }
 
         .feature h3 {
             margin-bottom: 10px;
+
+            color: #172033;
+
+            font-size: 18px;
         }
 
         .feature p {
             color: #64748b;
-            line-height: 1.6;
+
+            font-size: 14px;
+            line-height: 1.7;
         }
 
-        @media (max-width: 900px) {
+
+        /* =====================================================
+           HOW IT WORKS
+        ===================================================== */
+
+        .how {
+            padding: 100px 8%;
+
+            background: #f8fafc;
+
+            text-align: center;
+        }
+
+        .steps {
+            max-width: 1050px;
+
+            margin: 50px auto 0;
+
+            display: grid;
+
+            grid-template-columns:
+                repeat(3, 1fr);
+
+            gap: 35px;
+        }
+
+        .step {
+            position: relative;
+
+            padding: 30px 25px;
+        }
+
+        .step-number {
+            width: 46px;
+            height: 46px;
+
+            margin: 0 auto 21px;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            border-radius: 50%;
+
+            background: #2563eb;
+            color: white;
+
+            font-size: 15px;
+            font-weight: 800;
+
+            box-shadow:
+                0 7px 17px rgba(37, 99, 235, 0.20);
+        }
+
+        .step h3 {
+            margin-bottom: 10px;
+
+            font-size: 18px;
+        }
+
+        .step p {
+            color: #64748b;
+
+            font-size: 14px;
+            line-height: 1.7;
+        }
+
+
+        /* =====================================================
+           GERMANY SECTION
+        ===================================================== */
+
+        .germany-section {
+            padding: 110px 8%;
+
+            background: #ffffff;
+        }
+
+        .germany-container {
+            max-width: 1120px;
+
+            margin: auto;
+
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+
+            gap: 85px;
+        }
+
+        .germany-content {
+            max-width: 550px;
+        }
+
+        .germany-content .section-title {
+            margin-bottom: 20px;
+        }
+
+        .germany-description {
+            color: #64748b;
+
+            font-size: 16px;
+            line-height: 1.75;
+
+            margin-bottom: 28px;
+        }
+
+        .germany-list {
+            display: flex;
+            flex-direction: column;
+
+            gap: 15px;
+        }
+
+        .germany-list-item {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+
+            color: #334155;
+
+            font-size: 14px;
+            font-weight: 500;
+        }
+
+
+        /* CAREER CARD */
+
+        .germany-card {
+            width: 420px;
+
+            padding: 30px;
+
+            background:
+                linear-gradient(
+                    145deg,
+                    #f8fafc,
+                    #f4f7ff
+                );
+
+            border: 1px solid #e6ebf2;
+            border-radius: 18px;
+        }
+
+        .germany-card-title {
+            margin-bottom: 22px;
+
+            color: #172033;
+
+            font-size: 17px;
+            font-weight: 750;
+        }
+
+        .market-item {
+            padding: 15px 0;
+
+            border-bottom: 1px solid #e5eaf1;
+        }
+
+        .market-item:last-child {
+            border-bottom: none;
+        }
+
+        .market-item strong {
+            display: block;
+
+            color: #334155;
+
+            margin-bottom: 5px;
+
+            font-size: 13px;
+        }
+
+        .market-item span {
+            color: #64748b;
+
+            font-size: 13px;
+        }
+
+
+        /* =====================================================
+           FINAL CTA
+        ===================================================== */
+
+        .cta {
+            padding: 105px 8%;
+
+            text-align: center;
+
+            color: white;
+
+            background:
+                radial-gradient(
+                    circle at 50% 0%,
+                    rgba(59, 130, 246, 0.22),
+                    transparent 40%
+                ),
+                #172033;
+        }
+
+        .cta h2 {
+            max-width: 700px;
+
+            margin: 0 auto 17px;
+
+            font-size: 42px;
+            line-height: 1.15;
+
+            letter-spacing: -1.5px;
+        }
+
+        .cta p {
+            max-width: 600px;
+
+            margin: 0 auto 31px;
+
+            color: #cbd5e1;
+
+            font-size: 16px;
+            line-height: 1.7;
+        }
+
+        .cta .primary-btn {
+            min-height: 55px;
+            padding: 0 28px;
+        }
+
+
+        /* =====================================================
+           FOOTER
+        ===================================================== */
+
+        footer {
+            min-height: 85px;
+
+            padding: 25px 8%;
+
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+
+            background: #111827;
+
+            color: #94a3b8;
+
+            font-size: 13px;
+
+            border-top:
+                1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        .footer-logo {
+            color: white;
+
+            font-size: 20px;
+            font-weight: 800;
+        }
+
+        .footer-logo span {
+            color: #3b82f6;
+        }
+
+        .footer-links {
+            display: flex;
+            gap: 24px;
+        }
+
+        .footer-links a {
+            color: #94a3b8;
+
+            transition: 0.2s ease;
+        }
+
+        .footer-links a:hover {
+            color: white;
+        }
+
+
+        /* =====================================================
+           RESPONSIVE - TABLET
+        ===================================================== */
+
+        @media (max-width: 1050px) {
+
             .hero {
                 flex-direction: column;
+                align-items: flex-start;
+
+                gap: 60px;
+            }
+
+            .hero-content {
+                max-width: 750px;
+            }
+
+            .preview-wrapper {
+                width: 100%;
+                max-width: 620px;
+            }
+
+            .germany-container {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+
+            .germany-content {
+                max-width: 700px;
+            }
+
+            .germany-card {
+                width: 100%;
+                max-width: 650px;
+            }
+
+        }
+
+
+        /* =====================================================
+           RESPONSIVE - MOBILE
+        ===================================================== */
+
+        @media (max-width: 800px) {
+
+            nav {
+                padding: 0 5%;
+            }
+
+            .nav-links {
+                gap: 17px;
+            }
+
+            .nav-links a:not(.login):not(.signup) {
+                display: none;
+            }
+
+            .hero {
+                min-height: auto;
+
+                padding: 65px 5% 80px;
             }
 
             h1 {
-                font-size: 43px;
+                font-size: 45px;
+                letter-spacing: -1.7px;
             }
 
-            .preview {
-                width: 100%;
+            .hero-description {
+                font-size: 17px;
             }
 
             .feature-grid {
                 grid-template-columns: 1fr;
             }
 
-            .nav-links a:not(.login):not(.signup) {
+            .steps {
+                grid-template-columns: 1fr;
+            }
+
+            .features,
+            .how,
+            .germany-section {
+                padding: 80px 5%;
+            }
+
+            .section-title {
+                font-size: 33px;
+            }
+
+            .cta {
+                padding: 80px 5%;
+            }
+
+            .cta h2 {
+                font-size: 34px;
+            }
+
+            footer {
+                flex-direction: column;
+
+                gap: 20px;
+
+                text-align: center;
+            }
+
+        }
+
+
+        @media (max-width: 520px) {
+
+            .logo {
+                font-size: 23px;
+            }
+
+            .nav-links .login {
                 display: none;
             }
+
+            .nav-links .signup {
+                padding: 9px 14px;
+                font-size: 13px;
+            }
+
+            h1 {
+                font-size: 39px;
+            }
+
+            .hero-points {
+                flex-direction: column;
+                align-items: flex-start;
+
+                gap: 10px;
+            }
+
+            .buttons {
+                flex-direction: column;
+                align-items: stretch;
+            }
+
+            .primary-btn,
+            .secondary-btn {
+                width: 100%;
+            }
+
+            .preview {
+                padding: 20px;
+            }
+
+            .score {
+                font-size: 42px;
+            }
+
         }
+
     </style>
+
 </head>
+
 
 <body>
 
+
+<!-- =====================================================
+     NAVBAR
+===================================================== -->
+
 <nav>
-    <div class="logo">CareerInDe</div>
+
+    <div class="logo">
+        CareerIn<span>De</span>
+    </div>
+
 
     <div class="nav-links">
-        <a href="#features">Features</a>
-        <a href="#how">How it works</a>
-        <a href="#pricing">Pricing</a>
-        <a href="/login" class="login">Log in</a>
-        <a href="/register" class="signup">Get Started</a>
+
+        <a href="#features">
+            Features
+        </a>
+
+        <a href="#how">
+            How it works
+        </a>
+
+        <a href="#germany">
+            Germany
+        </a>
+
+        <a href="/login"
+           class="login">
+            Log in
+        </a>
+
+        <a href="/register"
+           class="signup">
+            Get Started
+        </a>
+
     </div>
+
 </nav>
+
+
+
+<!-- =====================================================
+     HERO
+===================================================== -->
 
 <section class="hero">
 
+
+    <!-- LEFT SIDE -->
+
     <div class="hero-content">
 
+
         <div class="badge">
+
+            <span class="badge-dot"></span>
+
             AI-powered career platform
+
         </div>
+
 
         <h1>
+
             Build your career in
             <span>Germany.</span>
+
         </h1>
 
-        <p>
-            Analyze your CV, improve your ATS score and prepare
-            stronger applications for the German job market —
-            all in one place.
+
+        <p class="hero-description">
+
+            Analyze your CV, discover your strongest career matches
+            and build better applications for the German job market —
+            powered by AI.
+
         </p>
 
+
+        <div class="hero-points">
+
+
+            <div class="hero-point">
+
+                <span class="check">
+                    ✓
+                </span>
+
+                AI CV Analysis
+
+            </div>
+
+
+            <div class="hero-point">
+
+                <span class="check">
+                    ✓
+                </span>
+
+                AI CV Optimization
+
+            </div>
+
+
+            <div class="hero-point">
+
+                <span class="check">
+                    ✓
+                </span>
+
+                Germany-focused
+
+            </div>
+
+
+        </div>
+
+
         <div class="buttons">
-            <a href="/register" class="primary-btn">
-                Analyze My CV →
+
+
+            <a href="/register"
+               class="primary-btn">
+
+                Analyze My CV &nbsp;→
+
             </a>
 
-            <a href="/login" class="secondary-btn">
+
+            <a href="/login"
+               class="secondary-btn">
+
                 Log in
+
             </a>
+
+
         </div>
+
 
     </div>
 
-    <div class="preview">
 
-        <div class="preview-title">
-            CV Analysis
+
+    <!-- RIGHT SIDE / PRODUCT PREVIEW -->
+
+    <div class="preview-wrapper">
+
+
+        <div class="preview">
+
+
+            <div class="preview-header">
+
+                <div class="preview-title">
+                    CV Analysis
+                </div>
+
+                <div class="demo-badge">
+                    EXAMPLE ANALYSIS
+                </div>
+
+            </div>
+
+
+
+            <!-- ATS SCORE -->
+
+            <div class="score-box">
+
+
+                <div class="score-top">
+
+                    <div class="score">
+                        85%
+                    </div>
+
+                    <div class="score-status">
+                        Strong profile
+                    </div>
+
+                </div>
+
+
+                <div class="score-label">
+                    ATS Compatibility Score
+                </div>
+
+
+                <div class="progress">
+
+                    <div class="progress-value">
+                    </div>
+
+                </div>
+
+
+            </div>
+
+
+
+            <!-- SKILLS -->
+
+            <div class="item">
+
+                <div class="item-header">
+
+                    <strong>
+                        ✓ Strong Skills Match
+                    </strong>
+
+                </div>
+
+                <span>
+                    Java · Spring Boot · PostgreSQL
+                </span>
+
+            </div>
+
+
+
+            <!-- JOB MATCH -->
+
+            <div class="item">
+
+                <div class="item-header">
+
+                    <strong>
+                        Best Job Match
+                    </strong>
+
+                    <div class="match-score">
+                        91%
+                    </div>
+
+                </div>
+
+                <span>
+                    Java Backend Developer
+                </span>
+
+            </div>
+
+
+
+            <!-- AI RECOMMENDATION -->
+
+            <div class="item">
+
+                <strong>
+
+                    <span class="ai-icon">
+                        ✦
+                    </span>
+
+                    AI Recommendation
+
+                </strong>
+
+                <span>
+
+                    Add Docker and cloud experience
+                    to strengthen your profile.
+
+                </span>
+
+            </div>
+
+
         </div>
 
-        <div class="score-box">
-            <div class="score">85%</div>
-            <div class="score-label">ATS Compatibility Score</div>
-        </div>
-
-        <div class="item">
-            <strong>✓ Strong Skills Match</strong>
-            <span>Java · Spring Boot · PostgreSQL</span>
-        </div>
-
-        <div class="item">
-            <strong>Job Match</strong>
-            <span>Java Backend Developer — 91%</span>
-        </div>
-
-        <div class="item">
-            <strong>AI Recommendation</strong>
-            <span>Add Docker and cloud experience to strengthen your profile.</span>
-        </div>
 
     </div>
+
 
 </section>
 
-<section class="features" id="features">
 
-    <h2>Everything you need for your job search</h2>
 
-    <p class="features-subtitle">
-        Tools designed for international professionals building their career in Germany.
+<!-- =====================================================
+     FEATURES
+===================================================== -->
+
+<section class="features"
+         id="features">
+
+
+    <div class="section-label">
+        Platform Features
+    </div>
+
+
+    <h2 class="section-title">
+
+        Everything you need for a stronger application
+
+    </h2>
+
+
+    <p class="section-subtitle">
+
+        CareerInDe combines AI-powered CV analysis,
+        career insights and optimization tools in one workspace
+        designed for the German job market.
+
     </p>
+
+
 
     <div class="feature-grid">
 
-        <div class="feature">
-            <div class="feature-icon">📄</div>
-            <h3>ATS CV Analysis</h3>
-            <p>
-                Check how well your CV matches a job description
-                and identify missing skills.
-            </p>
-        </div>
+
+        <!-- FEATURE 1 -->
 
         <div class="feature">
-            <div class="feature-icon">✨</div>
-            <h3>AI Recommendations</h3>
+
+            <div class="feature-icon">
+                CV
+            </div>
+
+            <h3>
+                AI CV Analysis
+            </h3>
+
             <p>
-                Receive practical suggestions to improve your CV
-                and strengthen your applications.
+
+                Analyze your skills, professional experience,
+                education and projects and receive a clear
+                assessment of your career profile.
+
             </p>
+
         </div>
 
+
+
+        <!-- FEATURE 2 -->
+
         <div class="feature">
-            <div class="feature-icon">🎯</div>
-            <h3>Job Matching</h3>
+
+            <div class="feature-icon">
+                AI
+            </div>
+
+            <h3>
+                AI CV Optimization
+            </h3>
+
             <p>
-                Understand how closely your skills and experience
-                match relevant opportunities.
+
+                Improve the wording, structure and professional
+                positioning of your CV while keeping your
+                real qualifications and experience.
+
             </p>
+
         </div>
+
+
+
+        <!-- FEATURE 3 -->
+
+        <div class="feature">
+
+            <div class="feature-icon">
+                %
+            </div>
+
+            <h3>
+                ATS Compatibility
+            </h3>
+
+            <p>
+
+                Understand how strong your CV currently is
+                and identify areas that could improve
+                your application readiness.
+
+            </p>
+
+        </div>
+
+
+
+        <!-- FEATURE 4 -->
+
+        <div class="feature">
+
+            <div class="feature-icon">
+                JM
+            </div>
+
+            <h3>
+                Career Matching
+            </h3>
+
+            <p>
+
+                Discover realistic career directions based
+                on your skills, experience, education
+                and professional background.
+
+            </p>
+
+        </div>
+
+
+
+        <!-- FEATURE 5 -->
+
+        <div class="feature">
+
+            <div class="feature-icon">
+                SG
+            </div>
+
+            <h3>
+                Skill Gap Analysis
+            </h3>
+
+            <p>
+
+                Identify relevant competencies that could
+                strengthen your profile for your target
+                career path.
+
+            </p>
+
+        </div>
+
+
+
+        <!-- FEATURE 6 -->
+
+        <div class="feature">
+
+            <div class="feature-icon">
+                DE
+            </div>
+
+            <h3>
+                German Market Focus
+            </h3>
+
+            <p>
+
+                Get career insights designed around
+                professional expectations and application
+                practices in Germany.
+
+            </p>
+
+        </div>
+
 
     </div>
 
+
 </section>
 
+
+
+<!-- =====================================================
+     HOW IT WORKS
+===================================================== -->
+
+<section class="how"
+         id="how">
+
+
+    <div class="section-label">
+        How it works
+    </div>
+
+
+    <h2 class="section-title">
+
+        From CV to career insights in minutes
+
+    </h2>
+
+
+    <p class="section-subtitle">
+
+        CareerInDe turns your existing CV into actionable
+        insights that help you understand and strengthen
+        your professional profile.
+
+    </p>
+
+
+
+    <div class="steps">
+
+
+        <!-- STEP 1 -->
+
+        <div class="step">
+
+            <div class="step-number">
+                1
+            </div>
+
+            <h3>
+                Upload your CV
+            </h3>
+
+            <p>
+
+                Upload your existing CV and CareerInDe
+                extracts your skills, experience,
+                education and projects.
+
+            </p>
+
+        </div>
+
+
+
+        <!-- STEP 2 -->
+
+        <div class="step">
+
+            <div class="step-number">
+                2
+            </div>
+
+            <h3>
+                Get AI career analysis
+            </h3>
+
+            <p>
+
+                Receive an ATS score, profile level,
+                key strengths, skill gaps and
+                realistic career recommendations.
+
+            </p>
+
+        </div>
+
+
+
+        <!-- STEP 3 -->
+
+        <div class="step">
+
+            <div class="step-number">
+                3
+            </div>
+
+            <h3>
+                Improve your profile
+            </h3>
+
+            <p>
+
+                Use AI optimization and personalized
+                recommendations to create stronger
+                applications for the German market.
+
+            </p>
+
+        </div>
+
+
+    </div>
+
+
+</section>
+
+
+
+<!-- =====================================================
+     GERMAN JOB MARKET
+===================================================== -->
+
+<section class="germany-section"
+         id="germany">
+
+
+    <div class="germany-container">
+
+
+        <!-- LEFT -->
+
+        <div class="germany-content">
+
+
+            <div class="section-label">
+                Built for Germany
+            </div>
+
+
+            <h2 class="section-title">
+
+                Understand your position
+                in the German job market
+
+            </h2>
+
+
+            <p class="germany-description">
+
+                CareerInDe helps international professionals
+                understand how their skills, education and
+                professional experience translate into realistic
+                career opportunities in Germany.
+
+            </p>
+
+
+
+            <div class="germany-list">
+
+
+                <div class="germany-list-item">
+
+                    <span class="check">
+                        ✓
+                    </span>
+
+                    German-market career positioning
+
+                </div>
+
+
+                <div class="germany-list-item">
+
+                    <span class="check">
+                        ✓
+                    </span>
+
+                    Skills and experience analysis
+
+                </div>
+
+
+                <div class="germany-list-item">
+
+                    <span class="check">
+                        ✓
+                    </span>
+
+                    AI-powered CV recommendations
+
+                </div>
+
+
+                <div class="germany-list-item">
+
+                    <span class="check">
+                        ✓
+                    </span>
+
+                    Career insights for international professionals
+
+                </div>
+
+
+            </div>
+
+
+        </div>
+
+
+
+        <!-- RIGHT -->
+
+        <div class="germany-card">
+
+
+            <div class="germany-card-title">
+                Example Career Profile
+            </div>
+
+
+
+            <div class="market-item">
+
+                <strong>
+                    Profile Level
+                </strong>
+
+                <span>
+                    Strong
+                </span>
+
+            </div>
+
+
+
+            <div class="market-item">
+
+                <strong>
+                    Best Career Match
+                </strong>
+
+                <span>
+                    Java Backend Developer
+                </span>
+
+            </div>
+
+
+
+            <div class="market-item">
+
+                <strong>
+                    Market Readiness
+                </strong>
+
+                <span>
+                    Good potential for the German tech market
+                </span>
+
+            </div>
+
+
+
+            <div class="market-item">
+
+                <strong>
+                    Recommended Next Step
+                </strong>
+
+                <span>
+                    Strengthen Docker and CI/CD experience
+                </span>
+
+            </div>
+
+
+        </div>
+
+
+    </div>
+
+
+</section>
+
+
+
+<!-- =====================================================
+     FINAL CTA
+===================================================== -->
+
+<section class="cta">
+
+
+    <h2>
+
+        Ready to strengthen your career in Germany?
+
+    </h2>
+
+
+    <p>
+
+        Start with your CV and discover your strengths,
+        skill gaps and realistic career opportunities.
+
+    </p>
+
+
+    <a href="/register"
+       class="primary-btn">
+
+        Analyze My CV &nbsp;→
+
+    </a>
+
+
+</section>
+
+
+
+<!-- =====================================================
+     FOOTER
+===================================================== -->
+
+<footer>
+
+
+    <div class="footer-logo">
+
+        CareerIn<span>De</span>
+
+    </div>
+
+
+    <div>
+
+        © 2026 CareerInDe
+
+    </div>
+
+
+    <div class="footer-links">
+
+        <a href="/login">
+            Login
+        </a>
+
+        <a href="/register">
+            Register
+        </a>
+
+    </div>
+
+
+</footer>
+
+
 </body>
+
 </html>
