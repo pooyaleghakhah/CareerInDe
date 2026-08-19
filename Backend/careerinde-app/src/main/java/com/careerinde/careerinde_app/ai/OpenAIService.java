@@ -62,13 +62,14 @@ Evaluate:
 - language skills
 - German job market readiness
 
-Return ONLY valid JSON.
+Return ONLY one valid JSON object.
 
 Do NOT use Markdown.
-Do NOT use ```json.
-Do NOT include any text before or after the JSON.
+Do NOT use code fences.
+Do NOT include explanations before or after the JSON.
+Keep every strength, missing skill and recommendation concise.
 
-Return exactly this JSON structure:
+Return exactly these fields:
 
 {
   "atsScore": 78,
@@ -84,24 +85,18 @@ Return exactly this JSON structure:
     "Kubernetes"
   ],
   "recommendations": [
-    "Add measurable achievements to work experience",
+    "Add measurable achievements",
     "Strengthen Docker experience",
-    "Highlight backend projects more prominently"
+    "Highlight backend projects"
   ]
 }
 
 Rules:
 
 atsScore:
-- Must be an integer between 0 and 100.
-- Evaluate the actual CV content.
+- Integer between 0 and 100.
+- Evaluate the actual CV.
 - Do not score too harshly.
-- Consider education and academic projects.
-- Consider professional experience.
-- Consider transferable skills.
-- Consider international experience.
-- Consider German job market requirements.
-- Do not invent skills or experience.
 
 profileLevel must be exactly one of:
 - Needs Improvement
@@ -112,20 +107,27 @@ profileLevel must be exactly one of:
 
 bestJobMatch:
 - Choose ONE realistic job role.
-- Base it only on the candidate's actual profile.
+- Use only evidence from the CV.
 
 strengths:
-- Return 3 to 6 concise strengths.
-- Base them on evidence in the CV.
+- Return 3 to 5 concise strengths.
+- Use evidence from the CV.
 
 missingSkills:
-- Return 0 to 6 relevant missing skills.
-- Only suggest skills relevant to the candidate's likely career path.
-- Do not claim a skill is missing if it already appears in the CV.
+- Return 0 to 5 relevant missing skills.
+- Do not list skills already present in the CV.
 
 recommendations:
-- Return 3 to 6 specific and actionable recommendations.
-- Focus on improving the candidate's chances in the German job market.
+- Return 3 to 5 concise and actionable recommendations.
+- Focus on the German job market.
+
+Never invent:
+- experience
+- education
+- skills
+- certifications
+- employers
+- achievements
 
 CV:
 
@@ -142,14 +144,22 @@ CV:
                                 Map.of(
                                         "role",
                                         "user",
-
                                         "content",
                                         prompt
                                 )
                         },
 
                         "temperature",
-                        0.2
+                        0.1,
+
+                        "max_tokens",
+                        2000,
+
+                        "response_format",
+                        Map.of(
+                                "type",
+                                "json_object"
+                        )
                 );
 
 
@@ -172,6 +182,18 @@ CV:
                     extractContent(response);
 
 
+            // Temporary debug output
+            System.out.println(
+                    "===== GROQ RAW CV ANALYSIS ====="
+            );
+
+            System.out.println(content);
+
+            System.out.println(
+                    "================================"
+            );
+
+
             String cleanedJson =
                     cleanJson(content);
 
@@ -188,13 +210,10 @@ CV:
             // =================================================
 
             if (result.getAtsScore() < 0) {
-
                 result.setAtsScore(0);
             }
 
-
             if (result.getAtsScore() > 100) {
-
                 result.setAtsScore(100);
             }
 
@@ -204,26 +223,15 @@ CV:
             // =================================================
 
             if (result.getStrengths() == null) {
-
-                result.setStrengths(
-                        List.of()
-                );
+                result.setStrengths(List.of());
             }
-
 
             if (result.getMissingSkills() == null) {
-
-                result.setMissingSkills(
-                        List.of()
-                );
+                result.setMissingSkills(List.of());
             }
 
-
             if (result.getRecommendations() == null) {
-
-                result.setRecommendations(
-                        List.of()
-                );
+                result.setRecommendations(List.of());
             }
 
 
@@ -246,8 +254,7 @@ CV:
 
     // =========================================================
     // Generic AI Prompt
-    //
-    // Used by JobMatchController / SkillGapController
+    // Used by other AI features
     // =========================================================
 
     public String sendPrompt(String prompt) {
@@ -262,14 +269,16 @@ CV:
                                 Map.of(
                                         "role",
                                         "user",
-
                                         "content",
                                         prompt
                                 )
                         },
 
                         "temperature",
-                        0.2
+                        0.2,
+
+                        "max_tokens",
+                        2500
                 );
 
 
@@ -288,7 +297,22 @@ CV:
                             .block();
 
 
-            return extractContent(response);
+            String content =
+                    extractContent(response);
+
+
+            System.out.println(
+                    "===== GROQ RAW PROMPT RESPONSE ====="
+            );
+
+            System.out.println(content);
+
+            System.out.println(
+                    "===================================="
+            );
+
+
+            return content;
 
 
         } catch (Exception e) {
@@ -311,7 +335,6 @@ CV:
 
     private String extractContent(
             Map<?, ?> response) {
-
 
         if (response == null) {
 
@@ -383,9 +406,7 @@ CV:
     private String cleanJson(
             String response) {
 
-
         if (response == null) {
-
             return "";
         }
 
@@ -394,17 +415,13 @@ CV:
                 response.trim();
 
 
-        // Remove ```json
         if (cleaned.startsWith("```json")) {
 
             cleaned =
                     cleaned.substring(7)
                             .trim();
 
-        }
-
-        // Remove ```
-        else if (cleaned.startsWith("```")) {
+        } else if (cleaned.startsWith("```")) {
 
             cleaned =
                     cleaned.substring(3)
@@ -412,7 +429,6 @@ CV:
         }
 
 
-        // Remove ending ```
         if (cleaned.endsWith("```")) {
 
             cleaned =
@@ -423,13 +439,8 @@ CV:
         }
 
 
-        // =====================================================
-        // Extract JSON object if AI added extra text
-        // =====================================================
-
         int firstBrace =
                 cleaned.indexOf('{');
-
 
         int lastBrace =
                 cleaned.lastIndexOf('}');
@@ -462,26 +473,21 @@ CV:
 
         result.setAtsScore(0);
 
-
         result.setProfileLevel(
                 "Analysis unavailable"
         );
-
 
         result.setBestJobMatch(
                 "Not available"
         );
 
-
         result.setStrengths(
                 List.of()
         );
 
-
         result.setMissingSkills(
                 List.of()
         );
-
 
         result.setRecommendations(
                 List.of(
