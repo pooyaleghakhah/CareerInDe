@@ -2,52 +2,58 @@
 <html xmlns:th="http://www.thymeleaf.org">
 
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <title>Optimized CV | CareerInDe</title>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <title>AI CV Optimization | CareerInDe</title>
 
     <style>
 
         * {
-            box-sizing: border-box;
             margin: 0;
             padding: 0;
+            box-sizing: border-box;
         }
 
         body {
             font-family: Arial, sans-serif;
-            background: #f5f7fb;
-            color: #111827;
+            background: #f6f8fc;
+            color: #101828;
         }
 
         /* =========================
            HEADER
         ========================= */
 
-        .header {
-            background: white;
-            border-bottom: 1px solid #e5e7eb;
-            padding: 22px 60px;
+        .topbar {
+            background: #0c1424;
+            color: white;
+            padding: 18px 40px;
 
             display: flex;
-            justify-content: space-between;
             align-items: center;
+            justify-content: space-between;
         }
 
         .logo {
-            font-size: 28px;
+            font-size: 25px;
             font-weight: 800;
         }
 
         .logo span {
-            color: #2563eb;
+            color: #2f6df6;
         }
 
         .back-link {
+            color: #d7deea;
             text-decoration: none;
-            color: #374151;
-            font-weight: 600;
+            font-size: 14px;
+        }
+
+        .back-link:hover {
+            color: white;
         }
 
 
@@ -57,28 +63,35 @@
 
         .page {
             max-width: 1100px;
-            margin: 50px auto;
-            padding: 0 25px;
+            margin: auto;
+            padding: 55px 25px 80px;
         }
 
-        .badge {
-            color: #2563eb;
+
+        /* =========================
+           HEADER SECTION
+        ========================= */
+
+        .page-label {
+            color: #2f6df6;
             font-size: 13px;
-            font-weight: 700;
-            letter-spacing: 1px;
+            font-weight: 800;
+            letter-spacing: 1.4px;
             margin-bottom: 12px;
         }
 
-        h1 {
-            font-size: 40px;
-            margin-bottom: 12px;
+        .page-title {
+            font-size: 38px;
+            line-height: 1.2;
+            margin-bottom: 14px;
         }
 
-        .subtitle {
-            color: #6b7280;
-            font-size: 17px;
-            line-height: 1.6;
-            margin-bottom: 35px;
+        .page-description {
+            color: #667085;
+            font-size: 16px;
+            line-height: 1.7;
+            max-width: 760px;
+            margin-bottom: 30px;
         }
 
 
@@ -87,68 +100,33 @@
         ========================= */
 
         .success-box {
-            background: #ecfdf5;
-            border: 1px solid #a7f3d0;
+            background: #ecfdf3;
+            border: 1px solid #abefc6;
             border-radius: 14px;
-            padding: 20px 24px;
-            margin-bottom: 30px;
+            padding: 18px 22px;
+
+            display: flex;
+            gap: 13px;
+
+            margin-bottom: 28px;
         }
 
-        .success-title {
-            font-weight: 700;
-            color: #065f46;
+        .success-icon {
+            color: #027a48;
+            font-size: 20px;
+            font-weight: bold;
+        }
+
+        .success-content strong {
+            display: block;
+            color: #027a48;
             margin-bottom: 5px;
         }
 
-        .success-text {
-            color: #047857;
+        .success-content p {
+            color: #475467;
             font-size: 14px;
-        }
-
-
-        /* =========================
-           RESULT CARD
-        ========================= */
-
-        .card {
-            background: white;
-            border: 1px solid #e5e7eb;
-            border-radius: 18px;
-            padding: 35px;
-            box-shadow: 0 4px 18px rgba(0,0,0,0.04);
-        }
-
-        .card-title {
-            font-size: 22px;
-            font-weight: 700;
-            margin-bottom: 8px;
-        }
-
-        .card-description {
-            color: #6b7280;
-            margin-bottom: 25px;
-            line-height: 1.5;
-        }
-
-
-        /* =========================
-           CV CONTENT
-        ========================= */
-
-        .cv-content {
-            background: #f9fafb;
-            border: 1px solid #e5e7eb;
-            border-radius: 12px;
-
-            padding: 30px;
-
-            white-space: pre-wrap;
-            line-height: 1.8;
-
-            font-size: 15px;
-
-            max-height: 700px;
-            overflow-y: auto;
+            line-height: 1.6;
         }
 
 
@@ -157,11 +135,12 @@
         ========================= */
 
         .error-box {
-            background: #fef2f2;
-            border: 1px solid #fecaca;
-            color: #991b1b;
+            background: #fff1f0;
+            color: #b42318;
 
+            border: 1px solid #fecdca;
             border-radius: 12px;
+
             padding: 18px;
 
             margin-bottom: 25px;
@@ -169,75 +148,190 @@
 
 
         /* =========================
-           BUTTONS
+           AI CARD
         ========================= */
 
-        .actions {
-            display: flex;
-            gap: 15px;
-            margin-top: 30px;
-            flex-wrap: wrap;
+        .ai-card {
+            background: white;
+
+            border: 1px solid #e4e8f0;
+            border-radius: 20px;
+
+            box-shadow: 0 8px 30px rgba(16, 24, 40, .05);
+
+            overflow: hidden;
+
+            margin-bottom: 28px;
         }
 
-        .btn-primary {
-            background: #2563eb;
+        .ai-card-header {
+            padding: 25px 30px;
+
+            border-bottom: 1px solid #e4e8f0;
+
+            display: flex;
+            align-items: center;
+            gap: 14px;
+        }
+
+        .ai-icon {
+            width: 44px;
+            height: 44px;
+
+            border-radius: 12px;
+
+            background: #2f6df6;
             color: white;
 
-            padding: 14px 24px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
 
-            border-radius: 10px;
-
-            text-decoration: none;
-            font-weight: 600;
-
-            display: inline-block;
+            font-size: 20px;
         }
 
-        .btn-primary:hover {
-            background: #1d4ed8;
+        .ai-card-header h2 {
+            font-size: 20px;
+            margin-bottom: 4px;
         }
 
-        .btn-secondary {
-            background: white;
-            color: #111827;
-
-            padding: 14px 24px;
-
-            border-radius: 10px;
-
-            border: 1px solid #d1d5db;
-
-            text-decoration: none;
-            font-weight: 600;
-
-            display: inline-block;
-        }
-
-        .btn-secondary:hover {
-            background: #f9fafb;
+        .ai-card-header p {
+            color: #667085;
+            font-size: 13px;
         }
 
 
         /* =========================
-           AI LABEL
+           OPTIMIZED CV CONTENT
         ========================= */
 
-        .ai-label {
+        .optimized-content {
+            padding: 35px;
+        }
+
+        .optimized-cv {
+            background: #f8fafc;
+
+            border: 1px solid #eaecf0;
+            border-radius: 14px;
+
+            padding: 32px;
+
+            white-space: pre-wrap;
+
+            font-family: Arial, sans-serif;
+
+            font-size: 14px;
+            line-height: 1.8;
+
+            color: #344054;
+
+            max-height: 850px;
+            overflow-y: auto;
+        }
+
+
+        /* =========================
+           ACTION AREA
+        ========================= */
+
+        .actions {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 15px;
+
+            flex-wrap: wrap;
+
+            margin-top: 30px;
+        }
+
+        .left-actions,
+        .right-actions {
+            display: flex;
+            gap: 12px;
+            flex-wrap: wrap;
+            align-items: center;
+        }
+
+        .actions form {
+            margin: 0;
+        }
+
+
+        /* =========================
+           BUTTONS
+        ========================= */
+
+        .btn {
+            border: none;
+
+            border-radius: 10px;
+
+            padding: 14px 22px;
+
+            font-size: 14px;
+            font-weight: 700;
+
+            cursor: pointer;
+
+            text-decoration: none;
+
             display: inline-flex;
             align-items: center;
+            justify-content: center;
             gap: 8px;
 
-            background: #eff6ff;
-            color: #2563eb;
+            font-family: inherit;
 
-            border-radius: 8px;
+            transition: .2s;
+        }
 
-            padding: 7px 12px;
+        .btn:hover {
+            transform: translateY(-1px);
+        }
+
+        .btn-secondary {
+            background: white;
+            color: #344054;
+            border: 1px solid #d0d5dd;
+        }
+
+        .btn-primary {
+            background: #2f6df6;
+            color: white;
+            border: 1px solid #2f6df6;
+        }
+
+        .btn-download {
+            background: #101828;
+            color: white;
+            border: 1px solid #101828;
+        }
+
+        .btn-download:hover {
+            background: #1d2939;
+        }
+
+
+        /* =========================
+           DOWNLOAD INFO
+        ========================= */
+
+        .download-info {
+            margin-top: 18px;
+
+            padding: 14px 17px;
+
+            background: #f8faff;
+
+            border-radius: 10px;
+
+            color: #667085;
 
             font-size: 13px;
-            font-weight: 600;
 
-            margin-bottom: 20px;
+            line-height: 1.6;
         }
 
 
@@ -247,22 +341,45 @@
 
         @media (max-width: 700px) {
 
-            .header {
-                padding: 20px;
+            .topbar {
+                padding: 16px 20px;
             }
 
             .page {
-                margin-top: 30px;
+                padding: 35px 18px 60px;
             }
 
-            h1 {
-                font-size: 32px;
+            .page-title {
+                font-size: 30px;
             }
 
-            .card {
-                padding: 22px;
+            .optimized-content {
+                padding: 20px;
             }
 
+            .optimized-cv {
+                padding: 20px;
+            }
+
+            .actions {
+                flex-direction: column;
+                align-items: stretch;
+            }
+
+            .left-actions,
+            .right-actions {
+                flex-direction: column;
+                width: 100%;
+            }
+
+            .btn,
+            .actions form {
+                width: 100%;
+            }
+
+            .actions form .btn {
+                width: 100%;
+            }
         }
 
     </style>
@@ -274,10 +391,10 @@
 
 
 <!-- =========================
-     HEADER
+     TOP BAR
 ========================= -->
 
-<header class="header">
+<header class="topbar">
 
     <div class="logo">
         CareerIn<span>De</span>
@@ -295,23 +412,23 @@
 
 
 <!-- =========================
-     MAIN CONTENT
+     MAIN PAGE
 ========================= -->
 
 <main class="page">
 
 
-    <div class="badge">
+    <div class="page-label">
         AI CV OPTIMIZATION
     </div>
 
 
-    <h1>
+    <h1 class="page-title">
         Your Optimized CV
     </h1>
 
 
-    <p class="subtitle">
+    <p class="page-description">
 
         CareerInDe has rewritten your CV to improve
         clarity, professional positioning and ATS
@@ -321,100 +438,187 @@
 
 
 
-    <!-- ERROR MESSAGE -->
+    <!-- =========================
+         ERROR
+    ========================= -->
 
     <div class="error-box"
-         th:if="${error}">
+         th:if="${error != null}"
+         th:text="${error}">
 
-        <strong>Optimization failed</strong>
-
-        <br><br>
-
-        <span th:text="${error}">
-            Something went wrong.
-        </span>
+        CV optimization failed.
 
     </div>
 
 
 
-    <!-- SUCCESS -->
+    <!-- Everything below appears
+         when optimized CV exists -->
 
-    <div class="success-box"
-         th:if="${optimizedCV != null}">
-
-        <div class="success-title">
-
-            ✓ CV Optimization Complete
-
-        </div>
-
-        <div class="success-text">
-
-            Your original experience and qualifications
-            have been preserved while improving the
-            presentation of your CV.
-
-        </div>
-
-    </div>
+    <div th:if="${optimizedCV != null and !optimizedCV.isBlank()}">
 
 
+        <!-- =========================
+             SUCCESS MESSAGE
+        ========================= -->
 
-    <!-- RESULT -->
+        <div class="success-box">
 
-    <div class="card"
-         th:if="${optimizedCV != null}">
+            <div class="success-icon">
+                ✓
+            </div>
 
+            <div class="success-content">
 
-        <div class="ai-label">
+                <strong>
+                    CV Optimization Complete
+                </strong>
 
-            ✦ AI Optimized Version
+                <p>
+                    Your original experience and qualifications
+                    have been preserved while improving the
+                    presentation of your CV.
+                </p>
+
+            </div>
 
         </div>
 
 
-        <div class="card-title">
 
-            Optimized CV Content
+        <!-- =========================
+             OPTIMIZED CV CARD
+        ========================= -->
 
-        </div>
-
-
-        <div class="card-description">
-
-            Review the optimized version carefully before
-            using it in your applications.
-
-        </div>
+        <section class="ai-card">
 
 
-        <div class="cv-content"
-             th:text="${optimizedCV}">
+            <div class="ai-card-header">
 
-            Optimized CV will appear here.
+                <div class="ai-icon">
+                    ✦
+                </div>
 
-        </div>
 
+                <div>
+
+                    <h2>
+                        AI Optimized Version
+                    </h2>
+
+                    <p>
+                        Optimized CV Content
+                    </p>
+
+                </div>
+
+            </div>
+
+
+
+            <div class="optimized-content">
+
+
+                <div class="optimized-cv"
+                     th:text="${optimizedCV}">
+
+                    Optimized CV will appear here.
+
+                </div>
+
+
+                <div class="download-info">
+
+                    Review the optimized version carefully
+                    before downloading or using it in your
+                    job applications.
+
+                </div>
+
+
+            </div>
+
+        </section>
+
+
+
+        <!-- =========================
+             ACTION BUTTONS
+        ========================= -->
 
         <div class="actions">
 
-            <a th:href="@{/resume/upload}"
-               class="btn-primary">
 
-                Analyze Another CV
-
-            </a>
+            <div class="left-actions">
 
 
-            <a th:href="@{/dashboard}"
-               class="btn-secondary">
+                <!-- Analyze another CV -->
 
-                Back to Dashboard
+                <a th:href="@{/resume/upload}"
+                   class="btn btn-secondary">
 
-            </a>
+                    Analyze Another CV
+
+                </a>
+
+
+                <!-- Dashboard -->
+
+                <a th:href="@{/dashboard}"
+                   class="btn btn-secondary">
+
+                    Back to Dashboard
+
+                </a>
+
+
+            </div>
+
+
+
+            <div class="right-actions">
+
+
+                <!-- =========================
+                     DOWNLOAD PDF
+                ========================= -->
+
+                <form th:action="@{/resume/optimized/download}"
+                      method="post">
+
+
+                    <!--
+                    The optimized CV is sent back to
+                    CVOptimizationController.
+
+                    Controller:
+                    /resume/optimized/download
+
+                    Then:
+                    OptimizedCvPdfService
+
+                    generates the PDF.
+                    -->
+
+                    <input type="hidden"
+                           name="optimizedCV"
+                           th:value="${optimizedCV}">
+
+
+                    <button type="submit"
+                            class="btn btn-download">
+
+                        ↓ Download Optimized CV as PDF
+
+                    </button>
+
+                </form>
+
+
+            </div>
 
         </div>
+
 
     </div>
 
@@ -423,4 +627,5 @@
 
 
 </body>
+
 </html>
