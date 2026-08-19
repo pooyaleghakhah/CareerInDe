@@ -1,0 +1,426 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Optimized CV | CareerInDe</title>
+
+    <style>
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            background: #f5f7fb;
+            color: #111827;
+        }
+
+        /* =========================
+           HEADER
+        ========================= */
+
+        .header {
+            background: white;
+            border-bottom: 1px solid #e5e7eb;
+            padding: 22px 60px;
+
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-size: 28px;
+            font-weight: 800;
+        }
+
+        .logo span {
+            color: #2563eb;
+        }
+
+        .back-link {
+            text-decoration: none;
+            color: #374151;
+            font-weight: 600;
+        }
+
+
+        /* =========================
+           PAGE
+        ========================= */
+
+        .page {
+            max-width: 1100px;
+            margin: 50px auto;
+            padding: 0 25px;
+        }
+
+        .badge {
+            color: #2563eb;
+            font-size: 13px;
+            font-weight: 700;
+            letter-spacing: 1px;
+            margin-bottom: 12px;
+        }
+
+        h1 {
+            font-size: 40px;
+            margin-bottom: 12px;
+        }
+
+        .subtitle {
+            color: #6b7280;
+            font-size: 17px;
+            line-height: 1.6;
+            margin-bottom: 35px;
+        }
+
+
+        /* =========================
+           SUCCESS BOX
+        ========================= */
+
+        .success-box {
+            background: #ecfdf5;
+            border: 1px solid #a7f3d0;
+            border-radius: 14px;
+            padding: 20px 24px;
+            margin-bottom: 30px;
+        }
+
+        .success-title {
+            font-weight: 700;
+            color: #065f46;
+            margin-bottom: 5px;
+        }
+
+        .success-text {
+            color: #047857;
+            font-size: 14px;
+        }
+
+
+        /* =========================
+           RESULT CARD
+        ========================= */
+
+        .card {
+            background: white;
+            border: 1px solid #e5e7eb;
+            border-radius: 18px;
+            padding: 35px;
+            box-shadow: 0 4px 18px rgba(0,0,0,0.04);
+        }
+
+        .card-title {
+            font-size: 22px;
+            font-weight: 700;
+            margin-bottom: 8px;
+        }
+
+        .card-description {
+            color: #6b7280;
+            margin-bottom: 25px;
+            line-height: 1.5;
+        }
+
+
+        /* =========================
+           CV CONTENT
+        ========================= */
+
+        .cv-content {
+            background: #f9fafb;
+            border: 1px solid #e5e7eb;
+            border-radius: 12px;
+
+            padding: 30px;
+
+            white-space: pre-wrap;
+            line-height: 1.8;
+
+            font-size: 15px;
+
+            max-height: 700px;
+            overflow-y: auto;
+        }
+
+
+        /* =========================
+           ERROR
+        ========================= */
+
+        .error-box {
+            background: #fef2f2;
+            border: 1px solid #fecaca;
+            color: #991b1b;
+
+            border-radius: 12px;
+            padding: 18px;
+
+            margin-bottom: 25px;
+        }
+
+
+        /* =========================
+           BUTTONS
+        ========================= */
+
+        .actions {
+            display: flex;
+            gap: 15px;
+            margin-top: 30px;
+            flex-wrap: wrap;
+        }
+
+        .btn-primary {
+            background: #2563eb;
+            color: white;
+
+            padding: 14px 24px;
+
+            border-radius: 10px;
+
+            text-decoration: none;
+            font-weight: 600;
+
+            display: inline-block;
+        }
+
+        .btn-primary:hover {
+            background: #1d4ed8;
+        }
+
+        .btn-secondary {
+            background: white;
+            color: #111827;
+
+            padding: 14px 24px;
+
+            border-radius: 10px;
+
+            border: 1px solid #d1d5db;
+
+            text-decoration: none;
+            font-weight: 600;
+
+            display: inline-block;
+        }
+
+        .btn-secondary:hover {
+            background: #f9fafb;
+        }
+
+
+        /* =========================
+           AI LABEL
+        ========================= */
+
+        .ai-label {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+
+            background: #eff6ff;
+            color: #2563eb;
+
+            border-radius: 8px;
+
+            padding: 7px 12px;
+
+            font-size: 13px;
+            font-weight: 600;
+
+            margin-bottom: 20px;
+        }
+
+
+        /* =========================
+           RESPONSIVE
+        ========================= */
+
+        @media (max-width: 700px) {
+
+            .header {
+                padding: 20px;
+            }
+
+            .page {
+                margin-top: 30px;
+            }
+
+            h1 {
+                font-size: 32px;
+            }
+
+            .card {
+                padding: 22px;
+            }
+
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+
+<!-- =========================
+     HEADER
+========================= -->
+
+<header class="header">
+
+    <div class="logo">
+        CareerIn<span>De</span>
+    </div>
+
+    <a th:href="@{/dashboard}"
+       class="back-link">
+
+        ← Back to Dashboard
+
+    </a>
+
+</header>
+
+
+
+<!-- =========================
+     MAIN CONTENT
+========================= -->
+
+<main class="page">
+
+
+    <div class="badge">
+        AI CV OPTIMIZATION
+    </div>
+
+
+    <h1>
+        Your Optimized CV
+    </h1>
+
+
+    <p class="subtitle">
+
+        CareerInDe has rewritten your CV to improve
+        clarity, professional positioning and ATS
+        compatibility for the German job market.
+
+    </p>
+
+
+
+    <!-- ERROR MESSAGE -->
+
+    <div class="error-box"
+         th:if="${error}">
+
+        <strong>Optimization failed</strong>
+
+        <br><br>
+
+        <span th:text="${error}">
+            Something went wrong.
+        </span>
+
+    </div>
+
+
+
+    <!-- SUCCESS -->
+
+    <div class="success-box"
+         th:if="${optimizedCV != null}">
+
+        <div class="success-title">
+
+            ✓ CV Optimization Complete
+
+        </div>
+
+        <div class="success-text">
+
+            Your original experience and qualifications
+            have been preserved while improving the
+            presentation of your CV.
+
+        </div>
+
+    </div>
+
+
+
+    <!-- RESULT -->
+
+    <div class="card"
+         th:if="${optimizedCV != null}">
+
+
+        <div class="ai-label">
+
+            ✦ AI Optimized Version
+
+        </div>
+
+
+        <div class="card-title">
+
+            Optimized CV Content
+
+        </div>
+
+
+        <div class="card-description">
+
+            Review the optimized version carefully before
+            using it in your applications.
+
+        </div>
+
+
+        <div class="cv-content"
+             th:text="${optimizedCV}">
+
+            Optimized CV will appear here.
+
+        </div>
+
+
+        <div class="actions">
+
+            <a th:href="@{/resume/upload}"
+               class="btn-primary">
+
+                Analyze Another CV
+
+            </a>
+
+
+            <a th:href="@{/dashboard}"
+               class="btn-secondary">
+
+                Back to Dashboard
+
+            </a>
+
+        </div>
+
+    </div>
+
+
+</main>
+
+
+</body>
+</html>

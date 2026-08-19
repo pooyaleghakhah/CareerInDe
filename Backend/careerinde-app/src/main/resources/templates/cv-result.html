@@ -26,7 +26,9 @@
             min-height: 100vh;
         }
 
-        /* SIDEBAR */
+        /* =========================
+           SIDEBAR
+        ========================= */
 
         .sidebar {
             width: 250px;
@@ -80,7 +82,10 @@
             font-weight: 600;
         }
 
-        /* MAIN */
+
+        /* =========================
+           MAIN
+        ========================= */
 
         .main {
             margin-left: 250px;
@@ -93,7 +98,10 @@
             margin: auto;
         }
 
-        /* HEADER */
+
+        /* =========================
+           HEADER
+        ========================= */
 
         .header {
             display: flex;
@@ -121,16 +129,21 @@
             font-weight: 600;
         }
 
-        /* SCORE HERO */
+
+        /* =========================
+           SCORE HERO
+        ========================= */
 
         .score-section {
             background: linear-gradient(120deg, #172b64, #2f6df6);
             color: white;
             border-radius: 22px;
             padding: 38px 42px;
+
             display: flex;
             justify-content: space-between;
             align-items: center;
+
             margin-bottom: 25px;
         }
 
@@ -149,12 +162,16 @@
             width: 145px;
             height: 145px;
             min-width: 145px;
+
             border-radius: 50%;
+
             border: 10px solid rgba(255,255,255,.25);
+
             display: flex;
             flex-direction: column;
             align-items: center;
             justify-content: center;
+
             background: rgba(255,255,255,.08);
         }
 
@@ -169,7 +186,10 @@
             margin-top: 4px;
         }
 
-        /* SUMMARY */
+
+        /* =========================
+           SUMMARY
+        ========================= */
 
         .summary-grid {
             display: grid;
@@ -204,7 +224,10 @@
             margin-top: 6px;
         }
 
-        /* CARDS */
+
+        /* =========================
+           CARDS
+        ========================= */
 
         .content-grid {
             display: grid;
@@ -231,7 +254,10 @@
             margin-bottom: 22px;
         }
 
-        /* TAGS */
+
+        /* =========================
+           TAGS
+        ========================= */
 
         .tags {
             display: flex;
@@ -258,7 +284,10 @@
             border: 1px solid #ffd6ae;
         }
 
-        /* AI OVERVIEW */
+
+        /* =========================
+           AI OVERVIEW
+        ========================= */
 
         .ai-card {
             background: linear-gradient(135deg, #f6f9ff, #ffffff);
@@ -279,11 +308,14 @@
             width: 42px;
             height: 42px;
             border-radius: 11px;
+
             background: #2f6df6;
             color: white;
+
             display: flex;
             justify-content: center;
             align-items: center;
+
             font-size: 20px;
         }
 
@@ -325,7 +357,10 @@
             line-height: 1.4;
         }
 
-        /* STRENGTHS */
+
+        /* =========================
+           STRENGTHS
+        ========================= */
 
         .strength-box {
             background: white;
@@ -352,7 +387,10 @@
             font-weight: bold;
         }
 
-        /* RECOMMENDATIONS */
+
+        /* =========================
+           RECOMMENDATIONS
+        ========================= */
 
         .recommendation-list {
             display: flex;
@@ -364,7 +402,9 @@
             display: flex;
             gap: 14px;
             align-items: flex-start;
+
             padding: 15px;
+
             background: #f8faff;
             border-radius: 11px;
         }
@@ -373,12 +413,16 @@
             width: 29px;
             height: 29px;
             min-width: 29px;
+
             background: #e8f0ff;
             color: #2f6df6;
+
             border-radius: 8px;
+
             display: flex;
             align-items: center;
             justify-content: center;
+
             font-size: 12px;
             font-weight: 700;
         }
@@ -388,13 +432,18 @@
             line-height: 1.6;
         }
 
-        /* RAW CV */
+
+        /* =========================
+           RAW CV
+        ========================= */
 
         details {
             background: white;
             border: 1px solid #e4e8f0;
             border-radius: 16px;
+
             padding: 22px 25px;
+
             margin-bottom: 25px;
         }
 
@@ -406,59 +455,101 @@
 
         .cv-text {
             margin-top: 20px;
+
             padding: 20px;
+
             background: #f8fafc;
+
             border-radius: 10px;
+
             white-space: pre-wrap;
+
             line-height: 1.7;
+
             font-size: 13px;
+
             color: #475467;
+
             max-height: 450px;
+
             overflow-y: auto;
         }
 
-        /* BUTTONS */
+
+        /* =========================
+           ACTION BUTTONS
+        ========================= */
 
         .actions {
             display: flex;
             gap: 14px;
             justify-content: flex-end;
+            align-items: center;
+            flex-wrap: wrap;
+
             margin-top: 25px;
+        }
+
+        .actions form {
+            margin: 0;
         }
 
         .btn {
             display: inline-block;
+
             text-decoration: none;
+
             padding: 13px 22px;
+
             border-radius: 10px;
+
             font-size: 14px;
             font-weight: 700;
+
+            cursor: pointer;
+
+            font-family: inherit;
         }
 
         .btn-secondary {
             background: white;
             color: #344054;
+
             border: 1px solid #d0d5dd;
         }
 
         .btn-primary {
             background: #2f6df6;
             color: white;
+
             border: 1px solid #2f6df6;
+        }
+
+        .btn-ai {
+            background: #101828;
+            color: white;
+
+            border: 1px solid #101828;
         }
 
         .btn:hover {
             opacity: .9;
         }
 
-        /* EMPTY */
+
+        /* =========================
+           EMPTY MESSAGE
+        ========================= */
 
         .empty-message {
             color: #98a2b3;
             font-size: 14px;
         }
 
-        /* RESPONSIVE */
+
+        /* =========================
+           RESPONSIVE
+        ========================= */
 
         @media (max-width: 950px) {
 
@@ -484,16 +575,25 @@
                 align-items: flex-start;
             }
 
+            .actions {
+                justify-content: flex-start;
+            }
+
         }
 
     </style>
+
 </head>
+
 
 <body>
 
 <div class="layout">
 
-    <!-- SIDEBAR -->
+
+    <!-- =========================
+         SIDEBAR
+    ========================= -->
 
     <aside class="sidebar">
 
@@ -507,28 +607,28 @@
 
         <nav class="menu">
 
-            <a href="/dashboard">
+            <a th:href="@{/dashboard}">
                 ▣ &nbsp; Dashboard
             </a>
 
-            <a href="/profile">
+            <a th:href="@{/profile}">
                 ○ &nbsp; Profile
             </a>
 
-            <a href="/resume/upload"
+            <a th:href="@{/resume/upload}"
                class="active">
                 ↑ &nbsp; My CV
             </a>
 
-            <a href="/job-match">
+            <a th:href="@{/job-match}">
                 ◎ &nbsp; Job Matches
             </a>
 
-            <a href="/skill-gap">
+            <a th:href="@{/skill-gap}">
                 ◇ &nbsp; Skill Gap
             </a>
 
-            <a href="/applications">
+            <a th:href="@{/applications}">
                 ▤ &nbsp; Applications
             </a>
 
@@ -537,11 +637,15 @@
     </aside>
 
 
-    <!-- MAIN -->
+
+    <!-- =========================
+         MAIN
+    ========================= -->
 
     <main class="main">
 
         <div class="container">
+
 
             <!-- HEADER -->
 
@@ -566,7 +670,10 @@
             </div>
 
 
-            <!-- SCORE HERO -->
+
+            <!-- =========================
+                 SCORE HERO
+            ========================= -->
 
             <section class="score-section">
 
@@ -584,6 +691,7 @@
 
                 </div>
 
+
                 <div class="score-circle">
 
                     <div class="score-number"
@@ -600,9 +708,15 @@
             </section>
 
 
-            <!-- SUMMARY -->
+
+            <!-- =========================
+                 SUMMARY
+            ========================= -->
 
             <div class="summary-grid">
+
+
+                <!-- ATS SCORE -->
 
                 <div class="summary-card">
 
@@ -622,6 +736,9 @@
                 </div>
 
 
+
+                <!-- DETECTED SKILLS -->
+
                 <div class="summary-card">
 
                     <div class="summary-title">
@@ -639,6 +756,9 @@
 
                 </div>
 
+
+
+                <!-- SKILL GAPS -->
 
                 <div class="summary-card">
 
@@ -660,7 +780,10 @@
             </div>
 
 
-            <!-- AI CAREER ANALYSIS -->
+
+            <!-- =========================
+                 AI CAREER ANALYSIS
+            ========================= -->
 
             <section class="ai-card">
 
@@ -685,7 +808,11 @@
                 </div>
 
 
+
                 <div class="ai-summary-grid">
+
+
+                    <!-- PROFILE LEVEL -->
 
                     <div class="ai-summary-box">
 
@@ -700,6 +827,9 @@
 
                     </div>
 
+
+
+                    <!-- BEST JOB -->
 
                     <div class="ai-summary-box">
 
@@ -717,13 +847,17 @@
                 </div>
 
 
-                <!-- AI STRENGTHS -->
+
+                <!-- =========================
+                     AI STRENGTHS
+                ========================= -->
 
                 <div class="strength-box">
 
                     <h3>
                         Key Strengths
                     </h3>
+
 
                     <div th:if="${strengths != null and !#lists.isEmpty(strengths)}">
 
@@ -742,6 +876,7 @@
 
                     </div>
 
+
                     <div class="empty-message"
                          th:if="${strengths == null or #lists.isEmpty(strengths)}">
 
@@ -754,11 +889,15 @@
             </section>
 
 
-            <!-- SKILLS -->
+
+            <!-- =========================
+                 SKILLS
+            ========================= -->
 
             <div class="content-grid">
 
-                <!-- DETECTED -->
+
+                <!-- DETECTED SKILLS -->
 
                 <div class="card">
 
@@ -769,6 +908,7 @@
                     <p class="card-description">
                         Skills identified from your CV.
                     </p>
+
 
                     <div class="tags"
                          th:if="${skills != null and !#lists.isEmpty(skills)}">
@@ -781,6 +921,7 @@
 
                     </div>
 
+
                     <div class="empty-message"
                          th:if="${skills == null or #lists.isEmpty(skills)}">
 
@@ -791,7 +932,8 @@
                 </div>
 
 
-                <!-- MISSING -->
+
+                <!-- MISSING SKILLS -->
 
                 <div class="card">
 
@@ -803,6 +945,7 @@
                         Skills that may strengthen your profile.
                     </p>
 
+
                     <div class="tags"
                          th:if="${missingSkills != null and !#lists.isEmpty(missingSkills)}">
 
@@ -813,6 +956,7 @@
                         </span>
 
                     </div>
+
 
                     <div class="empty-message"
                          th:if="${missingSkills == null or #lists.isEmpty(missingSkills)}">
@@ -826,7 +970,10 @@
             </div>
 
 
-            <!-- AI RECOMMENDATIONS -->
+
+            <!-- =========================
+                 AI RECOMMENDATIONS
+            ========================= -->
 
             <div class="card"
                  style="margin-bottom:25px;">
@@ -840,16 +987,20 @@
                     and job readiness.
                 </p>
 
+
                 <div class="recommendation-list"
                      th:if="${recommendations != null and !#lists.isEmpty(recommendations)}">
 
+
                     <div class="recommendation"
                          th:each="recommendation, stat : ${recommendations}">
+
 
                         <div class="recommendation-number"
                              th:text="${stat.count}">
                             1
                         </div>
+
 
                         <div class="recommendation-text"
                              th:text="${recommendation}">
@@ -859,6 +1010,7 @@
                     </div>
 
                 </div>
+
 
                 <div class="empty-message"
                      th:if="${recommendations == null or #lists.isEmpty(recommendations)}">
@@ -870,7 +1022,10 @@
             </div>
 
 
-            <!-- EXTRACTED CV -->
+
+            <!-- =========================
+                 EXTRACTED CV
+            ========================= -->
 
             <details>
 
@@ -885,18 +1040,57 @@
             </details>
 
 
-            <!-- ACTIONS -->
+
+            <!-- =========================
+                 ACTIONS
+            ========================= -->
 
             <div class="actions">
 
-                <a href="/resume/upload"
+
+                <!-- UPLOAD ANOTHER CV -->
+
+                <a th:href="@{/resume/upload}"
                    class="btn btn-secondary">
 
                     Upload Another CV
 
                 </a>
 
-                <a href="/dashboard"
+
+
+                <!-- =========================
+                     AI OPTIMIZATION
+                ========================= -->
+
+                <form th:action="@{/resume/optimize}"
+                      method="post">
+
+
+                    <!--
+                        Send the extracted CV text
+                        to CVOptimizationController
+                    -->
+
+                    <input type="hidden"
+                           name="cvText"
+                           th:value="${cvText}">
+
+
+                    <button type="submit"
+                            class="btn btn-ai">
+
+                        ✦ Optimize My CV with AI
+
+                    </button>
+
+                </form>
+
+
+
+                <!-- DASHBOARD -->
+
+                <a th:href="@{/dashboard}"
                    class="btn btn-primary">
 
                     Go to Dashboard →
@@ -905,11 +1099,13 @@
 
             </div>
 
+
         </div>
 
     </main>
 
 </div>
+
 
 </body>
 
