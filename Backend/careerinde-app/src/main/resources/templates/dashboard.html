@@ -1,403 +1,769 @@
 <!DOCTYPE html>
-
 <html xmlns:th="http://www.thymeleaf.org">
 
 <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <title>
-        Careerinde Dashboard
-    </title>
+    <title>CareerInDe Dashboard</title>
 
     <style>
-
         * {
-
             margin: 0;
-
             padding: 0;
-
             box-sizing: border-box;
         }
 
+        :root {
+            --blue: #2563eb;
+            --blue-light: #eff6ff;
+            --dark: #0f172a;
+            --text: #334155;
+            --muted: #64748b;
+            --border: #e2e8f0;
+            --background: #f8fafc;
+            --white: #ffffff;
+            --green: #16a34a;
+        }
+
         body {
-
             font-family: Arial, sans-serif;
-
-            background: #f5f5f5;
-
-            color: #111;
+            background: var(--background);
+            color: var(--dark);
         }
 
         .layout {
-
             display: flex;
-
             min-height: 100vh;
         }
 
+        /* SIDEBAR */
+
         .sidebar {
-
-            width: 260px;
-
-            background: black;
-
+            width: 245px;
+            background: #0b1220;
             color: white;
-
-            padding: 40px 25px;
+            padding: 32px 20px;
+            position: fixed;
+            top: 0;
+            bottom: 0;
+            left: 0;
         }
 
         .logo {
+            font-size: 25px;
+            font-weight: 800;
+            padding: 0 12px;
+            margin-bottom: 42px;
+        }
 
-            font-size: 28px;
+        .logo span {
+            color: #3b82f6;
+        }
 
-            font-weight: bold;
-
-            margin-bottom: 50px;
+        .menu-label {
+            font-size: 11px;
+            color: #64748b;
+            text-transform: uppercase;
+            letter-spacing: 1.2px;
+            margin: 25px 12px 10px;
         }
 
         .menu {
-
             display: flex;
-
             flex-direction: column;
-
-            gap: 18px;
+            gap: 5px;
         }
 
         .menu a {
-
-            color: white;
-
+            color: #cbd5e1;
             text-decoration: none;
-
-            padding: 14px;
-
-            border-radius: 10px;
-
+            padding: 13px 14px;
+            border-radius: 9px;
+            font-size: 14px;
             transition: 0.2s;
         }
 
         .menu a:hover {
-
-            background: #1f1f1f;
+            background: #172033;
+            color: white;
         }
+
+        .menu a.active {
+            background: #2563eb;
+            color: white;
+            font-weight: 600;
+        }
+
+        /* MAIN */
 
         .main {
-
             flex: 1;
-
-            padding: 40px;
+            margin-left: 245px;
+            padding: 38px 45px 60px;
+            max-width: 1700px;
         }
 
+        /* TOP BAR */
+
         .topbar {
-
             display: flex;
-
             justify-content: space-between;
-
             align-items: center;
-
-            margin-bottom: 40px;
+            margin-bottom: 35px;
         }
 
         .welcome h1 {
-
-            font-size: 34px;
-
-            margin-bottom: 10px;
-        }
-
-        .welcome p {
-
-            color: #666;
-        }
-
-        .logout-btn {
-
-            padding: 12px 20px;
-
-            border: none;
-
-            border-radius: 10px;
-
-            background: black;
-
-            color: white;
-
-            cursor: pointer;
-
-            font-weight: bold;
-        }
-
-        .cards {
-
-            display: grid;
-
-            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-
-            gap: 25px;
-
-            margin-bottom: 40px;
-        }
-
-        .card {
-
-            background: white;
-
-            padding: 30px;
-
-            border-radius: 16px;
-
-            box-shadow: 0 4px 20px rgba(0,0,0,0.06);
-        }
-
-        .card-title {
-
-            color: #666;
-
-            margin-bottom: 12px;
-
-            font-size: 14px;
-        }
-
-        .card-value {
-
-            font-size: 34px;
-
-            font-weight: bold;
-        }
-
-        .section {
-
-            background: white;
-
-            border-radius: 16px;
-
-            padding: 35px;
-
-            box-shadow: 0 4px 20px rgba(0,0,0,0.06);
-        }
-
-        .section h2 {
-
-            margin-bottom: 20px;
-        }
-
-        .activity {
-
-            display: flex;
-
-            flex-direction: column;
-
-            gap: 18px;
-        }
-
-        .activity-item {
-
-            padding: 18px;
-
-            border: 1px solid #ececec;
-
-            border-radius: 12px;
-        }
-
-        .activity-title {
-
-            font-weight: bold;
-
+            font-size: 30px;
             margin-bottom: 8px;
         }
 
-        .activity-text {
+        .welcome p {
+            color: var(--muted);
+            font-size: 15px;
+        }
 
-            color: #666;
+        .top-actions {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
 
+        .logout-btn {
+            padding: 11px 18px;
+            border: 1px solid var(--border);
+            border-radius: 9px;
+            background: white;
+            color: var(--dark);
+            cursor: pointer;
+            font-weight: 600;
+        }
+
+        .logout-btn:hover {
+            background: #f1f5f9;
+        }
+
+        /* HERO */
+
+        .career-overview {
+            background: linear-gradient(135deg, #172554, #2563eb);
+            color: white;
+            border-radius: 20px;
+            padding: 30px 34px;
+            margin-bottom: 28px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .career-overview h2 {
+            font-size: 23px;
+            margin-bottom: 9px;
+        }
+
+        .career-overview p {
+            color: #dbeafe;
+            line-height: 1.6;
             font-size: 14px;
         }
 
-    </style>
+        .overview-score {
+            text-align: center;
+            min-width: 130px;
+        }
 
+        .overview-score strong {
+            display: block;
+            font-size: 42px;
+        }
+
+        .overview-score span {
+            font-size: 12px;
+            color: #dbeafe;
+        }
+
+        /* KPI CARDS */
+
+        .cards {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 18px;
+            margin-bottom: 28px;
+        }
+
+        .card {
+            background: white;
+            padding: 23px;
+            border-radius: 15px;
+            border: 1px solid var(--border);
+        }
+
+        .card-top {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 18px;
+        }
+
+        .card-title {
+            color: var(--muted);
+            font-size: 13px;
+            font-weight: 600;
+        }
+
+        .card-icon {
+            width: 36px;
+            height: 36px;
+            border-radius: 9px;
+            background: var(--blue-light);
+            color: var(--blue);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 17px;
+        }
+
+        .card-value {
+            font-size: 31px;
+            font-weight: 750;
+        }
+
+        .card-description {
+            margin-top: 7px;
+            color: var(--muted);
+            font-size: 12px;
+        }
+
+        /* GRID */
+
+        .content-grid {
+            display: grid;
+            grid-template-columns: 1.4fr 1fr;
+            gap: 22px;
+        }
+
+        .panel {
+            background: white;
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            padding: 26px;
+        }
+
+        .panel-header {
+            margin-bottom: 24px;
+        }
+
+        .panel-header h2 {
+            font-size: 18px;
+            margin-bottom: 6px;
+        }
+
+        .panel-header p {
+            color: var(--muted);
+            font-size: 13px;
+        }
+
+        /* CAREER PROGRESS */
+
+        .progress-number {
+            display: flex;
+            justify-content: space-between;
+            font-size: 13px;
+            margin-bottom: 10px;
+        }
+
+        .progress-number strong {
+            color: var(--blue);
+        }
+
+        .progress-bar {
+            width: 100%;
+            height: 9px;
+            background: #e2e8f0;
+            border-radius: 20px;
+            overflow: hidden;
+            margin-bottom: 28px;
+        }
+
+        .progress-fill {
+            height: 100%;
+            width: 72%;
+            background: var(--blue);
+            border-radius: 20px;
+        }
+
+        .steps {
+            display: flex;
+            flex-direction: column;
+            gap: 17px;
+        }
+
+        .step {
+            display: flex;
+            align-items: center;
+            gap: 13px;
+        }
+
+        .step-status {
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 13px;
+            flex-shrink: 0;
+        }
+
+        .done {
+            background: #dcfce7;
+            color: #15803d;
+        }
+
+        .current {
+            background: #dbeafe;
+            color: #2563eb;
+        }
+
+        .waiting {
+            background: #f1f5f9;
+            color: #94a3b8;
+        }
+
+        .step-text strong {
+            display: block;
+            font-size: 14px;
+            margin-bottom: 3px;
+        }
+
+        .step-text span {
+            color: var(--muted);
+            font-size: 12px;
+        }
+
+        /* AI INSIGHT */
+
+        .ai-box {
+            background: var(--blue-light);
+            border: 1px solid #dbeafe;
+            border-radius: 13px;
+            padding: 20px;
+            margin-bottom: 20px;
+        }
+
+        .ai-label {
+            font-size: 12px;
+            color: var(--blue);
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
+
+        .ai-box h3 {
+            font-size: 16px;
+            margin-bottom: 8px;
+        }
+
+        .ai-box p {
+            color: var(--text);
+            font-size: 13px;
+            line-height: 1.6;
+        }
+
+        /* QUICK ACTIONS */
+
+        .quick-actions {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 10px;
+        }
+
+        .action {
+            text-decoration: none;
+            color: var(--dark);
+            border: 1px solid var(--border);
+            border-radius: 10px;
+            padding: 15px;
+            font-size: 13px;
+            font-weight: 600;
+            transition: 0.2s;
+        }
+
+        .action:hover {
+            border-color: var(--blue);
+            color: var(--blue);
+            background: #f8fbff;
+        }
+
+        /* RESPONSIVE */
+
+        @media (max-width: 1050px) {
+            .cards {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .content-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        @media (max-width: 700px) {
+            .sidebar {
+                display: none;
+            }
+
+            .main {
+                margin-left: 0;
+                padding: 25px 18px;
+            }
+
+            .cards {
+                grid-template-columns: 1fr;
+            }
+
+            .career-overview {
+                align-items: flex-start;
+                gap: 25px;
+                flex-direction: column;
+            }
+        }
+    </style>
 </head>
 
 <body>
 
 <div class="layout">
 
-    <div class="sidebar">
+    <!-- SIDEBAR -->
+
+    <aside class="sidebar">
 
         <div class="logo">
-            Careerinde
+            Career<span>InDe</span>
         </div>
 
-        <div class="menu">
+        <div class="menu-label">Workspace</div>
 
-            <a href="/dashboard">
-                Dashboard
+        <nav class="menu">
+
+            <a href="/dashboard" class="active">
+                ▣ &nbsp; Dashboard
             </a>
 
             <a href="/profile">
-                Profile
+                ◯ &nbsp; Profile
             </a>
 
             <a href="/resume/upload">
-                Upload CV
+                ↑ &nbsp; My CV
             </a>
 
             <a href="/job-match">
-                Job Match
+                ◎ &nbsp; Job Matches
             </a>
 
             <a href="/skill-gap">
-                Skill Gap
+                ◇ &nbsp; Skill Gap
             </a>
 
             <a href="/applications">
-                Applications
+                ▤ &nbsp; Applications
             </a>
 
-        </div>
+        </nav>
 
-    </div>
+    </aside>
 
-    <div class="main">
+
+    <!-- MAIN -->
+
+    <main class="main">
 
         <div class="topbar">
 
             <div class="welcome">
 
                 <h1>
-                    Welcome,
+                    Welcome back,
                     <span th:text="${email}"></span>
-                    🚀
+                    👋
                 </h1>
 
                 <p>
-                    Your Germany Career Operating System
+                    Here's an overview of your career progress in Germany.
                 </p>
 
             </div>
 
-            <form th:action="@{/logout}"
-                  method="post">
+            <div class="top-actions">
 
-                <button class="logout-btn"
-                        type="submit">
+                <form th:action="@{/logout}" method="post">
 
-                    Logout
+                    <button class="logout-btn" type="submit">
+                        Logout
+                    </button>
 
-                </button>
-
-            </form>
-
-        </div>
-
-        <div class="cards">
-
-            <div class="card">
-
-                <div class="card-title">
-                    CV Score
-                </div>
-
-                <div class="card-value">
-                    78%
-                </div>
-
-            </div>
-
-            <div class="card">
-
-                <div class="card-title">
-                    Job Matches
-                </div>
-
-                <div class="card-value">
-                    12
-                </div>
-
-            </div>
-
-            <div class="card">
-
-                <div class="card-title">
-                    Missing Skills
-                </div>
-
-                <div class="card-value">
-                    4
-                </div>
-
-            </div>
-
-            <div class="card">
-
-                <div class="card-title">
-                    Applications
-                </div>
-
-                <div class="card-value">
-                    7
-                </div>
+                </form>
 
             </div>
 
         </div>
 
-        <div class="section">
 
-            <h2>
-                Recent Career Insights
-            </h2>
+        <!-- CAREER OVERVIEW -->
 
-            <div class="activity">
+        <section class="career-overview">
 
-                <div class="activity-item">
+            <div>
 
-                    <div class="activity-title">
-                        German B2 Recommended
-                    </div>
+                <h2>Your Career Readiness</h2>
 
-                    <div class="activity-text">
-                        Most backend developer jobs
-                        in Germany require B2 German.
-                    </div>
+                <p>
+                    You're making good progress. Complete your CV analysis
+                    and skill profile to unlock better job matches.
+                </p>
 
+            </div>
+
+            <div class="overview-score">
+
+                <strong>78%</strong>
+
+                <span>CAREER SCORE</span>
+
+            </div>
+
+        </section>
+
+
+        <!-- KPI -->
+
+        <section class="cards">
+
+            <div class="card">
+
+                <div class="card-top">
+                    <span class="card-title">ATS SCORE</span>
+                    <div class="card-icon">✓</div>
                 </div>
 
-                <div class="activity-item">
+                <div class="card-value">78%</div>
 
-                    <div class="activity-title">
-                        Docker Missing Skill
-                    </div>
-
-                    <div class="activity-text">
-                        Your target jobs frequently
-                        require Docker experience.
-                    </div>
-
-                </div>
-
-                <div class="activity-item">
-
-                    <div class="activity-title">
-                        CV Optimization Available
-                    </div>
-
-                    <div class="activity-text">
-                        Improve your ATS score
-                        with AI recommendations.
-                    </div>
-
+                <div class="card-description">
+                    CV compatibility
                 </div>
 
             </div>
 
+
+            <div class="card">
+
+                <div class="card-top">
+                    <span class="card-title">JOB MATCHES</span>
+                    <div class="card-icon">◎</div>
+                </div>
+
+                <div class="card-value">12</div>
+
+                <div class="card-description">
+                    Matching opportunities
+                </div>
+
+            </div>
+
+
+            <div class="card">
+
+                <div class="card-top">
+                    <span class="card-title">MISSING SKILLS</span>
+                    <div class="card-icon">◇</div>
+                </div>
+
+                <div class="card-value">4</div>
+
+                <div class="card-description">
+                    Skills to improve
+                </div>
+
+            </div>
+
+
+            <div class="card">
+
+                <div class="card-top">
+                    <span class="card-title">APPLICATIONS</span>
+                    <div class="card-icon">↗</div>
+                </div>
+
+                <div class="card-value">7</div>
+
+                <div class="card-description">
+                    Applications tracked
+                </div>
+
+            </div>
+
+        </section>
+
+
+        <div class="content-grid">
+
+            <!-- PROGRESS -->
+
+            <section class="panel">
+
+                <div class="panel-header">
+
+                    <h2>Your Career Progress</h2>
+
+                    <p>
+                        Complete these steps to improve your job readiness.
+                    </p>
+
+                </div>
+
+
+                <div class="progress-number">
+
+                    <span>Overall progress</span>
+
+                    <strong>72%</strong>
+
+                </div>
+
+                <div class="progress-bar">
+
+                    <div class="progress-fill"></div>
+
+                </div>
+
+
+                <div class="steps">
+
+                    <div class="step">
+
+                        <div class="step-status done">✓</div>
+
+                        <div class="step-text">
+
+                            <strong>Create your account</strong>
+
+                            <span>Profile successfully created</span>
+
+                        </div>
+
+                    </div>
+
+
+                    <div class="step">
+
+                        <div class="step-status done">✓</div>
+
+                        <div class="step-text">
+
+                            <strong>Upload your CV</strong>
+
+                            <span>Your resume is ready for analysis</span>
+
+                        </div>
+
+                    </div>
+
+
+                    <div class="step">
+
+                        <div class="step-status current">3</div>
+
+                        <div class="step-text">
+
+                            <strong>Improve your skills</strong>
+
+                            <span>4 important skills identified</span>
+
+                        </div>
+
+                    </div>
+
+
+                    <div class="step">
+
+                        <div class="step-status waiting">4</div>
+
+                        <div class="step-text">
+
+                            <strong>Find matching jobs</strong>
+
+                            <span>Discover opportunities matching your profile</span>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </section>
+
+
+            <!-- AI -->
+
+            <section class="panel">
+
+                <div class="panel-header">
+
+                    <h2>AI Career Insights</h2>
+
+                    <p>
+                        Personalized recommendations for your profile.
+                    </p>
+
+                </div>
+
+
+                <div class="ai-box">
+
+                    <div class="ai-label">
+                        ✦ NEXT BEST ACTION
+                    </div>
+
+                    <h3>
+                        Strengthen your Backend profile
+                    </h3>
+
+                    <p>
+                        Docker and cloud skills appear frequently in
+                        Java Backend positions. Adding these skills
+                        could improve your job matching potential.
+                    </p>
+
+                </div>
+
+
+                <div class="quick-actions">
+
+                    <a class="action" href="/resume/upload">
+                        ↑ Upload CV
+                    </a>
+
+                    <a class="action" href="/skill-gap">
+                        ◇ View Skill Gap
+                    </a>
+
+                    <a class="action" href="/job-match">
+                        ◎ Find Jobs
+                    </a>
+
+                    <a class="action" href="/applications">
+                        ↗ Applications
+                    </a>
+
+                </div>
+
+            </section>
+
         </div>
 
-    </div>
+    </main>
 
 </div>
 
 </body>
-
 </html>
