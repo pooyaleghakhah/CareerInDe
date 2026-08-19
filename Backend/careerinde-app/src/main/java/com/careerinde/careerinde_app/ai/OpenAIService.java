@@ -22,6 +22,10 @@ public class OpenAIService {
     private final ObjectMapper objectMapper;
 
 
+    // =========================================================
+    // Constructor
+    // =========================================================
+
     public OpenAIService() {
 
         this.objectMapper = new ObjectMapper();
@@ -35,6 +39,10 @@ public class OpenAIService {
                 .build();
     }
 
+
+    // =========================================================
+    // Structured CV Analysis
+    // =========================================================
 
     public AIAnalysisResult analyzeCV(String cvText) {
 
@@ -126,17 +134,22 @@ CV:
 
         Map<String, Object> requestBody =
                 Map.of(
-                        "model", "openai/gpt-oss-20b",
+                        "model",
+                        "openai/gpt-oss-20b",
 
                         "messages",
                         new Object[]{
                                 Map.of(
-                                        "role", "user",
-                                        "content", prompt
+                                        "role",
+                                        "user",
+
+                                        "content",
+                                        prompt
                                 )
                         },
 
-                        "temperature", 0.2
+                        "temperature",
+                        0.2
                 );
 
 
@@ -155,9 +168,12 @@ CV:
                             .block();
 
 
-            String content = extractContent(response);
+            String content =
+                    extractContent(response);
 
-            String cleanedJson = cleanJson(content);
+
+            String cleanedJson =
+                    cleanJson(content);
 
 
             AIAnalysisResult result =
@@ -167,27 +183,47 @@ CV:
                     );
 
 
-            // ATS score validation
+            // =================================================
+            // ATS Score validation
+            // =================================================
+
             if (result.getAtsScore() < 0) {
+
                 result.setAtsScore(0);
             }
 
+
             if (result.getAtsScore() > 100) {
+
                 result.setAtsScore(100);
             }
 
 
+            // =================================================
             // Prevent null lists
+            // =================================================
+
             if (result.getStrengths() == null) {
-                result.setStrengths(List.of());
+
+                result.setStrengths(
+                        List.of()
+                );
             }
+
 
             if (result.getMissingSkills() == null) {
-                result.setMissingSkills(List.of());
+
+                result.setMissingSkills(
+                        List.of()
+                );
             }
 
+
             if (result.getRecommendations() == null) {
-                result.setRecommendations(List.of());
+
+                result.setRecommendations(
+                        List.of()
+                );
             }
 
 
@@ -197,7 +233,8 @@ CV:
         } catch (Exception e) {
 
             System.err.println(
-                    "AI Analysis Error: " + e.getMessage()
+                    "AI Analysis Error: "
+                            + e.getMessage()
             );
 
             e.printStackTrace();
@@ -207,16 +244,86 @@ CV:
     }
 
 
-    private String extractContent(Map<?, ?> response) {
+    // =========================================================
+    // Generic AI Prompt
+    //
+    // Used by JobMatchController / SkillGapController
+    // =========================================================
+
+    public String sendPrompt(String prompt) {
+
+        Map<String, Object> requestBody =
+                Map.of(
+                        "model",
+                        "openai/gpt-oss-20b",
+
+                        "messages",
+                        new Object[]{
+                                Map.of(
+                                        "role",
+                                        "user",
+
+                                        "content",
+                                        prompt
+                                )
+                        },
+
+                        "temperature",
+                        0.2
+                );
+
+
+        try {
+
+            Map<?, ?> response =
+                    webClient.post()
+                            .uri("/chat/completions")
+                            .header(
+                                    HttpHeaders.AUTHORIZATION,
+                                    "Bearer " + apiKey
+                            )
+                            .bodyValue(requestBody)
+                            .retrieve()
+                            .bodyToMono(Map.class)
+                            .block();
+
+
+            return extractContent(response);
+
+
+        } catch (Exception e) {
+
+            System.err.println(
+                    "AI Prompt Error: "
+                            + e.getMessage()
+            );
+
+            e.printStackTrace();
+
+            return "AI service temporarily unavailable.";
+        }
+    }
+
+
+    // =========================================================
+    // Extract content from Groq response
+    // =========================================================
+
+    private String extractContent(
+            Map<?, ?> response) {
+
 
         if (response == null) {
+
             throw new RuntimeException(
                     "No response received from Groq."
             );
         }
 
 
-        Object choicesObject = response.get("choices");
+        Object choicesObject =
+                response.get("choices");
+
 
         if (!(choicesObject instanceof List<?> choices)
                 || choices.isEmpty()) {
@@ -227,9 +334,12 @@ CV:
         }
 
 
-        Object firstChoiceObject = choices.get(0);
+        Object firstChoiceObject =
+                choices.get(0);
 
-        if (!(firstChoiceObject instanceof Map<?, ?> firstChoice)) {
+
+        if (!(firstChoiceObject
+                instanceof Map<?, ?> firstChoice)) {
 
             throw new RuntimeException(
                     "Invalid choice returned by Groq."
@@ -240,7 +350,9 @@ CV:
         Object messageObject =
                 firstChoice.get("message");
 
-        if (!(messageObject instanceof Map<?, ?> message)) {
+
+        if (!(messageObject
+                instanceof Map<?, ?> message)) {
 
             throw new RuntimeException(
                     "No message returned by Groq."
@@ -250,6 +362,7 @@ CV:
 
         Object content =
                 message.get("content");
+
 
         if (content == null) {
 
@@ -263,9 +376,16 @@ CV:
     }
 
 
-    private String cleanJson(String response) {
+    // =========================================================
+    // Clean JSON returned by AI
+    // =========================================================
+
+    private String cleanJson(
+            String response) {
+
 
         if (response == null) {
+
             return "";
         }
 
@@ -274,18 +394,25 @@ CV:
                 response.trim();
 
 
+        // Remove ```json
         if (cleaned.startsWith("```json")) {
 
             cleaned =
-                    cleaned.substring(7).trim();
+                    cleaned.substring(7)
+                            .trim();
 
-        } else if (cleaned.startsWith("```")) {
+        }
+
+        // Remove ```
+        else if (cleaned.startsWith("```")) {
 
             cleaned =
-                    cleaned.substring(3).trim();
+                    cleaned.substring(3)
+                            .trim();
         }
 
 
+        // Remove ending ```
         if (cleaned.endsWith("```")) {
 
             cleaned =
@@ -296,8 +423,13 @@ CV:
         }
 
 
+        // =====================================================
+        // Extract JSON object if AI added extra text
+        // =====================================================
+
         int firstBrace =
                 cleaned.indexOf('{');
+
 
         int lastBrace =
                 cleaned.lastIndexOf('}');
@@ -318,6 +450,10 @@ CV:
     }
 
 
+    // =========================================================
+    // Fallback
+    // =========================================================
+
     private AIAnalysisResult createFallbackResult() {
 
         AIAnalysisResult result =
@@ -326,21 +462,26 @@ CV:
 
         result.setAtsScore(0);
 
+
         result.setProfileLevel(
                 "Analysis unavailable"
         );
+
 
         result.setBestJobMatch(
                 "Not available"
         );
 
+
         result.setStrengths(
                 List.of()
         );
 
+
         result.setMissingSkills(
                 List.of()
         );
+
 
         result.setRecommendations(
                 List.of(
