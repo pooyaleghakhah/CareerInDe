@@ -4,12 +4,9 @@ import java.util.List;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Value;
-
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
-
 import org.springframework.stereotype.Service;
-
 import org.springframework.web.reactive.function.client.WebClient;
 
 @Service
@@ -20,27 +17,28 @@ public class OpenAIService {
 
     private final WebClient webClient =
             WebClient.builder()
-
                     .baseUrl("https://api.groq.com/openai/v1")
-
                     .defaultHeader(
                             HttpHeaders.CONTENT_TYPE,
-                            MediaType.APPLICATION_JSON_VALUE)
-
+                            MediaType.APPLICATION_JSON_VALUE
+                    )
                     .build();
 
     public String analyzeCV(String cvText) {
 
         String prompt = """
 You are an advanced ATS system and career recruiter
-for the German tech market.
+specialized in the German tech job market.
 
-Analyze this CV realistically.
+Analyze the following CV realistically.
 
-The candidate is applying for:
+The candidate may be applying for roles such as:
 - Junior / Mid-Level Tech Roles
+- Software Development
+- Data Analysis
 - Digital Transformation
 - IT Project Management
+- Industrial IoT
 - Data & Digital Roles
 
 Return STRICTLY in this format:
@@ -56,12 +54,17 @@ MISSING_SKILLS:
 RECOMMENDATIONS:
 - bullet points
 
-Important:
-Do NOT score too harshly.
-Consider education, projects,
-transferable skills,
-international experience,
-and technical potential.
+Important rules:
+- Evaluate the actual content of the CV.
+- Do not score too harshly.
+- Consider education and academic projects.
+- Consider professional experience.
+- Consider transferable skills.
+- Consider international experience.
+- Consider technical skills and potential.
+- Consider German job market requirements.
+- Do not invent experience or skills that are not present in the CV.
+- Give practical recommendations that could improve the candidate's chances in Germany.
 
 CV:
 """ + cvText;
@@ -73,46 +76,39 @@ CV:
 
         Map<String, Object> requestBody =
                 Map.of(
-
                         "model",
-                        "llama-3.3-70b-versatile",
+                        "openai/gpt-oss-20b",
 
                         "messages",
-                        new Object[] {
-
+                        new Object[]{
                                 Map.of(
                                         "role",
                                         "user",
-
                                         "content",
-                                        prompt)
-                        });
+                                        prompt
+                                )
+                        }
+                );
 
         try {
 
             Map response =
                     webClient.post()
-
                             .uri("/chat/completions")
-
                             .header(
                                     HttpHeaders.AUTHORIZATION,
-                                    "Bearer " + apiKey)
-
+                                    "Bearer " + apiKey
+                            )
                             .bodyValue(requestBody)
-
                             .retrieve()
-
                             .bodyToMono(Map.class)
-
                             .block();
 
             return extractContent(response);
 
         } catch (Exception e) {
 
-            return "OpenAI Error: "
-                    + e.getMessage();
+            return "AI Error: " + e.getMessage();
         }
     }
 
@@ -120,12 +116,14 @@ CV:
 
         try {
 
+            if (response == null) {
+                return "No AI response.";
+            }
+
             List choices =
                     (List) response.get("choices");
 
-            if (choices == null
-                    || choices.isEmpty()) {
-
+            if (choices == null || choices.isEmpty()) {
                 return "No AI response.";
             }
 
@@ -135,12 +133,16 @@ CV:
             Map message =
                     (Map) firstChoice.get("message");
 
-            return message.get("content")
-                    .toString();
+            if (message == null || message.get("content") == null) {
+                return "No AI content returned.";
+            }
+
+            return message.get("content").toString();
 
         } catch (Exception e) {
 
-            return "Failed to parse AI response.";
+            return "Failed to parse AI response: "
+                    + e.getMessage();
         }
     }
 }
