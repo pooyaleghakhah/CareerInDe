@@ -2,11 +2,12 @@
 <html xmlns:th="http://www.thymeleaf.org">
 
 <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <title>Upload CV</title>
+    <title>CV Analysis | CareerInDe</title>
 
     <style>
-
         * {
             margin: 0;
             padding: 0;
@@ -14,206 +15,990 @@
         }
 
         body {
-
             font-family: Arial, sans-serif;
+            background: #f6f8fc;
+            color: #101828;
+            min-height: 100vh;
+        }
 
-            background: #f5f5f5;
+        /* TOP BAR */
 
-            height: 100vh;
+        .topbar {
+            height: 72px;
+            background: white;
+            border-bottom: 1px solid #e8edf5;
 
             display: flex;
-
-            justify-content: center;
-
             align-items: center;
+            justify-content: space-between;
 
-            padding: 20px;
+            padding: 0 55px;
         }
 
-        .upload-container {
-
-            width: 550px;
-
-            background: white;
-
-            border-radius: 18px;
-
-            padding: 50px;
-
-            box-shadow: 0 4px 25px rgba(0,0,0,0.08);
+        .logo {
+            font-size: 25px;
+            font-weight: 800;
+            letter-spacing: -0.5px;
         }
 
-        .title {
-
-            font-size: 32px;
-
-            font-weight: bold;
-
-            margin-bottom: 10px;
-
-            color: #111;
+        .logo span {
+            color: #2f6df6;
         }
 
-        .subtitle {
+        .dashboard-link {
+            color: #475467;
+            text-decoration: none;
+            font-size: 14px;
+            font-weight: 600;
 
-            color: #666;
-
-            margin-bottom: 40px;
-
-            line-height: 1.6;
-        }
-
-        .upload-box {
-
-            border: 2px dashed #dcdcdc;
-
-            border-radius: 14px;
-
-            padding: 50px 30px;
-
-            text-align: center;
-
-            margin-bottom: 30px;
+            padding: 10px 15px;
+            border-radius: 9px;
 
             transition: 0.2s;
         }
 
-        .upload-box:hover {
+        .dashboard-link:hover {
+            background: #f2f4f7;
+            color: #101828;
+        }
 
-            border-color: black;
+
+        /* PAGE */
+
+        .page {
+            max-width: 1180px;
+            margin: 0 auto;
+            padding: 55px 30px 80px;
+        }
+
+
+        /* HEADER */
+
+        .page-header {
+            margin-bottom: 35px;
+        }
+
+        .eyebrow {
+            color: #2f6df6;
+            font-size: 12px;
+            font-weight: 700;
+            letter-spacing: .8px;
+            text-transform: uppercase;
+            margin-bottom: 12px;
+        }
+
+        .page-header h1 {
+            font-size: 38px;
+            letter-spacing: -1.3px;
+            margin-bottom: 12px;
+        }
+
+        .page-header p {
+            color: #667085;
+            font-size: 16px;
+            line-height: 1.6;
+            max-width: 650px;
+        }
+
+
+        /* STEPS */
+
+        .steps {
+            display: flex;
+            align-items: center;
+
+            background: white;
+            border: 1px solid #e4e9f2;
+            border-radius: 14px;
+
+            padding: 18px 25px;
+            margin-bottom: 28px;
+        }
+
+        .step {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+
+            color: #98a2b3;
+            font-size: 13px;
+            font-weight: 600;
+        }
+
+        .step.active {
+            color: #2f6df6;
+        }
+
+        .step-number {
+            width: 28px;
+            height: 28px;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            border-radius: 50%;
+            background: #f2f4f7;
+
+            font-size: 12px;
+        }
+
+        .step.active .step-number {
+            background: #eaf1ff;
+            color: #2f6df6;
+        }
+
+        .step-line {
+            flex: 1;
+            height: 1px;
+            background: #e4e7ec;
+            margin: 0 20px;
+        }
+
+
+        /* MAIN GRID */
+
+        .content-grid {
+            display: grid;
+            grid-template-columns: 1.45fr .75fr;
+            gap: 28px;
+            align-items: start;
+        }
+
+
+        /* CARDS */
+
+        .card {
+            background: white;
+            border: 1px solid #e4e9f2;
+            border-radius: 18px;
+        }
+
+        .upload-card {
+            padding: 35px;
+        }
+
+        .card-header {
+            margin-bottom: 25px;
+        }
+
+        .card-header h2 {
+            font-size: 22px;
+            margin-bottom: 8px;
+        }
+
+        .card-header p {
+            color: #667085;
+            font-size: 14px;
+            line-height: 1.6;
+        }
+
+
+        /* DROP ZONE */
+
+        .upload-box {
+            position: relative;
+
+            border: 2px dashed #cbd5e1;
+            border-radius: 16px;
+
+            min-height: 310px;
+
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+
+            text-align: center;
+            padding: 40px;
+
+            background: #fbfcfe;
+
+            cursor: pointer;
+
+            transition:
+                border-color .2s,
+                background .2s,
+                transform .2s;
+        }
+
+        .upload-box:hover,
+        .upload-box.dragover {
+            border-color: #2f6df6;
+            background: #f5f8ff;
         }
 
         .upload-icon {
+            width: 68px;
+            height: 68px;
 
-            font-size: 50px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            background: #eaf1ff;
+            color: #2f6df6;
+
+            border-radius: 16px;
+
+            font-size: 29px;
 
             margin-bottom: 20px;
         }
 
         .upload-text {
-
-            font-size: 16px;
-
-            font-weight: bold;
-
-            margin-bottom: 10px;
+            font-size: 17px;
+            font-weight: 700;
+            margin-bottom: 7px;
         }
 
         .upload-subtext {
+            color: #667085;
+            font-size: 13px;
+            line-height: 1.6;
+            margin-bottom: 20px;
+        }
 
-            color: #777;
+        .browse-button {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
 
-            font-size: 14px;
+            background: white;
+            border: 1px solid #d0d5dd;
+
+            border-radius: 9px;
+
+            padding: 10px 16px;
+
+            font-size: 13px;
+            font-weight: 600;
+
+            color: #344054;
+        }
+
+        input[type="file"] {
+            position: absolute;
+            width: 1px;
+            height: 1px;
+            opacity: 0;
+            pointer-events: none;
+        }
+
+
+        /* FILE SELECTED */
+
+        .file-selected {
+            display: none;
+
+            margin-top: 18px;
+
+            border: 1px solid #dbe5f5;
+            background: #f8faff;
+
+            border-radius: 12px;
+
+            padding: 14px 16px;
+
+            align-items: center;
+            gap: 13px;
+        }
+
+        .file-selected.show {
+            display: flex;
+        }
+
+        .file-icon {
+            width: 38px;
+            height: 38px;
+
+            background: #eaf1ff;
+            color: #2f6df6;
+
+            border-radius: 9px;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            font-size: 16px;
+        }
+
+        .file-details {
+            flex: 1;
+            min-width: 0;
+        }
+
+        .file-name {
+            font-size: 13px;
+            font-weight: 700;
+
+            overflow: hidden;
+            white-space: nowrap;
+            text-overflow: ellipsis;
+        }
+
+        .file-status {
+            color: #667085;
+            font-size: 11px;
+            margin-top: 4px;
+        }
+
+
+        /* ANALYZE BUTTON */
+
+        .upload-btn {
+            width: 100%;
+
+            border: none;
+            border-radius: 11px;
+
+            padding: 15px;
+
+            background: #2f6df6;
+            color: white;
+
+            font-size: 15px;
+            font-weight: 700;
+
+            cursor: pointer;
+
+            margin-top: 22px;
+
+            transition:
+                background .2s,
+                box-shadow .2s,
+                transform .15s;
+        }
+
+        .upload-btn:hover {
+            background: #245bd5;
+            box-shadow: 0 8px 22px rgba(47,109,246,.20);
+        }
+
+        .upload-btn:active {
+            transform: translateY(1px);
+        }
+
+
+        /* SECURITY */
+
+        .security {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            gap: 7px;
+
+            color: #667085;
+            font-size: 11px;
+
+            margin-top: 16px;
+        }
+
+        .security-icon {
+            color: #12b76a;
+        }
+
+
+        /* RIGHT PANEL */
+
+        .insight-card {
+            padding: 30px;
+        }
+
+        .insight-card h3 {
+            font-size: 18px;
+            margin-bottom: 7px;
+        }
+
+        .insight-intro {
+            color: #667085;
+            font-size: 13px;
+            line-height: 1.6;
 
             margin-bottom: 25px;
         }
 
-        input[type="file"] {
+        .feature {
+            display: flex;
+            gap: 13px;
 
-            font-size: 14px;
+            padding: 17px 0;
+
+            border-bottom: 1px solid #eef1f5;
         }
 
-        .upload-btn {
+        .feature:last-child {
+            border-bottom: none;
+        }
 
-            width: 100%;
+        .feature-icon {
+            width: 38px;
+            height: 38px;
 
-            padding: 16px;
+            flex-shrink: 0;
 
-            border: none;
+            display: flex;
+            align-items: center;
+            justify-content: center;
 
-            border-radius: 12px;
+            border-radius: 10px;
 
-            background: black;
+            background: #eef4ff;
+            color: #2f6df6;
+
+            font-weight: 700;
+        }
+
+        .feature-content h4 {
+            font-size: 13px;
+            margin-bottom: 5px;
+        }
+
+        .feature-content p {
+            color: #667085;
+            font-size: 12px;
+            line-height: 1.5;
+        }
+
+
+        /* AI BOX */
+
+        .ai-box {
+            margin-top: 22px;
+
+            background:
+                linear-gradient(135deg, #13275b, #2f6df6);
 
             color: white;
 
+            padding: 24px;
+
+            border-radius: 15px;
+        }
+
+        .ai-label {
+            color: #bcd0ff;
+
+            font-size: 10px;
+            font-weight: 700;
+
+            letter-spacing: .8px;
+            text-transform: uppercase;
+
+            margin-bottom: 9px;
+        }
+
+        .ai-box h4 {
             font-size: 16px;
-
-            font-weight: bold;
-
-            cursor: pointer;
-
-            transition: 0.2s;
+            margin-bottom: 8px;
         }
 
-        .upload-btn:hover {
-
-            opacity: 0.9;
-        }
-
-        .info {
-
-            margin-top: 25px;
-
-            color: #777;
-
-            font-size: 13px;
-
+        .ai-box p {
+            color: #dce6ff;
+            font-size: 12px;
             line-height: 1.6;
         }
 
-    </style>
 
+        /* RESPONSIVE */
+
+        @media (max-width: 850px) {
+
+            .content-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .topbar {
+                padding: 0 25px;
+            }
+
+            .page {
+                padding: 40px 20px 60px;
+            }
+
+            .steps {
+                padding: 15px;
+            }
+
+            .step span:last-child {
+                display: none;
+            }
+
+            .step-line {
+                margin: 0 10px;
+            }
+        }
+
+        @media (max-width: 500px) {
+
+            .page-header h1 {
+                font-size: 31px;
+            }
+
+            .upload-card {
+                padding: 22px;
+            }
+
+            .upload-box {
+                min-height: 270px;
+                padding: 25px 15px;
+            }
+        }
+
+    </style>
 </head>
+
 
 <body>
 
-<div class="upload-container">
 
-    <div class="title">
-        Upload Your CV 📄
+<!-- TOP BAR -->
+
+<header class="topbar">
+
+    <div class="logo">
+        CareerIn<span>De</span>
     </div>
 
-    <div class="subtitle">
-        Upload your German-style CV and let Careerinde analyze
-        your profile for the German job market.
+    <a href="/dashboard" class="dashboard-link">
+        ← Back to Dashboard
+    </a>
+
+</header>
+
+
+
+<main class="page">
+
+
+    <!-- PAGE HEADER -->
+
+    <div class="page-header">
+
+        <div class="eyebrow">
+            AI Career Intelligence
+        </div>
+
+        <h1>Analyze your CV</h1>
+
+        <p>
+            Upload your CV and get personalized insights
+            to improve your positioning for the German job market.
+        </p>
+
     </div>
 
-    <form th:action="@{/resume/upload}"
-          method="post"
-          enctype="multipart/form-data">
 
-        <div class="upload-box">
 
-            <div class="upload-icon">
-                📁
-            </div>
+    <!-- PROGRESS STEPS -->
 
-            <div class="upload-text">
-                Select your CV file
-            </div>
+    <div class="steps">
 
-            <div class="upload-subtext">
-                PDF files only
-            </div>
+        <div class="step active">
 
-            <input type="file"
-                   name="file"
-                   accept=".pdf"
-                   required>
+            <div class="step-number">1</div>
+
+            <span>Upload CV</span>
 
         </div>
 
-        <button class="upload-btn" type="submit">
-            Upload CV
-        </button>
+        <div class="step-line"></div>
 
-    </form>
+        <div class="step">
 
-    <div class="info">
+            <div class="step-number">2</div>
 
-        Your CV will be securely processed for:
-        <br><br>
+            <span>AI Analysis</span>
 
-        • ATS Score Analysis  
-        • German CV Optimization  
-        • Skill Gap Detection  
-        • AI Job Matching
+        </div>
+
+        <div class="step-line"></div>
+
+        <div class="step">
+
+            <div class="step-number">3</div>
+
+            <span>Career Report</span>
+
+        </div>
 
     </div>
 
-</div>
+
+
+    <div class="content-grid">
+
+
+        <!-- UPLOAD -->
+
+        <div class="card upload-card">
+
+            <div class="card-header">
+
+                <h2>Upload your CV</h2>
+
+                <p>
+                    Select your current CV in PDF format.
+                    CareerInDe will analyze its content and career positioning.
+                </p>
+
+            </div>
+
+
+            <form
+                th:action="@{/resume/upload}"
+                method="post"
+                enctype="multipart/form-data"
+                id="uploadForm">
+
+
+                <label
+                    for="cvFile"
+                    class="upload-box"
+                    id="dropZone">
+
+
+                    <div class="upload-icon">
+                        ↑
+                    </div>
+
+
+                    <div class="upload-text">
+                        Drop your CV here
+                    </div>
+
+
+                    <div class="upload-subtext">
+                        or choose a file from your computer
+                        <br>
+                        PDF · Maximum recommended size 10 MB
+                    </div>
+
+
+                    <div class="browse-button">
+                        Choose PDF file
+                    </div>
+
+
+                    <input
+                        id="cvFile"
+                        type="file"
+                        name="file"
+                        accept=".pdf,application/pdf"
+                        required>
+
+                </label>
+
+
+
+                <!-- SELECTED FILE -->
+
+                <div
+                    class="file-selected"
+                    id="fileSelected">
+
+                    <div class="file-icon">
+                        PDF
+                    </div>
+
+                    <div class="file-details">
+
+                        <div
+                            class="file-name"
+                            id="fileName">
+                        </div>
+
+                        <div class="file-status">
+                            Ready for analysis
+                        </div>
+
+                    </div>
+
+                </div>
+
+
+
+                <button
+                    class="upload-btn"
+                    type="submit"
+                    id="analyzeButton">
+
+                    Analyze My CV →
+
+                </button>
+
+
+                <div class="security">
+
+                    <span class="security-icon">●</span>
+
+                    Your CV is processed securely.
+
+                </div>
+
+            </form>
+
+        </div>
+
+
+
+        <!-- RIGHT PANEL -->
+
+        <aside>
+
+            <div class="card insight-card">
+
+                <h3>What you'll get</h3>
+
+                <p class="insight-intro">
+                    Your CV is analyzed across the key areas
+                    that influence your career positioning.
+                </p>
+
+
+                <div class="feature">
+
+                    <div class="feature-icon">
+                        ✓
+                    </div>
+
+                    <div class="feature-content">
+
+                        <h4>ATS Score</h4>
+
+                        <p>
+                            Evaluate how effectively your CV
+                            communicates your profile.
+                        </p>
+
+                    </div>
+
+                </div>
+
+
+                <div class="feature">
+
+                    <div class="feature-icon">
+                        AI
+                    </div>
+
+                    <div class="feature-content">
+
+                        <h4>AI Career Analysis</h4>
+
+                        <p>
+                            Identify strengths and opportunities
+                            based on your experience.
+                        </p>
+
+                    </div>
+
+                </div>
+
+
+                <div class="feature">
+
+                    <div class="feature-icon">
+                        ◇
+                    </div>
+
+                    <div class="feature-content">
+
+                        <h4>Skill Gap</h4>
+
+                        <p>
+                            Discover skills that could strengthen
+                            your target profile.
+                        </p>
+
+                    </div>
+
+                </div>
+
+
+                <div class="feature">
+
+                    <div class="feature-icon">
+                        ◎
+                    </div>
+
+                    <div class="feature-content">
+
+                        <h4>Job Match Insights</h4>
+
+                        <p>
+                            Understand where your profile fits
+                            in the German job market.
+                        </p>
+
+                    </div>
+
+                </div>
+
+
+                <div class="feature">
+
+                    <div class="feature-icon">
+                        DE
+                    </div>
+
+                    <div class="feature-content">
+
+                        <h4>German Market Insights</h4>
+
+                        <p>
+                            Get recommendations tailored
+                            to career opportunities in Germany.
+                        </p>
+
+                    </div>
+
+                </div>
+
+
+                <div class="ai-box">
+
+                    <div class="ai-label">
+                        CareerInDe Intelligence
+                    </div>
+
+                    <h4>
+                        More than an ATS checker.
+                    </h4>
+
+                    <p>
+                        CareerInDe combines CV analysis,
+                        skill insights and career positioning
+                        to help you make better career decisions.
+                    </p>
+
+                </div>
+
+            </div>
+
+        </aside>
+
+    </div>
+
+</main>
+
+
+
+<script>
+
+    const fileInput =
+        document.getElementById("cvFile");
+
+    const fileSelected =
+        document.getElementById("fileSelected");
+
+    const fileName =
+        document.getElementById("fileName");
+
+    const dropZone =
+        document.getElementById("dropZone");
+
+    const form =
+        document.getElementById("uploadForm");
+
+    const analyzeButton =
+        document.getElementById("analyzeButton");
+
+
+    function showFile(file) {
+
+        if (!file) {
+            return;
+        }
+
+        if (file.type !== "application/pdf") {
+
+            alert("Please select a PDF file.");
+
+            fileInput.value = "";
+
+            fileSelected.classList.remove("show");
+
+            return;
+        }
+
+        fileName.textContent = file.name;
+
+        fileSelected.classList.add("show");
+    }
+
+
+    fileInput.addEventListener(
+        "change",
+        function () {
+
+            showFile(this.files[0]);
+
+        }
+    );
+
+
+    dropZone.addEventListener(
+        "dragover",
+        function (event) {
+
+            event.preventDefault();
+
+            dropZone.classList.add("dragover");
+
+        }
+    );
+
+
+    dropZone.addEventListener(
+        "dragleave",
+        function () {
+
+            dropZone.classList.remove("dragover");
+
+        }
+    );
+
+
+    dropZone.addEventListener(
+        "drop",
+        function (event) {
+
+            event.preventDefault();
+
+            dropZone.classList.remove("dragover");
+
+            const files =
+                event.dataTransfer.files;
+
+            if (files.length > 0) {
+
+                fileInput.files = files;
+
+                showFile(files[0]);
+
+            }
+
+        }
+    );
+
+
+    form.addEventListener(
+        "submit",
+        function () {
+
+            analyzeButton.disabled = true;
+
+            analyzeButton.textContent =
+                "Analyzing your CV...";
+
+        }
+    );
+
+</script>
+
 
 </body>
-
 </html>
