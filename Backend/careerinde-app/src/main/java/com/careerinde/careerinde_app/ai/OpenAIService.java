@@ -22,9 +22,9 @@ public class OpenAIService {
     private final ObjectMapper objectMapper;
 
 
-    public OpenAIService(ObjectMapper objectMapper) {
+    public OpenAIService() {
 
-        this.objectMapper = objectMapper;
+        this.objectMapper = new ObjectMapper();
 
         this.webClient = WebClient.builder()
                 .baseUrl("https://api.groq.com/openai/v1")
@@ -126,27 +126,23 @@ CV:
 
         Map<String, Object> requestBody =
                 Map.of(
-                        "model",
-                        "openai/gpt-oss-20b",
+                        "model", "openai/gpt-oss-20b",
 
                         "messages",
                         new Object[]{
                                 Map.of(
-                                        "role",
-                                        "user",
-                                        "content",
-                                        prompt
+                                        "role", "user",
+                                        "content", prompt
                                 )
                         },
 
-                        "temperature",
-                        0.2
+                        "temperature", 0.2
                 );
 
 
         try {
 
-            Map response =
+            Map<?, ?> response =
                     webClient.post()
                             .uri("/chat/completions")
                             .header(
@@ -171,7 +167,7 @@ CV:
                     );
 
 
-            // ATS Score safety validation
+            // ATS score validation
             if (result.getAtsScore() < 0) {
                 result.setAtsScore(0);
             }
@@ -211,7 +207,7 @@ CV:
     }
 
 
-    private String extractContent(Map response) {
+    private String extractContent(Map<?, ?> response) {
 
         if (response == null) {
             throw new RuntimeException(
@@ -220,26 +216,32 @@ CV:
         }
 
 
-        List choices =
-                (List) response.get("choices");
+        Object choicesObject = response.get("choices");
 
+        if (!(choicesObject instanceof List<?> choices)
+                || choices.isEmpty()) {
 
-        if (choices == null || choices.isEmpty()) {
             throw new RuntimeException(
                     "No choices returned by Groq."
             );
         }
 
 
-        Map firstChoice =
-                (Map) choices.get(0);
+        Object firstChoiceObject = choices.get(0);
+
+        if (!(firstChoiceObject instanceof Map<?, ?> firstChoice)) {
+
+            throw new RuntimeException(
+                    "Invalid choice returned by Groq."
+            );
+        }
 
 
-        Map message =
-                (Map) firstChoice.get("message");
+        Object messageObject =
+                firstChoice.get("message");
 
+        if (!(messageObject instanceof Map<?, ?> message)) {
 
-        if (message == null) {
             throw new RuntimeException(
                     "No message returned by Groq."
             );
@@ -249,8 +251,8 @@ CV:
         Object content =
                 message.get("content");
 
-
         if (content == null) {
+
             throw new RuntimeException(
                     "No content returned by Groq."
             );
@@ -268,7 +270,8 @@ CV:
         }
 
 
-        String cleaned = response.trim();
+        String cleaned =
+                response.trim();
 
 
         if (cleaned.startsWith("```json")) {
@@ -293,9 +296,6 @@ CV:
         }
 
 
-        // Extra protection if the model adds text
-        // before or after the JSON object.
-
         int firstBrace =
                 cleaned.indexOf('{');
 
@@ -303,8 +303,8 @@ CV:
                 cleaned.lastIndexOf('}');
 
 
-        if (firstBrace >= 0 &&
-                lastBrace > firstBrace) {
+        if (firstBrace >= 0
+                && lastBrace > firstBrace) {
 
             cleaned =
                     cleaned.substring(
@@ -351,10 +351,4 @@ CV:
 
         return result;
     }
-
-
-	public String sendPrompt(String prompt) {
-		// TODO Auto-generated method stub
-		return null;
-	}
 }
