@@ -1,85 +1,995 @@
 <!DOCTYPE html>
-
-<html xmlns:th="http://www.thymeleaf.org">
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org">
 
 <head>
 
-    <title>
-        AI Job Match Result
-    </title>
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <title>Job Match Analysis | CareerInDe</title>
 
     <style>
 
+        /* =========================================
+           GLOBAL
+        ========================================= */
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
         body {
-
-            font-family: Arial;
-
-            background: #f5f5f5;
-
-            padding: 40px;
+            font-family: Arial, Helvetica, sans-serif;
+            background: #f8fafc;
+            color: #172033;
+            line-height: 1.6;
         }
 
-        .container {
-
-            max-width: 1000px;
-
-            margin: auto;
+        a {
+            text-decoration: none;
         }
 
-        .card {
+
+        /* =========================================
+           TOP BAR
+        ========================================= */
+
+        .topbar {
+            height: 72px;
+
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+
+            padding: 0 7%;
 
             background: white;
 
-            padding: 35px;
+            border-bottom: 1px solid #e8edf4;
+        }
 
-            border-radius: 16px;
+        .logo {
+            font-size: 24px;
+            font-weight: 800;
+            color: #172033;
+        }
 
-            box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+        .logo span {
+            color: #2563eb;
+        }
+
+        .dashboard-link {
+            color: #475569;
+            font-size: 14px;
+            font-weight: 600;
+        }
+
+        .dashboard-link:hover {
+            color: #2563eb;
+        }
+
+
+        /* =========================================
+           PAGE
+        ========================================= */
+
+        .page {
+            max-width: 1100px;
+            margin: auto;
+            padding: 55px 25px 80px;
+        }
+
+
+        /* =========================================
+           PAGE HEADER
+        ========================================= */
+
+        .page-header {
+            margin-bottom: 30px;
+        }
+
+        .page-label {
+            color: #2563eb;
+
+            font-size: 12px;
+            font-weight: 800;
+
+            letter-spacing: 1.2px;
+
+            text-transform: uppercase;
+
+            margin-bottom: 8px;
+        }
+
+        .page-header h1 {
+            font-size: 34px;
+            letter-spacing: -1px;
+            margin-bottom: 8px;
+        }
+
+        .page-header p {
+            color: #64748b;
+            font-size: 15px;
+        }
+
+
+        /* =========================================
+           ERROR
+        ========================================= */
+
+        .error-box {
+            background: #fff1f2;
+
+            color: #be123c;
+
+            border: 1px solid #fecdd3;
+
+            padding: 18px;
+
+            border-radius: 12px;
 
             margin-bottom: 25px;
         }
 
-        .result-box {
 
-            background: #fafafa;
+        /* =========================================
+           MAIN SCORE CARD
+        ========================================= */
 
-            border: 1px solid #e5e5e5;
+        .main-card {
+            background: white;
 
-            border-radius: 12px;
+            border: 1px solid #e8edf4;
+
+            border-radius: 18px;
+
+            padding: 35px;
+
+            box-shadow:
+                0 12px 35px rgba(15, 23, 42, 0.06);
+
+            margin-bottom: 25px;
+        }
+
+        .score-section {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+
+            gap: 40px;
+        }
+
+        .score-left {
+            flex: 1;
+        }
+
+        .score-label {
+            color: #64748b;
+
+            font-size: 13px;
+            font-weight: 600;
+
+            margin-bottom: 8px;
+        }
+
+        .score-number {
+            font-size: 65px;
+            line-height: 1;
+
+            font-weight: 800;
+
+            letter-spacing: -3px;
+
+            color: #2563eb;
+
+            margin-bottom: 10px;
+        }
+
+        .match-level {
+            display: inline-block;
+
+            padding: 7px 13px;
+
+            border-radius: 20px;
+
+            background: #dcfce7;
+            color: #15803d;
+
+            font-size: 13px;
+            font-weight: 700;
+        }
+
+
+        /* =========================================
+           PROGRESS
+        ========================================= */
+
+        .score-progress-area {
+            flex: 1.5;
+        }
+
+        .progress-title {
+            display: flex;
+            justify-content: space-between;
+
+            color: #64748b;
+
+            font-size: 13px;
+
+            margin-bottom: 9px;
+        }
+
+        .progress {
+            width: 100%;
+            height: 10px;
+
+            background: #e8edf4;
+
+            border-radius: 30px;
+
+            overflow: hidden;
+        }
+
+        .progress-value {
+            height: 100%;
+
+            background: #2563eb;
+
+            border-radius: 30px;
+        }
+
+        .score-description {
+            color: #64748b;
+
+            font-size: 13px;
+
+            margin-top: 14px;
+        }
+
+
+        /* =========================================
+           SCORE CARDS
+        ========================================= */
+
+        .score-grid {
+            display: grid;
+
+            grid-template-columns:
+                repeat(3, 1fr);
+
+            gap: 18px;
+
+            margin-bottom: 25px;
+        }
+
+        .mini-card {
+            background: white;
+
+            border: 1px solid #e8edf4;
+
+            border-radius: 15px;
 
             padding: 25px;
 
-            white-space: pre-wrap;
-
-            line-height: 1.7;
+            text-align: center;
         }
 
-        h1 {
+        .mini-title {
+            color: #64748b;
+
+            font-size: 13px;
+            font-weight: 600;
+
+            margin-bottom: 7px;
+        }
+
+        .mini-score {
+            color: #172033;
+
+            font-size: 32px;
+            font-weight: 800;
+        }
+
+
+        /* =========================================
+           CONTENT GRID
+        ========================================= */
+
+        .content-grid {
+            display: grid;
+
+            grid-template-columns:
+                1fr 1fr;
+
+            gap: 20px;
+
+            margin-bottom: 25px;
+        }
+
+        .card {
+            background: white;
+
+            border: 1px solid #e8edf4;
+
+            border-radius: 16px;
+
+            padding: 27px;
+        }
+
+        .card-title {
+            font-size: 17px;
+            font-weight: 750;
+
+            margin-bottom: 6px;
+        }
+
+        .card-description {
+            color: #64748b;
+
+            font-size: 13px;
 
             margin-bottom: 20px;
+        }
+
+
+        /* =========================================
+           SKILL TAGS
+        ========================================= */
+
+        .tags {
+            display: flex;
+            flex-wrap: wrap;
+
+            gap: 9px;
+        }
+
+        .tag-match {
+            padding: 8px 12px;
+
+            border-radius: 8px;
+
+            background: #ecfdf5;
+
+            border: 1px solid #bbf7d0;
+
+            color: #166534;
+
+            font-size: 13px;
+            font-weight: 600;
+        }
+
+        .tag-missing {
+            padding: 8px 12px;
+
+            border-radius: 8px;
+
+            background: #fff7ed;
+
+            border: 1px solid #fed7aa;
+
+            color: #c2410c;
+
+            font-size: 13px;
+            font-weight: 600;
+        }
+
+        .empty-message {
+            color: #94a3b8;
+            font-size: 13px;
+        }
+
+
+        /* =========================================
+           HIRING PROBABILITY
+        ========================================= */
+
+        .hiring-card {
+            background: white;
+
+            border: 1px solid #e8edf4;
+
+            border-radius: 16px;
+
+            padding: 27px;
+
+            margin-bottom: 25px;
+        }
+
+        .probability {
+            display: inline-block;
+
+            margin-top: 15px;
+
+            padding: 8px 15px;
+
+            border-radius: 20px;
+
+            background: #eaf2ff;
+            color: #2563eb;
+
+            font-size: 14px;
+            font-weight: 800;
+
+            text-transform: uppercase;
+        }
+
+
+        /* =========================================
+           RECOMMENDATIONS
+        ========================================= */
+
+        .recommendation-card {
+            background: white;
+
+            border: 1px solid #e8edf4;
+
+            border-radius: 16px;
+
+            padding: 30px;
+
+            margin-bottom: 30px;
+        }
+
+        .recommendations {
+            margin-top: 20px;
+
+            display: flex;
+            flex-direction: column;
+
+            gap: 12px;
+        }
+
+        .recommendation {
+            display: flex;
+
+            align-items: flex-start;
+
+            gap: 13px;
+
+            padding: 15px;
+
+            background: #f8fafc;
+
+            border-radius: 10px;
+        }
+
+        .recommendation-number {
+            min-width: 28px;
+            height: 28px;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            background: #eaf2ff;
+            color: #2563eb;
+
+            border-radius: 7px;
+
+            font-size: 12px;
+            font-weight: 800;
+        }
+
+        .recommendation-text {
+            color: #475569;
+            font-size: 14px;
+        }
+
+
+        /* =========================================
+           ACTION BUTTONS
+        ========================================= */
+
+        .actions {
+            display: flex;
+
+            justify-content: center;
+
+            gap: 14px;
+
+            flex-wrap: wrap;
+        }
+
+        .primary-btn,
+        .secondary-btn {
+            min-height: 48px;
+
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+
+            padding: 0 21px;
+
+            border-radius: 9px;
+
+            font-size: 14px;
+            font-weight: 700;
+
+            transition: 0.2s;
+        }
+
+        .primary-btn {
+            background: #2563eb;
+            color: white;
+        }
+
+        .primary-btn:hover {
+            background: #1d4ed8;
+        }
+
+        .secondary-btn {
+            background: white;
+
+            color: #334155;
+
+            border: 1px solid #dbe2ea;
+        }
+
+        .secondary-btn:hover {
+            border-color: #2563eb;
+
+            color: #2563eb;
+        }
+
+
+        /* =========================================
+           RESPONSIVE
+        ========================================= */
+
+        @media (max-width: 800px) {
+
+            .score-section {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+
+            .score-progress-area {
+                width: 100%;
+            }
+
+            .score-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .content-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .score-number {
+                font-size: 55px;
+            }
+
+            .page-header h1 {
+                font-size: 29px;
+            }
+
         }
 
     </style>
 
 </head>
 
+
 <body>
 
-<div class="container">
 
-    <div class="card">
+<!-- =========================================
+     TOP BAR
+========================================= -->
+
+<div class="topbar">
+
+    <div class="logo">
+        CareerIn<span>De</span>
+    </div>
+
+    <a href="/dashboard"
+       class="dashboard-link">
+
+        ← Back to Dashboard
+
+    </a>
+
+</div>
+
+
+
+<!-- =========================================
+     PAGE
+========================================= -->
+
+<div class="page">
+
+
+    <!-- PAGE HEADER -->
+
+    <div class="page-header">
+
+        <div class="page-label">
+            AI Job Matching
+        </div>
 
         <h1>
-            AI Job Match Analysis 🚀
+            Job Match Analysis
         </h1>
 
-        <div class="result-box"
-             th:text="${result}">
-        </div>
+        <p>
+            See how closely your CV matches this position
+            and what you can improve before applying.
+        </p>
 
     </div>
 
+
+
+    <!-- =========================================
+         ERROR
+    ========================================= -->
+
+    <div class="error-box"
+         th:if="${error != null}"
+         th:text="${error}">
+
+        Job match analysis is temporarily unavailable.
+
+    </div>
+
+
+
+    <!-- =========================================
+         RESULT
+    ========================================= -->
+
+    <div th:if="${matchResult != null}">
+
+
+        <!-- MAIN MATCH SCORE -->
+
+        <div class="main-card">
+
+            <div class="score-section">
+
+
+                <div class="score-left">
+
+                    <div class="score-label">
+                        OVERALL JOB MATCH
+                    </div>
+
+
+                    <div class="score-number">
+
+                        <span th:text="${matchScore}">
+                            82
+                        </span>%
+
+                    </div>
+
+
+                    <div class="match-level"
+                         th:text="${matchLevel}">
+
+                        Strong Match
+
+                    </div>
+
+                </div>
+
+
+
+                <div class="score-progress-area">
+
+                    <div class="progress-title">
+
+                        <span>
+                            CV-to-job compatibility
+                        </span>
+
+                        <span>
+
+                            <span th:text="${matchScore}">
+                                82
+                            </span>%
+
+                        </span>
+
+                    </div>
+
+
+                    <div class="progress">
+
+                        <div class="progress-value"
+                             th:style="'width:' + ${matchScore} + '%'">
+                        </div>
+
+                    </div>
+
+
+                    <div class="score-description">
+
+                        This score compares your skills,
+                        experience and education with the
+                        requirements of this position.
+
+                    </div>
+
+                </div>
+
+
+            </div>
+
+        </div>
+
+
+
+        <!-- =========================================
+             DETAILED SCORES
+        ========================================= -->
+
+        <div class="score-grid">
+
+
+            <div class="mini-card">
+
+                <div class="mini-title">
+                    Skills Match
+                </div>
+
+                <div class="mini-score">
+
+                    <span th:text="${skillsMatch}">
+                        85
+                    </span>%
+
+                </div>
+
+            </div>
+
+
+
+            <div class="mini-card">
+
+                <div class="mini-title">
+                    Experience Match
+                </div>
+
+                <div class="mini-score">
+
+                    <span th:text="${experienceMatch}">
+                        80
+                    </span>%
+
+                </div>
+
+            </div>
+
+
+
+            <div class="mini-card">
+
+                <div class="mini-title">
+                    Education Match
+                </div>
+
+                <div class="mini-score">
+
+                    <span th:text="${educationMatch}">
+                        90
+                    </span>%
+
+                </div>
+
+            </div>
+
+
+        </div>
+
+
+
+        <!-- =========================================
+             SKILLS
+        ========================================= -->
+
+        <div class="content-grid">
+
+
+            <!-- MATCHING SKILLS -->
+
+            <div class="card">
+
+                <div class="card-title">
+                    ✓ Matching Skills
+                </div>
+
+                <div class="card-description">
+                    Skills from your CV that match this position.
+                </div>
+
+
+                <div class="tags"
+                     th:if="${matchingSkills != null and !matchingSkills.isEmpty()}">
+
+                    <span class="tag-match"
+                          th:each="skill : ${matchingSkills}"
+                          th:text="${skill}">
+
+                        Java
+
+                    </span>
+
+                </div>
+
+
+                <div class="empty-message"
+                     th:if="${matchingSkills == null or matchingSkills.isEmpty()}">
+
+                    No clear matching skills detected.
+
+                </div>
+
+            </div>
+
+
+
+            <!-- MISSING SKILLS -->
+
+            <div class="card">
+
+                <div class="card-title">
+                    Skills to Improve
+                </div>
+
+                <div class="card-description">
+                    Relevant requirements not clearly found in your CV.
+                </div>
+
+
+                <div class="tags"
+                     th:if="${missingSkills != null and !missingSkills.isEmpty()}">
+
+                    <span class="tag-missing"
+                          th:each="skill : ${missingSkills}"
+                          th:text="${skill}">
+
+                        Docker
+
+                    </span>
+
+                </div>
+
+
+                <div class="empty-message"
+                     th:if="${missingSkills == null or missingSkills.isEmpty()}">
+
+                    No major skill gaps detected.
+
+                </div>
+
+            </div>
+
+
+        </div>
+
+
+
+        <!-- =========================================
+             HIRING PROBABILITY
+        ========================================= -->
+
+        <div class="hiring-card">
+
+            <div class="card-title">
+                Hiring Potential
+            </div>
+
+            <div class="card-description">
+                AI estimate based on the alignment between
+                your CV and the job requirements.
+            </div>
+
+
+            <div class="probability"
+                 th:text="${hiringProbability}">
+
+                High
+
+            </div>
+
+        </div>
+
+
+
+        <!-- =========================================
+             AI RECOMMENDATIONS
+        ========================================= -->
+
+        <div class="recommendation-card">
+
+            <div class="card-title">
+                ✦ AI Recommendations
+            </div>
+
+            <div class="card-description">
+                Recommended improvements before applying
+                for this position.
+            </div>
+
+
+            <div class="recommendations"
+                 th:if="${recommendations != null and !recommendations.isEmpty()}">
+
+
+                <div class="recommendation"
+                     th:each="recommendation, status : ${recommendations}">
+
+
+                    <div class="recommendation-number"
+                         th:text="${status.count}">
+
+                        1
+
+                    </div>
+
+
+                    <div class="recommendation-text"
+                         th:text="${recommendation}">
+
+                        Highlight your Spring Boot experience.
+
+                    </div>
+
+
+                </div>
+
+
+            </div>
+
+
+            <div class="empty-message"
+                 th:if="${recommendations == null or recommendations.isEmpty()}">
+
+                No additional recommendations available.
+
+            </div>
+
+        </div>
+
+
+
+        <!-- =========================================
+             ACTIONS
+        ========================================= -->
+
+        <div class="actions">
+
+            <a href="/job-match"
+               class="secondary-btn">
+
+                Analyze Another Job
+
+            </a>
+
+
+            <a href="/resume/upload"
+               class="primary-btn">
+
+                Analyze My CV →
+
+            </a>
+
+        </div>
+
+
+    </div>
+
+
 </div>
+
 
 </body>
 
