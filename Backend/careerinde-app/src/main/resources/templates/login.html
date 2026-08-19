@@ -2,8 +2,10 @@
 <html xmlns:th="http://www.thymeleaf.org">
 
 <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <title>Careerinde Login</title>
+    <title>Login | CareerInDe</title>
 
     <style>
 
@@ -14,200 +16,736 @@
         }
 
         body {
-
             font-family: Arial, sans-serif;
-
-            background: #ffffff;
-
-            color: #111111;
-
-            height: 100vh;
-
-            display: flex;
-
-            justify-content: center;
-
-            align-items: center;
+            background: #f6f8fc;
+            color: #101828;
+            min-height: 100vh;
         }
 
-        .login-box {
+        .page {
+            min-height: 100vh;
+            display: grid;
+            grid-template-columns: 1.05fr 0.95fr;
+        }
 
-            width: 380px;
+        /* LEFT SIDE */
 
-            padding: 50px;
+        .brand-side {
+            position: relative;
+            overflow: hidden;
+            background:
+                radial-gradient(circle at 20% 20%, rgba(67, 120, 255, 0.30), transparent 35%),
+                radial-gradient(circle at 80% 80%, rgba(47, 109, 246, 0.22), transparent 35%),
+                linear-gradient(145deg, #091326, #13295c);
+            color: white;
+            padding: 60px 70px;
 
-            border: 1px solid #e5e5e5;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
 
-            border-radius: 14px;
+        .brand-side::after {
+            content: "";
+            position: absolute;
 
-            background: white;
+            width: 420px;
+            height: 420px;
+
+            border: 1px solid rgba(255,255,255,0.08);
+            border-radius: 50%;
+
+            right: -170px;
+            bottom: -150px;
         }
 
         .logo {
+            position: relative;
+            z-index: 2;
 
-            font-size: 28px;
+            font-size: 29px;
+            font-weight: 800;
+            letter-spacing: -0.5px;
+        }
 
+        .logo span {
+            color: #4d82ff;
+        }
+
+        .brand-content {
+            position: relative;
+            z-index: 2;
+
+            max-width: 580px;
+        }
+
+        .badge {
+            display: inline-flex;
+            align-items: center;
+
+            padding: 8px 13px;
+
+            border-radius: 30px;
+
+            background: rgba(255,255,255,0.09);
+            border: 1px solid rgba(255,255,255,0.13);
+
+            font-size: 12px;
+            font-weight: 600;
+
+            margin-bottom: 25px;
+        }
+
+        .brand-content h1 {
+            font-size: clamp(40px, 4vw, 62px);
+            line-height: 1.08;
+            letter-spacing: -2px;
+
+            margin-bottom: 22px;
+        }
+
+        .brand-content h1 span {
+            color: #6592ff;
+        }
+
+        .brand-description {
+            max-width: 520px;
+
+            color: #b9c7df;
+
+            font-size: 17px;
+            line-height: 1.7;
+
+            margin-bottom: 38px;
+        }
+
+        .features {
+            display: flex;
+            flex-direction: column;
+            gap: 17px;
+        }
+
+        .feature {
+            display: flex;
+            align-items: center;
+            gap: 13px;
+
+            color: #e4ebf7;
+
+            font-size: 14px;
+        }
+
+        .feature-icon {
+            width: 32px;
+            height: 32px;
+
+            border-radius: 9px;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            background: rgba(78,130,255,0.15);
+            border: 1px solid rgba(112,153,255,0.25);
+
+            color: #80a5ff;
+
+            font-size: 14px;
             font-weight: bold;
+        }
 
-            text-align: center;
+        .brand-footer {
+            position: relative;
+            z-index: 2;
+
+            color: #7184a5;
+            font-size: 12px;
+        }
+
+
+        /* RIGHT SIDE */
+
+        .login-side {
+            background: #ffffff;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            padding: 50px;
+        }
+
+        .login-container {
+            width: 100%;
+            max-width: 430px;
+        }
+
+        .mobile-logo {
+            display: none;
+
+            font-size: 25px;
+            font-weight: 800;
+
+            margin-bottom: 45px;
+        }
+
+        .mobile-logo span {
+            color: #2f6df6;
+        }
+
+        .login-header {
+            margin-bottom: 36px;
+        }
+
+        .login-header h2 {
+            font-size: 34px;
+            letter-spacing: -1px;
 
             margin-bottom: 10px;
         }
 
-        .subtitle {
+        .login-header p {
+            color: #667085;
 
-            text-align: center;
-
-            color: #666;
-
-            margin-bottom: 40px;
-
-            font-size: 14px;
+            font-size: 15px;
+            line-height: 1.6;
         }
 
-        .input-group {
 
-            margin-bottom: 20px;
+        /* ERROR / LOGOUT MESSAGE */
+
+        .message {
+            padding: 13px 15px;
+
+            border-radius: 9px;
+
+            margin-bottom: 22px;
+
+            font-size: 13px;
+        }
+
+        .error-message {
+            background: #fef3f2;
+            color: #b42318;
+            border: 1px solid #fecdca;
+        }
+
+        .success-message {
+            background: #ecfdf3;
+            color: #027a48;
+            border: 1px solid #abefc6;
+        }
+
+
+        /* FORM */
+
+        .input-group {
+            margin-bottom: 21px;
         }
 
         label {
-
             display: block;
 
             margin-bottom: 8px;
 
-            font-size: 14px;
-
+            font-size: 13px;
             font-weight: 600;
+
+            color: #344054;
+        }
+
+        .input-wrapper {
+            position: relative;
         }
 
         input {
-
             width: 100%;
 
-            padding: 14px;
+            padding: 14px 15px;
 
-            border: 1px solid #dcdcdc;
-
+            border: 1px solid #d0d5dd;
             border-radius: 10px;
 
+            background: white;
+
             font-size: 14px;
+            color: #101828;
 
             outline: none;
 
-            transition: 0.2s;
+            transition:
+                border-color 0.2s,
+                box-shadow 0.2s;
+        }
+
+        input::placeholder {
+            color: #98a2b3;
         }
 
         input:focus {
+            border-color: #2f6df6;
 
-            border-color: black;
+            box-shadow:
+                0 0 0 4px rgba(47,109,246,0.10);
         }
 
-        button {
+        .password-wrapper input {
+            padding-right: 55px;
+        }
 
-            width: 100%;
+        .password-toggle {
+            position: absolute;
 
-            padding: 14px;
+            right: 14px;
+            top: 50%;
+
+            transform: translateY(-50%);
 
             border: none;
+            background: transparent;
 
-            border-radius: 10px;
-
-            background: black;
-
-            color: white;
-
-            font-size: 15px;
-
-            font-weight: bold;
+            color: #667085;
 
             cursor: pointer;
 
-            margin-top: 10px;
+            font-size: 12px;
+            font-weight: 600;
 
-            transition: 0.2s;
+            padding: 5px;
         }
 
-        button:hover {
 
-            opacity: 0.9;
+        /* OPTIONS */
+
+        .form-options {
+            display: flex;
+            justify-content: flex-end;
+            align-items: center;
+
+            margin-top: -5px;
+            margin-bottom: 25px;
         }
 
-        .footer {
+        .forgot {
+            color: #2f6df6;
 
-            margin-top: 30px;
+            font-size: 13px;
+            font-weight: 600;
 
+            text-decoration: none;
+        }
+
+        .forgot:hover {
+            text-decoration: underline;
+        }
+
+
+        /* LOGIN BUTTON */
+
+        .login-button {
+            width: 100%;
+
+            padding: 14px 18px;
+
+            border: none;
+            border-radius: 10px;
+
+            background: #2f6df6;
+            color: white;
+
+            font-size: 15px;
+            font-weight: 700;
+
+            cursor: pointer;
+
+            transition:
+                transform 0.15s,
+                box-shadow 0.2s,
+                background 0.2s;
+        }
+
+        .login-button:hover {
+            background: #245bd5;
+
+            box-shadow:
+                0 8px 20px rgba(47,109,246,0.20);
+        }
+
+        .login-button:active {
+            transform: translateY(1px);
+        }
+
+
+        /* DIVIDER */
+
+        .divider {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+
+            margin: 30px 0;
+
+            color: #98a2b3;
+
+            font-size: 12px;
+        }
+
+        .divider::before,
+        .divider::after {
+            content: "";
+
+            height: 1px;
+            background: #eaecf0;
+
+            flex: 1;
+        }
+
+
+        /* REGISTER */
+
+        .register-box {
             text-align: center;
 
-            font-size: 14px;
+            color: #667085;
 
-            color: #666;
+            font-size: 14px;
         }
 
-        .footer a {
-
-            color: black;
+        .register-box a {
+            color: #2f6df6;
 
             text-decoration: none;
 
-            font-weight: bold;
+            font-weight: 700;
+
+            margin-left: 4px;
+        }
+
+        .register-box a:hover {
+            text-decoration: underline;
+        }
+
+
+        /* SECURITY TEXT */
+
+        .security-text {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 6px;
+
+            margin-top: 35px;
+
+            color: #98a2b3;
+
+            font-size: 11px;
+        }
+
+
+        /* RESPONSIVE */
+
+        @media (max-width: 900px) {
+
+            .page {
+                display: block;
+            }
+
+            .brand-side {
+                display: none;
+            }
+
+            .login-side {
+                min-height: 100vh;
+                padding: 35px 25px;
+            }
+
+            .mobile-logo {
+                display: block;
+            }
+
+        }
+
+        @media (max-width: 500px) {
+
+            .login-side {
+                align-items: flex-start;
+                padding-top: 35px;
+            }
+
+            .login-header h2 {
+                font-size: 29px;
+            }
+
         }
 
     </style>
 
 </head>
 
+
 <body>
 
-<div class="login-box">
+<div class="page">
 
-    <div class="logo">
-        Careerinde
-    </div>
 
-    <div class="subtitle">
-        Career Positioning for Germany
-    </div>
+    <!-- LEFT BRAND AREA -->
 
-    <form th:action="@{/login}" method="post">
+    <section class="brand-side">
 
-        <div class="input-group">
+        <div class="logo">
+            CareerIn<span>De</span>
+        </div>
 
-            <label>Email</label>
 
-            <input type="email"
-                   name="username"
-                   placeholder="Enter your email"
-                   required>
+        <div class="brand-content">
+
+            <div class="badge">
+                AI-powered career platform
+            </div>
+
+            <h1>
+                Build your career
+                <span>in Germany.</span>
+            </h1>
+
+            <p class="brand-description">
+                Analyze your CV, understand your skill gaps
+                and discover better career opportunities
+                for the German job market.
+            </p>
+
+
+            <div class="features">
+
+                <div class="feature">
+
+                    <div class="feature-icon">✓</div>
+
+                    <span>
+                        AI-powered CV & ATS analysis
+                    </span>
+
+                </div>
+
+
+                <div class="feature">
+
+                    <div class="feature-icon">◎</div>
+
+                    <span>
+                        Personalized skill gap insights
+                    </span>
+
+                </div>
+
+
+                <div class="feature">
+
+                    <div class="feature-icon">↗</div>
+
+                    <span>
+                        Smarter job matching for Germany
+                    </span>
+
+                </div>
+
+            </div>
 
         </div>
 
-        <div class="input-group">
 
-            <label>Password</label>
+        <div class="brand-footer">
+            CareerInDe · Career Intelligence for Germany
+        </div>
 
-            <input type="password"
-                   name="password"
-                   placeholder="Enter your password"
-                   required>
+    </section>
+
+
+
+    <!-- LOGIN AREA -->
+
+    <section class="login-side">
+
+        <div class="login-container">
+
+
+            <div class="mobile-logo">
+                CareerIn<span>De</span>
+            </div>
+
+
+            <div class="login-header">
+
+                <h2>Welcome back</h2>
+
+                <p>
+                    Log in to continue building your
+                    career in Germany.
+                </p>
+
+            </div>
+
+
+            <!-- LOGIN ERROR -->
+
+            <div
+                th:if="${param.error}"
+                class="message error-message">
+
+                Email or password is incorrect.
+
+            </div>
+
+
+            <!-- LOGOUT SUCCESS -->
+
+            <div
+                th:if="${param.logout}"
+                class="message success-message">
+
+                You have been successfully logged out.
+
+            </div>
+
+
+            <form th:action="@{/login}" method="post">
+
+
+                <!-- EMAIL -->
+
+                <div class="input-group">
+
+                    <label for="username">
+                        Email address
+                    </label>
+
+                    <div class="input-wrapper">
+
+                        <input
+                            id="username"
+                            type="email"
+                            name="username"
+                            placeholder="you@example.com"
+                            autocomplete="email"
+                            required>
+
+                    </div>
+
+                </div>
+
+
+
+                <!-- PASSWORD -->
+
+                <div class="input-group">
+
+                    <label for="password">
+                        Password
+                    </label>
+
+                    <div class="input-wrapper password-wrapper">
+
+                        <input
+                            id="password"
+                            type="password"
+                            name="password"
+                            placeholder="Enter your password"
+                            autocomplete="current-password"
+                            required>
+
+                        <button
+                            type="button"
+                            class="password-toggle"
+                            onclick="togglePassword()">
+
+                            Show
+
+                        </button>
+
+                    </div>
+
+                </div>
+
+
+                <div class="form-options">
+
+                    <!--
+                    Activate this when you create
+                    a forgot-password endpoint.
+                    -->
+
+                    <span class="forgot">
+                        Secure login
+                    </span>
+
+                </div>
+
+
+                <button
+                    class="login-button"
+                    type="submit">
+
+                    Log in →
+
+                </button>
+
+            </form>
+
+
+            <div class="divider">
+                New to CareerInDe?
+            </div>
+
+
+            <div class="register-box">
+
+                Don't have an account?
+
+                <a href="/register">
+                    Create account
+                </a>
+
+            </div>
+
+
+            <div class="security-text">
+                🔒 Your information is securely processed.
+            </div>
 
         </div>
 
-        <button type="submit">
-            Login
-        </button>
-
-    </form>
-
-    <div class="footer">
-
-        Don’t have an account?
-        <a href="/register">Register</a>
-
-    </div>
+    </section>
 
 </div>
 
-</body>
 
+
+<script>
+
+    function togglePassword() {
+
+        const password =
+            document.getElementById("password");
+
+        const button =
+            document.querySelector(".password-toggle");
+
+        if (password.type === "password") {
+
+            password.type = "text";
+            button.textContent = "Hide";
+
+        } else {
+
+            password.type = "password";
+            button.textContent = "Show";
+
+        }
+
+    }
+
+</script>
+
+
+</body>
 </html>

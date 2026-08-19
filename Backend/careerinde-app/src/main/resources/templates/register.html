@@ -1,4 +1,11 @@
-    <title>Careerinde Register</title>
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Create Account | CareerInDe</title>
 
     <style>
 
@@ -9,202 +16,687 @@
         }
 
         body {
-
             font-family: Arial, sans-serif;
-
-            background: #ffffff;
-
-            color: #111111;
-
-            height: 100vh;
-
-            display: flex;
-
-            justify-content: center;
-
-            align-items: center;
+            background: #f6f8fc;
+            color: #101828;
+            min-height: 100vh;
         }
 
-        .register-box {
+        .page {
+            min-height: 100vh;
+            display: grid;
+            grid-template-columns: 1.05fr 0.95fr;
+        }
 
-            width: 380px;
+        /* LEFT */
 
-            padding: 50px;
+        .brand-side {
+            position: relative;
+            overflow: hidden;
 
-            border: 1px solid #e5e5e5;
+            background:
+                radial-gradient(circle at 20% 20%,
+                rgba(67,120,255,.30), transparent 35%),
 
-            border-radius: 14px;
+                radial-gradient(circle at 80% 80%,
+                rgba(47,109,246,.22), transparent 35%),
 
-            background: white;
+                linear-gradient(145deg, #091326, #13295c);
+
+            color: white;
+
+            padding: 60px 70px;
+
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+
+        .brand-side::after {
+            content: "";
+
+            position: absolute;
+
+            width: 420px;
+            height: 420px;
+
+            border: 1px solid rgba(255,255,255,.08);
+            border-radius: 50%;
+
+            right: -170px;
+            bottom: -150px;
         }
 
         .logo {
+            position: relative;
+            z-index: 2;
 
-            font-size: 28px;
+            font-size: 29px;
+            font-weight: 800;
 
+            letter-spacing: -.5px;
+        }
+
+        .logo span {
+            color: #4d82ff;
+        }
+
+        .brand-content {
+            position: relative;
+            z-index: 2;
+
+            max-width: 580px;
+        }
+
+        .badge {
+            display: inline-flex;
+            align-items: center;
+
+            padding: 8px 13px;
+
+            border-radius: 30px;
+
+            background: rgba(255,255,255,.09);
+            border: 1px solid rgba(255,255,255,.13);
+
+            font-size: 12px;
+            font-weight: 600;
+
+            margin-bottom: 25px;
+        }
+
+        .brand-content h1 {
+            font-size: clamp(40px, 4vw, 62px);
+
+            line-height: 1.08;
+            letter-spacing: -2px;
+
+            margin-bottom: 22px;
+        }
+
+        .brand-content h1 span {
+            color: #6592ff;
+        }
+
+        .brand-description {
+            color: #b9c7df;
+
+            font-size: 17px;
+            line-height: 1.7;
+
+            max-width: 520px;
+
+            margin-bottom: 38px;
+        }
+
+        .features {
+            display: flex;
+            flex-direction: column;
+
+            gap: 17px;
+        }
+
+        .feature {
+            display: flex;
+            align-items: center;
+
+            gap: 13px;
+
+            color: #e4ebf7;
+
+            font-size: 14px;
+        }
+
+        .feature-icon {
+            width: 32px;
+            height: 32px;
+
+            border-radius: 9px;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            background: rgba(78,130,255,.15);
+
+            border:
+                1px solid rgba(112,153,255,.25);
+
+            color: #80a5ff;
+
+            font-size: 14px;
             font-weight: bold;
+        }
 
-            text-align: center;
+        .brand-footer {
+            position: relative;
+            z-index: 2;
+
+            color: #7184a5;
+
+            font-size: 12px;
+        }
+
+
+        /* RIGHT */
+
+        .register-side {
+            background: white;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            padding: 50px;
+        }
+
+        .register-container {
+            width: 100%;
+            max-width: 430px;
+        }
+
+        .mobile-logo {
+            display: none;
+
+            font-size: 25px;
+            font-weight: 800;
+
+            margin-bottom: 45px;
+        }
+
+        .mobile-logo span {
+            color: #2f6df6;
+        }
+
+        .register-header {
+            margin-bottom: 34px;
+        }
+
+        .register-header h2 {
+            font-size: 34px;
+            letter-spacing: -1px;
 
             margin-bottom: 10px;
         }
 
-        .subtitle {
+        .register-header p {
+            color: #667085;
 
-            text-align: center;
-
-            color: #666;
-
-            margin-bottom: 40px;
-
-            font-size: 14px;
+            font-size: 15px;
+            line-height: 1.6;
         }
 
-        .input-group {
 
-            margin-bottom: 20px;
+        /* FORM */
+
+        .input-group {
+            margin-bottom: 21px;
         }
 
         label {
-
             display: block;
 
             margin-bottom: 8px;
 
-            font-size: 14px;
+            color: #344054;
 
+            font-size: 13px;
             font-weight: 600;
         }
 
-        input {
+        .input-wrapper {
+            position: relative;
+        }
 
+        input {
             width: 100%;
 
-            padding: 14px;
+            padding: 14px 15px;
 
-            border: 1px solid #dcdcdc;
-
+            border: 1px solid #d0d5dd;
             border-radius: 10px;
 
+            background: white;
+
             font-size: 14px;
+            color: #101828;
 
             outline: none;
 
-            transition: 0.2s;
+            transition:
+                border-color .2s,
+                box-shadow .2s;
+        }
+
+        input::placeholder {
+            color: #98a2b3;
         }
 
         input:focus {
+            border-color: #2f6df6;
 
-            border-color: black;
+            box-shadow:
+                0 0 0 4px rgba(47,109,246,.10);
         }
 
-        button {
+        .password-wrapper input {
+            padding-right: 55px;
+        }
 
-            width: 100%;
+        .password-toggle {
+            position: absolute;
 
-            padding: 14px;
+            right: 14px;
+            top: 50%;
+
+            transform: translateY(-50%);
 
             border: none;
+            background: transparent;
 
-            border-radius: 10px;
-
-            background: black;
-
-            color: white;
-
-            font-size: 15px;
-
-            font-weight: bold;
+            color: #667085;
 
             cursor: pointer;
 
-            margin-top: 10px;
+            font-size: 12px;
+            font-weight: 600;
 
-            transition: 0.2s;
+            padding: 5px;
         }
 
-        button:hover {
 
-            opacity: 0.9;
+        /* PASSWORD INFO */
+
+        .password-info {
+            color: #98a2b3;
+
+            font-size: 11px;
+            line-height: 1.5;
+
+            margin-top: 7px;
         }
 
-        .footer {
 
-            margin-top: 30px;
+        /* BUTTON */
+
+        .register-button {
+            width: 100%;
+
+            padding: 14px 18px;
+
+            border: none;
+            border-radius: 10px;
+
+            background: #2f6df6;
+            color: white;
+
+            font-size: 15px;
+            font-weight: 700;
+
+            cursor: pointer;
+
+            margin-top: 8px;
+
+            transition:
+                background .2s,
+                box-shadow .2s,
+                transform .15s;
+        }
+
+        .register-button:hover {
+            background: #245bd5;
+
+            box-shadow:
+                0 8px 20px rgba(47,109,246,.20);
+        }
+
+        .register-button:active {
+            transform: translateY(1px);
+        }
+
+
+        /* TERMS */
+
+        .terms {
+            margin-top: 18px;
 
             text-align: center;
 
-            font-size: 14px;
+            color: #98a2b3;
 
-            color: #666;
+            font-size: 11px;
+            line-height: 1.6;
         }
 
-        .footer a {
 
-            color: black;
+        /* DIVIDER */
+
+        .divider {
+            display: flex;
+            align-items: center;
+
+            gap: 15px;
+
+            margin: 28px 0;
+
+            color: #98a2b3;
+
+            font-size: 12px;
+        }
+
+        .divider::before,
+        .divider::after {
+            content: "";
+
+            flex: 1;
+
+            height: 1px;
+
+            background: #eaecf0;
+        }
+
+
+        /* LOGIN */
+
+        .login-box {
+            text-align: center;
+
+            color: #667085;
+
+            font-size: 14px;
+        }
+
+        .login-box a {
+            color: #2f6df6;
 
             text-decoration: none;
 
-            font-weight: bold;
+            font-weight: 700;
+
+            margin-left: 4px;
+        }
+
+        .login-box a:hover {
+            text-decoration: underline;
+        }
+
+
+        /* RESPONSIVE */
+
+        @media (max-width: 900px) {
+
+            .page {
+                display: block;
+            }
+
+            .brand-side {
+                display: none;
+            }
+
+            .register-side {
+                min-height: 100vh;
+
+                padding: 35px 25px;
+            }
+
+            .mobile-logo {
+                display: block;
+            }
+        }
+
+        @media (max-width: 500px) {
+
+            .register-side {
+                align-items: flex-start;
+
+                padding-top: 35px;
+            }
+
+            .register-header h2 {
+                font-size: 29px;
+            }
         }
 
     </style>
 
 </head>
 
+
 <body>
 
-<div class="register-box">
+<div class="page">
 
-    <div class="logo">
-        Careerinde
-    </div>
 
-    <div class="subtitle">
-        Start your Germany career journey
-    </div>
+    <!-- LEFT -->
 
-    <form th:action="@{/register}"
-          th:object="${user}"
-          method="post">
+    <section class="brand-side">
 
-        <div class="input-group">
+        <div class="logo">
+            CareerIn<span>De</span>
+        </div>
 
-            <label>Email</label>
 
-            <input type="email"
-                   th:field="*{email}"
-                   placeholder="Enter your email"
-                   required>
+        <div class="brand-content">
+
+            <div class="badge">
+                Your career journey starts here
+            </div>
+
+            <h1>
+                Turn your experience into
+                <span>opportunity.</span>
+            </h1>
+
+            <p class="brand-description">
+                Create your CareerInDe profile and get
+                personalized insights for building a stronger
+                career in the German job market.
+            </p>
+
+
+            <div class="features">
+
+                <div class="feature">
+
+                    <div class="feature-icon">✓</div>
+
+                    <span>
+                        Analyze your CV with AI
+                    </span>
+
+                </div>
+
+
+                <div class="feature">
+
+                    <div class="feature-icon">◎</div>
+
+                    <span>
+                        Discover your strongest career matches
+                    </span>
+
+                </div>
+
+
+                <div class="feature">
+
+                    <div class="feature-icon">↗</div>
+
+                    <span>
+                        Build a stronger profile for Germany
+                    </span>
+
+                </div>
+
+            </div>
 
         </div>
 
-        <div class="input-group">
 
-            <label>Password</label>
+        <div class="brand-footer">
+            CareerInDe · Career Intelligence for Germany
+        </div>
 
-            <input type="password"
-                   th:field="*{password}"
-                   placeholder="Create your password"
-                   required>
+    </section>
+
+
+
+    <!-- RIGHT -->
+
+    <section class="register-side">
+
+        <div class="register-container">
+
+
+            <div class="mobile-logo">
+                CareerIn<span>De</span>
+            </div>
+
+
+            <div class="register-header">
+
+                <h2>Create your account</h2>
+
+                <p>
+                    Start building your personalized
+                    career profile for Germany.
+                </p>
+
+            </div>
+
+
+            <form
+                th:action="@{/register}"
+                th:object="${user}"
+                method="post">
+
+
+                <!-- EMAIL -->
+
+                <div class="input-group">
+
+                    <label for="email">
+                        Email address
+                    </label>
+
+                    <div class="input-wrapper">
+
+                        <input
+                            id="email"
+                            type="email"
+                            th:field="*{email}"
+                            placeholder="you@example.com"
+                            autocomplete="email"
+                            required>
+
+                    </div>
+
+                </div>
+
+
+
+                <!-- PASSWORD -->
+
+                <div class="input-group">
+
+                    <label for="password">
+                        Password
+                    </label>
+
+                    <div class="input-wrapper password-wrapper">
+
+                        <input
+                            id="password"
+                            type="password"
+                            th:field="*{password}"
+                            placeholder="Create your password"
+                            autocomplete="new-password"
+                            required>
+
+                        <button
+                            type="button"
+                            class="password-toggle"
+                            onclick="togglePassword()">
+
+                            Show
+
+                        </button>
+
+                    </div>
+
+                    <div class="password-info">
+                        Choose a secure password for your account.
+                    </div>
+
+                </div>
+
+
+
+                <button
+                    type="submit"
+                    class="register-button">
+
+                    Create my account →
+
+                </button>
+
+            </form>
+
+
+            <div class="terms">
+                By creating an account, you agree to
+                CareerInDe's Terms and Privacy Policy.
+            </div>
+
+
+            <div class="divider">
+                Already registered?
+            </div>
+
+
+            <div class="login-box">
+
+                Already have an account?
+
+                <a href="/login">
+                    Log in
+                </a>
+
+            </div>
 
         </div>
 
-        <button type="submit">
-            Create Account
-        </button>
-
-    </form>
-
-    <div class="footer">
-
-        Already have an account?
-        <a href="/login">Login</a>
-
-    </div>
+    </section>
 
 </div>
 
-</body>
 
+
+<script>
+
+    function togglePassword() {
+
+        const password =
+            document.getElementById("password");
+
+        const button =
+            document.querySelector(".password-toggle");
+
+        if (password.type === "password") {
+
+            password.type = "text";
+            button.textContent = "Hide";
+
+        } else {
+
+            password.type = "password";
+            button.textContent = "Show";
+
+        }
+    }
+
+</script>
+
+
+</body>
 </html>
