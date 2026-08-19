@@ -3,23 +3,19 @@ package com.careerinde.careerinde_app.resume;
 import java.io.File;
 import java.io.IOException;
 import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import org.springframework.stereotype.Controller;
-
 import org.springframework.ui.Model;
-
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
-
 import org.springframework.web.bind.annotation.RequestParam;
-
 import org.springframework.web.multipart.MultipartFile;
 
 import com.careerinde.careerinde_app.ai.OpenAIService;
-
 import com.careerinde.careerinde_app.analysis.Analysis;
 import com.careerinde.careerinde_app.analysis.AnalysisRepository;
-
 import com.careerinde.careerinde_app.ats.AtsAnalyzerService;
 import com.careerinde.careerinde_app.ats.RecommendationService;
 
@@ -27,13 +23,9 @@ import com.careerinde.careerinde_app.ats.RecommendationService;
 public class ResumeController {
 
     private final PdfService pdfService;
-
     private final AtsAnalyzerService atsAnalyzerService;
-
     private final RecommendationService recommendationService;
-
     private final AnalysisRepository analysisRepository;
-
     private final OpenAIService openAIService;
 
     public ResumeController(
@@ -44,78 +36,62 @@ public class ResumeController {
             OpenAIService openAIService) {
 
         this.pdfService = pdfService;
-
-        this.atsAnalyzerService =
-                atsAnalyzerService;
-
-        this.recommendationService =
-                recommendationService;
-
-        this.analysisRepository =
-                analysisRepository;
-
-        this.openAIService =
-                openAIService;
+        this.atsAnalyzerService = atsAnalyzerService;
+        this.recommendationService = recommendationService;
+        this.analysisRepository = analysisRepository;
+        this.openAIService = openAIService;
     }
 
     @GetMapping("/resume/upload")
     public String uploadPage() {
-
         return "resume-upload";
     }
 
     @PostMapping("/resume/upload")
     public String uploadResume(
-            @RequestParam("file")
-            MultipartFile file,
-
-            Model model)
-            throws IOException {
+            @RequestParam("file") MultipartFile file,
+            Model model) throws IOException {
 
         String uploadDir =
-                System.getProperty("user.dir")
-                        + "/uploads/";
+                System.getProperty("user.dir") + "/uploads/";
 
-        File directory =
-                new File(uploadDir);
+        File directory = new File(uploadDir);
 
         if (!directory.exists()) {
-
             directory.mkdirs();
         }
 
-        String fileName =
-                file.getOriginalFilename();
+        String fileName = file.getOriginalFilename();
 
         File destination =
                 new File(uploadDir + fileName);
 
         file.transferTo(destination);
 
+        // Extract CV text
         String extractedText =
                 pdfService.extractText(destination);
 
+        // AI analysis
         String aiResponse =
-                openAIService
-                        .analyzeCV(extractedText);
+                openAIService.analyzeCV(extractedText);
 
+        // Extract real AI ATS score
         int atsScore =
                 extractAtsScore(aiResponse);
 
+        // Existing rule-based analysis
         List<String> skills =
-                atsAnalyzerService
-                        .detectSkills(extractedText);
+                atsAnalyzerService.detectSkills(extractedText);
 
         List<String> missingSkills =
-                atsAnalyzerService
-                        .missingSkills(extractedText);
+                atsAnalyzerService.missingSkills(extractedText);
 
         List<String> suggestions =
-                recommendationService
-                        .generateSuggestions(extractedText);
+                recommendationService.generateSuggestions(extractedText);
 
-        Analysis analysis =
-                new Analysis();
+        // Save analysis
+        Analysis analysis = new Analysis();
 
         analysis.setAtsScore(atsScore);
 
@@ -132,6 +108,7 @@ public class ResumeController {
 
         analysisRepository.save(analysis);
 
+        // Send result to Thymeleaf
         model.addAttribute(
                 "atsScore",
                 atsScore);
@@ -159,31 +136,38 @@ public class ResumeController {
         return "cv-result";
     }
 
-    private int extractAtsScore(
-            String response) {
+    private int extractAtsScore(String response) {
+
+        if (response == null || response.isBlank()) {
+            return 0;
+        }
 
         try {
 
-            String[] lines =
-                    response.split("\n");
+            Pattern pattern =
+                    Pattern.compile(
+                            "ATS[_\\s-]*SCORE\\s*[:*]*\\s*(\\d{1,3})",
+                            Pattern.CASE_INSENSITIVE
+                    );
 
-            for (String line : lines) {
+            Matcher matcher =
+                    pattern.matcher(response);
 
-                if (line.startsWith(
-                        "ATS_SCORE:")) {
+            if (matcher.find()) {
 
-                    String score =
-                            line.replace(
-                                    "ATS_SCORE:",
-                                    "")
-                                    .trim();
+                int score =
+                        Integer.parseInt(
+                                matcher.group(1)
+                        );
 
-                    return Integer.parseInt(score);
-                }
+                // Keep score between 0 and 100
+                return Math.max(
+                        0,
+                        Math.min(score, 100)
+                );
             }
 
         } catch (Exception e) {
-
             e.printStackTrace();
         }
 
