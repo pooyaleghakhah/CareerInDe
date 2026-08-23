@@ -1,5 +1,7 @@
 package com.careerinde.careerinde_app.security;
 
+import java.util.Locale;
+
 import com.careerinde.careerinde_app.user.User;
 import com.careerinde.careerinde_app.user.UserRepository;
 
@@ -14,7 +16,9 @@ public class CustomUserDetailsService implements UserDetailsService {
 
     private final UserRepository userRepository;
 
-    public CustomUserDetailsService(UserRepository userRepository) {
+    public CustomUserDetailsService(
+            UserRepository userRepository) {
+
         this.userRepository = userRepository;
     }
 
@@ -22,14 +26,23 @@ public class CustomUserDetailsService implements UserDetailsService {
     public UserDetails loadUserByUsername(String email)
             throws UsernameNotFoundException {
 
-        User user = userRepository.findByEmail(email)
+        String normalizedEmail = email
+                .trim()
+                .toLowerCase(Locale.ROOT);
+
+        User user = userRepository
+                .findByEmail(normalizedEmail)
                 .orElseThrow(() ->
-                        new UsernameNotFoundException("User not found"));
+                        new UsernameNotFoundException(
+                                "User not found"
+                        )
+                );
 
         return org.springframework.security.core.userdetails.User
                 .withUsername(user.getEmail())
                 .password(user.getPassword())
                 .roles(user.getRole())
+                .disabled(!user.isEnabled())
                 .build();
     }
 }

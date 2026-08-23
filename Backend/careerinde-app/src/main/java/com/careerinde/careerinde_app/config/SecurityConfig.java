@@ -30,9 +30,15 @@ public class SecurityConfig {
                     "/",
                     "/login",
                     "/register",
+
+                    // Email verification
+                    "/verify-email",
+                    "/verify-email/**",
+
                     "/error",
                     "/api/auth/**",
                     "/api/profiles/**",
+
                     "/css/**",
                     "/js/**",
                     "/images/**"

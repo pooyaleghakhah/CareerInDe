@@ -6,6 +6,8 @@ import com.careerinde.careerinde_app.security.jwt.JwtService;
 import com.careerinde.careerinde_app.user.User;
 import com.careerinde.careerinde_app.user.UserRepository;
 
+import java.util.Locale;
+
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
@@ -31,17 +33,22 @@ public class AuthController {
     public AuthResponse login(
             @RequestBody LoginRequest request) {
 
+        String email = request.getEmail()
+                .trim()
+                .toLowerCase(Locale.ROOT);
+
         User user = userRepository
-                .findByEmail(request.getEmail())
+                .findByEmail(email)
                 .orElseThrow(() ->
-                        new RuntimeException("User not found"));
+                        new RuntimeException(
+                                "Invalid email or password"));
 
         if (!passwordEncoder.matches(
                 request.getPassword(),
                 user.getPassword())) {
 
             throw new RuntimeException(
-                    "Invalid password");
+                    "Invalid email or password");
         }
 
         String token =

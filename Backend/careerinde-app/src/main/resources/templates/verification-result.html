@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <title>Email Verification | CareerInDe</title>
+
+    <style>
+
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            min-height: 100vh;
+
+            font-family: Arial, sans-serif;
+
+            background: #f5f5f5;
+
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 520px;
+
+            background: white;
+
+            padding: 45px 40px;
+
+            border-radius: 16px;
+
+            box-shadow:
+                0 8px 30px rgba(0, 0, 0, 0.08);
+
+            text-align: center;
+        }
+
+        .icon {
+            width: 72px;
+            height: 72px;
+
+            margin: 0 auto 24px;
+
+            border-radius: 50%;
+
+            display: flex;
+            justify-content: center;
+            align-items: center;
+
+            font-size: 32px;
+        }
+
+        .success-icon {
+            background: #eaf8ef;
+        }
+
+        .error-icon {
+            background: #fdecec;
+        }
+
+        h1 {
+            margin: 0 0 14px;
+
+            font-size: 28px;
+        }
+
+        .message {
+            color: #666;
+
+            font-size: 16px;
+
+            line-height: 1.6;
+
+            margin-bottom: 30px;
+        }
+
+        .button {
+            display: inline-block;
+
+            padding: 13px 28px;
+
+            background: #000000;
+
+            color: white;
+
+            text-decoration: none;
+
+            border-radius: 8px;
+
+            font-weight: bold;
+
+            transition: opacity 0.2s;
+        }
+
+        .button:hover {
+            opacity: 0.85;
+        }
+
+        .brand {
+            margin-top: 30px;
+
+            color: #999;
+
+            font-size: 13px;
+        }
+
+    </style>
+
+</head>
+
+<body>
+
+<div class="container">
+
+    <!-- SUCCESS -->
+
+    <div th:if="${success}">
+
+        <div class="icon success-icon">
+            ✓
+        </div>
+
+        <h1>
+            Email verified
+        </h1>
+
+        <p class="message"
+           th:text="${message}">
+            Your email has been verified successfully.
+        </p>
+
+        <a class="button"
+           th:href="@{/login}">
+            Continue to Login
+        </a>
+
+    </div>
+
+
+    <!-- ERROR -->
+
+    <div th:unless="${success}">
+
+        <div class="icon error-icon">
+            !
+        </div>
+
+        <h1>
+            Verification failed
+        </h1>
+
+        <p class="message"
+           th:text="${message}">
+            The verification link is invalid or expired.
+        </p>
+
+        <a class="button"
+           th:href="@{/register}">
+            Back to Register
+        </a>
+
+    </div>
+
+
+    <div class="brand">
+        CareerInDe
+    </div>
+
+</div>
+
+</body>
+
+</html>

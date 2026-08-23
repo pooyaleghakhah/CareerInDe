@@ -8,6 +8,7 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Service;
 import org.springframework.web.reactive.function.client.WebClient;
+import org.springframework.web.reactive.function.client.WebClientResponseException;
 
 import com.careerinde.careerinde_app.AIAnalysisResult.AIAnalysisResult;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -20,7 +21,6 @@ public class OpenAIService {
 
     private final WebClient webClient;
     private final ObjectMapper objectMapper;
-
 
     // =========================================================
     // Constructor
@@ -38,7 +38,6 @@ public class OpenAIService {
                 )
                 .build();
     }
-
 
     // =========================================================
     // Structured CV Analysis
@@ -133,7 +132,6 @@ CV:
 
 """ + cvText;
 
-
         Map<String, Object> requestBody =
                 Map.of(
                         "model",
@@ -162,7 +160,6 @@ CV:
                         )
                 );
 
-
         try {
 
             Map<?, ?> response =
@@ -177,12 +174,9 @@ CV:
                             .bodyToMono(Map.class)
                             .block();
 
-
             String content =
                     extractContent(response);
 
-
-            // Temporary debug output
             System.out.println(
                     "===== GROQ RAW CV ANALYSIS ====="
             );
@@ -193,17 +187,14 @@ CV:
                     "================================"
             );
 
-
             String cleanedJson =
                     cleanJson(content);
-
 
             AIAnalysisResult result =
                     objectMapper.readValue(
                             cleanedJson,
                             AIAnalysisResult.class
                     );
-
 
             // =================================================
             // ATS Score validation
@@ -216,7 +207,6 @@ CV:
             if (result.getAtsScore() > 100) {
                 result.setAtsScore(100);
             }
-
 
             // =================================================
             // Prevent null lists
@@ -234,23 +224,46 @@ CV:
                 result.setRecommendations(List.of());
             }
 
-
             return result;
 
+        } catch (WebClientResponseException e) {
+
+            System.err.println();
+            System.err.println("===== GROQ API ERROR =====");
+            System.err.println(
+                    "Status: " + e.getStatusCode()
+            );
+            System.err.println(
+                    "Response: " + e.getResponseBodyAsString()
+            );
+            System.err.println(
+                    "=========================="
+            );
+            System.err.println();
+
+            return createFallbackResult();
 
         } catch (Exception e) {
 
+            System.err.println();
             System.err.println(
-                    "AI Analysis Error: "
-                            + e.getMessage()
+                    "===== AI ANALYSIS ERROR ====="
+            );
+
+            System.err.println(
+                    "Message: " + e.getMessage()
             );
 
             e.printStackTrace();
 
+            System.err.println(
+                    "============================="
+            );
+            System.err.println();
+
             return createFallbackResult();
         }
     }
-
 
     // =========================================================
     // Generic AI Prompt
@@ -281,7 +294,6 @@ CV:
                         2500
                 );
 
-
         try {
 
             Map<?, ?> response =
@@ -296,10 +308,8 @@ CV:
                             .bodyToMono(Map.class)
                             .block();
 
-
             String content =
                     extractContent(response);
-
 
             System.out.println(
                     "===== GROQ RAW PROMPT RESPONSE ====="
@@ -311,23 +321,51 @@ CV:
                     "===================================="
             );
 
-
             return content;
 
+        } catch (WebClientResponseException e) {
+
+            System.err.println();
+            System.err.println(
+                    "===== GROQ PROMPT API ERROR ====="
+            );
+
+            System.err.println(
+                    "Status: " + e.getStatusCode()
+            );
+
+            System.err.println(
+                    "Response: " + e.getResponseBodyAsString()
+            );
+
+            System.err.println(
+                    "================================="
+            );
+            System.err.println();
+
+            return "AI service temporarily unavailable.";
 
         } catch (Exception e) {
 
+            System.err.println();
             System.err.println(
-                    "AI Prompt Error: "
-                            + e.getMessage()
+                    "===== AI PROMPT ERROR ====="
+            );
+
+            System.err.println(
+                    "Message: " + e.getMessage()
             );
 
             e.printStackTrace();
 
+            System.err.println(
+                    "==========================="
+            );
+            System.err.println();
+
             return "AI service temporarily unavailable.";
         }
     }
-
 
     // =========================================================
     // Extract content from Groq response
@@ -343,10 +381,8 @@ CV:
             );
         }
 
-
         Object choicesObject =
                 response.get("choices");
-
 
         if (!(choicesObject instanceof List<?> choices)
                 || choices.isEmpty()) {
@@ -356,10 +392,8 @@ CV:
             );
         }
 
-
         Object firstChoiceObject =
                 choices.get(0);
-
 
         if (!(firstChoiceObject
                 instanceof Map<?, ?> firstChoice)) {
@@ -369,10 +403,8 @@ CV:
             );
         }
 
-
         Object messageObject =
                 firstChoice.get("message");
-
 
         if (!(messageObject
                 instanceof Map<?, ?> message)) {
@@ -382,10 +414,8 @@ CV:
             );
         }
 
-
         Object content =
                 message.get("content");
-
 
         if (content == null) {
 
@@ -394,10 +424,8 @@ CV:
             );
         }
 
-
         return content.toString();
     }
-
 
     // =========================================================
     // Clean JSON returned by AI
@@ -410,10 +438,8 @@ CV:
             return "";
         }
 
-
         String cleaned =
                 response.trim();
-
 
         if (cleaned.startsWith("```json")) {
 
@@ -428,7 +454,6 @@ CV:
                             .trim();
         }
 
-
         if (cleaned.endsWith("```")) {
 
             cleaned =
@@ -438,13 +463,11 @@ CV:
                     ).trim();
         }
 
-
         int firstBrace =
                 cleaned.indexOf('{');
 
         int lastBrace =
                 cleaned.lastIndexOf('}');
-
 
         if (firstBrace >= 0
                 && lastBrace > firstBrace) {
@@ -456,10 +479,8 @@ CV:
                     );
         }
 
-
         return cleaned;
     }
-
 
     // =========================================================
     // Fallback
@@ -469,7 +490,6 @@ CV:
 
         AIAnalysisResult result =
                 new AIAnalysisResult();
-
 
         result.setAtsScore(0);
 
@@ -494,7 +514,6 @@ CV:
                         "AI analysis is temporarily unavailable. Please try again."
                 )
         );
-
 
         return result;
     }
