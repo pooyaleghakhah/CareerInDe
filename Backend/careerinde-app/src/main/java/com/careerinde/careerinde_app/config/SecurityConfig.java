@@ -35,6 +35,12 @@ public class SecurityConfig {
                     "/verify-email",
                     "/verify-email/**",
 
+                    // Password reset
+                    "/forgot-password",
+                    "/forgot-password/**",
+                    "/reset-password",
+                    "/reset-password/**",
+
                     "/error",
                     "/api/auth/**",
                     "/api/profiles/**",

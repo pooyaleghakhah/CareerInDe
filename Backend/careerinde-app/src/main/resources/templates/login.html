@@ -1,8 +1,11 @@
 <!DOCTYPE html>
+
 <html xmlns:th="http://www.thymeleaf.org">
 
 <head>
+
     <meta charset="UTF-8">
+
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
     <title>Login | CareerInDe</title>
@@ -33,11 +36,26 @@
         .brand-side {
             position: relative;
             overflow: hidden;
+
             background:
-                radial-gradient(circle at 20% 20%, rgba(67, 120, 255, 0.30), transparent 35%),
-                radial-gradient(circle at 80% 80%, rgba(47, 109, 246, 0.22), transparent 35%),
-                linear-gradient(145deg, #091326, #13295c);
+                radial-gradient(
+                    circle at 20% 20%,
+                    rgba(67, 120, 255, 0.30),
+                    transparent 35%
+                ),
+                radial-gradient(
+                    circle at 80% 80%,
+                    rgba(47, 109, 246, 0.22),
+                    transparent 35%
+                ),
+                linear-gradient(
+                    145deg,
+                    #091326,
+                    #13295c
+                );
+
             color: white;
+
             padding: 60px 70px;
 
             display: flex;
@@ -47,12 +65,14 @@
 
         .brand-side::after {
             content: "";
+
             position: absolute;
 
             width: 420px;
             height: 420px;
 
             border: 1px solid rgba(255,255,255,0.08);
+
             border-radius: 50%;
 
             right: -170px;
@@ -65,6 +85,7 @@
 
             font-size: 29px;
             font-weight: 800;
+
             letter-spacing: -0.5px;
         }
 
@@ -88,6 +109,7 @@
             border-radius: 30px;
 
             background: rgba(255,255,255,0.09);
+
             border: 1px solid rgba(255,255,255,0.13);
 
             font-size: 12px;
@@ -98,7 +120,9 @@
 
         .brand-content h1 {
             font-size: clamp(40px, 4vw, 62px);
+
             line-height: 1.08;
+
             letter-spacing: -2px;
 
             margin-bottom: 22px;
@@ -114,6 +138,7 @@
             color: #b9c7df;
 
             font-size: 17px;
+
             line-height: 1.7;
 
             margin-bottom: 38px;
@@ -121,13 +146,17 @@
 
         .features {
             display: flex;
+
             flex-direction: column;
+
             gap: 17px;
         }
 
         .feature {
             display: flex;
+
             align-items: center;
+
             gap: 13px;
 
             color: #e4ebf7;
@@ -142,10 +171,12 @@
             border-radius: 9px;
 
             display: flex;
+
             align-items: center;
             justify-content: center;
 
             background: rgba(78,130,255,0.15);
+
             border: 1px solid rgba(112,153,255,0.25);
 
             color: #80a5ff;
@@ -159,6 +190,7 @@
             z-index: 2;
 
             color: #7184a5;
+
             font-size: 12px;
         }
 
@@ -169,6 +201,7 @@
             background: #ffffff;
 
             display: flex;
+
             align-items: center;
             justify-content: center;
 
@@ -177,6 +210,7 @@
 
         .login-container {
             width: 100%;
+
             max-width: 430px;
         }
 
@@ -199,6 +233,7 @@
 
         .login-header h2 {
             font-size: 34px;
+
             letter-spacing: -1px;
 
             margin-bottom: 10px;
@@ -208,6 +243,7 @@
             color: #667085;
 
             font-size: 15px;
+
             line-height: 1.6;
         }
 
@@ -226,13 +262,17 @@
 
         .error-message {
             background: #fef3f2;
+
             color: #b42318;
+
             border: 1px solid #fecdca;
         }
 
         .success-message {
             background: #ecfdf3;
+
             color: #027a48;
+
             border: 1px solid #abefc6;
         }
 
@@ -264,11 +304,13 @@
             padding: 14px 15px;
 
             border: 1px solid #d0d5dd;
+
             border-radius: 10px;
 
             background: white;
 
             font-size: 14px;
+
             color: #101828;
 
             outline: none;
@@ -302,6 +344,7 @@
             transform: translateY(-50%);
 
             border: none;
+
             background: transparent;
 
             color: #667085;
@@ -319,6 +362,7 @@
 
         .form-options {
             display: flex;
+
             justify-content: flex-end;
             align-items: center;
 
@@ -348,9 +392,11 @@
             padding: 14px 18px;
 
             border: none;
+
             border-radius: 10px;
 
             background: #2f6df6;
+
             color: white;
 
             font-size: 15px;
@@ -380,7 +426,9 @@
 
         .divider {
             display: flex;
+
             align-items: center;
+
             gap: 15px;
 
             margin: 30px 0;
@@ -395,6 +443,7 @@
             content: "";
 
             height: 1px;
+
             background: #eaecf0;
 
             flex: 1;
@@ -430,8 +479,10 @@
 
         .security-text {
             display: flex;
+
             justify-content: center;
             align-items: center;
+
             gap: 6px;
 
             margin-top: 35px;
@@ -456,26 +507,26 @@
 
             .login-side {
                 min-height: 100vh;
+
                 padding: 35px 25px;
             }
 
             .mobile-logo {
                 display: block;
             }
-
         }
 
         @media (max-width: 500px) {
 
             .login-side {
                 align-items: flex-start;
+
                 padding-top: 35px;
             }
 
             .login-header h2 {
                 font-size: 29px;
             }
-
         }
 
     </style>
@@ -503,15 +554,19 @@
                 AI-powered career platform
             </div>
 
+
             <h1>
                 Build your career
                 <span>in Germany.</span>
             </h1>
 
+
             <p class="brand-description">
+
                 Analyze your CV, understand your skill gaps
                 and discover better career opportunities
                 for the German job market.
+
             </p>
 
 
@@ -519,7 +574,9 @@
 
                 <div class="feature">
 
-                    <div class="feature-icon">✓</div>
+                    <div class="feature-icon">
+                        ✓
+                    </div>
 
                     <span>
                         AI-powered CV & ATS analysis
@@ -530,7 +587,9 @@
 
                 <div class="feature">
 
-                    <div class="feature-icon">◎</div>
+                    <div class="feature-icon">
+                        ◎
+                    </div>
 
                     <span>
                         Personalized skill gap insights
@@ -541,7 +600,9 @@
 
                 <div class="feature">
 
-                    <div class="feature-icon">↗</div>
+                    <div class="feature-icon">
+                        ↗
+                    </div>
 
                     <span>
                         Smarter job matching for Germany
@@ -576,7 +637,9 @@
 
             <div class="login-header">
 
-                <h2>Welcome back</h2>
+                <h2>
+                    Welcome back
+                </h2>
 
                 <p>
                     Log in to continue building your
@@ -608,7 +671,9 @@
             </div>
 
 
-            <form th:action="@{/login}" method="post">
+            <form
+                th:action="@{/login}"
+                method="post">
 
 
                 <!-- EMAIL -->
@@ -653,6 +718,7 @@
                             autocomplete="current-password"
                             required>
 
+
                         <button
                             type="button"
                             class="password-toggle"
@@ -667,19 +733,24 @@
                 </div>
 
 
+
+                <!-- FORGOT PASSWORD -->
+
                 <div class="form-options">
 
-                    <!--
-                    Activate this when you create
-                    a forgot-password endpoint.
-                    -->
+                    <a
+                        class="forgot"
+                        th:href="@{/forgot-password}">
 
-                    <span class="forgot">
-                        Secure login
-                    </span>
+                        Forgot password?
+
+                    </a>
 
                 </div>
 
+
+
+                <!-- LOGIN -->
 
                 <button
                     class="login-button"
@@ -692,20 +763,23 @@
             </form>
 
 
+
             <div class="divider">
                 New to CareerInDe?
             </div>
+
 
 
             <div class="register-box">
 
                 Don't have an account?
 
-                <a href="/register">
+                <a th:href="@{/register}">
                     Create account
                 </a>
 
             </div>
+
 
 
             <div class="security-text">
@@ -733,19 +807,21 @@
         if (password.type === "password") {
 
             password.type = "text";
+
             button.textContent = "Hide";
 
         } else {
 
             password.type = "password";
+
             button.textContent = "Show";
 
         }
-
     }
 
 </script>
 
 
 </body>
+
 </html>

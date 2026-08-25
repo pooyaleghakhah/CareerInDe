@@ -34,14 +34,18 @@ public class EmailService {
                 .build();
     }
 
+    // =========================================================
+    // EMAIL VERIFICATION
+    // =========================================================
+
     public void sendVerificationEmail(
             String recipientEmail,
             String token) {
 
         String verificationUrl =
                 baseUrl
-                + "/verify-email?token="
-                + token;
+                        + "/verify-email?token="
+                        + token;
 
         String html = """
                 <div style="font-family:Arial,sans-serif;max-width:600px;margin:auto;">
@@ -83,6 +87,90 @@ public class EmailService {
                 </div>
                 """.formatted(verificationUrl);
 
+        sendEmail(
+                recipientEmail,
+                "Verify your CareerInDe email",
+                html
+        );
+    }
+
+    // =========================================================
+    // PASSWORD RESET
+    // =========================================================
+
+    public void sendPasswordResetEmail(
+            String recipientEmail,
+            String token) {
+
+        String resetUrl =
+                baseUrl
+                        + "/reset-password?token="
+                        + token;
+
+        String html = """
+                <div style="font-family:Arial,sans-serif;max-width:600px;margin:auto;">
+
+                    <h2>Reset your CareerInDe password</h2>
+
+                    <p>
+                        We received a request to reset the password
+                        for your CareerInDe account.
+                    </p>
+
+                    <p style="margin:30px 0;">
+                        <a href="%s"
+                           style="
+                               background:#2563eb;
+                               color:#ffffff;
+                               text-decoration:none;
+                               padding:14px 24px;
+                               border-radius:8px;
+                               display:inline-block;
+                               font-weight:bold;
+                           ">
+                            Reset Password
+                        </a>
+                    </p>
+
+                    <p>
+                        This password reset link expires in 30 minutes.
+                    </p>
+
+                    <p>
+                        If you did not request a password reset,
+                        you can safely ignore this email.
+                    </p>
+
+                    <p>
+                        For security reasons, this link can only
+                        be used once.
+                    </p>
+
+                    <hr>
+
+                    <p style="color:#777;font-size:13px;">
+                        CareerInDe · Career Intelligence for Germany
+                    </p>
+
+                </div>
+                """.formatted(resetUrl);
+
+        sendEmail(
+                recipientEmail,
+                "Reset your CareerInDe password",
+                html
+        );
+    }
+
+    // =========================================================
+    // SEND EMAIL THROUGH RESEND
+    // =========================================================
+
+    private void sendEmail(
+            String recipientEmail,
+            String subject,
+            String html) {
+
         Map<String, Object> requestBody =
                 Map.of(
                         "from",
@@ -94,7 +182,7 @@ public class EmailService {
                         },
 
                         "subject",
-                        "Verify your CareerInDe email",
+                        subject,
 
                         "html",
                         html
@@ -114,8 +202,8 @@ public class EmailService {
                     .block();
 
             System.out.println(
-                    "Verification email sent to: "
-                    + recipientEmail
+                    "Email sent successfully to: "
+                            + recipientEmail
             );
 
         } catch (WebClientResponseException e) {
@@ -126,12 +214,12 @@ public class EmailService {
 
             System.err.println(
                     "Status: "
-                    + e.getStatusCode()
+                            + e.getStatusCode()
             );
 
             System.err.println(
                     "Response: "
-                    + e.getResponseBodyAsString()
+                            + e.getResponseBodyAsString()
             );
 
             System.err.println(
@@ -144,7 +232,7 @@ public class EmailService {
 
             System.err.println(
                     "Email sending failed: "
-                    + e.getMessage()
+                            + e.getMessage()
             );
 
             throw e;
