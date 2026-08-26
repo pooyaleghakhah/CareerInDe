@@ -63,15 +63,28 @@
         }
 
         .section-title {
-            margin-top: 30px;
+            margin-top: 35px;
             margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 1px solid #e5e7eb;
             font-size: 20px;
+        }
+
+        .section-title:first-of-type {
+            margin-top: 0;
+        }
+
+        .section-description {
+            color: #6b7280;
+            font-size: 13px;
+            margin-top: -12px;
+            margin-bottom: 20px;
+            line-height: 1.5;
         }
 
         .grid {
             display: grid;
-            grid-template-columns:
-                repeat(2, 1fr);
+            grid-template-columns: repeat(2, 1fr);
             gap: 20px;
         }
 
@@ -98,6 +111,8 @@
             border: 1px solid #d1d5db;
             border-radius: 8px;
             font-size: 15px;
+            background: white;
+            color: #111827;
         }
 
         input:focus,
@@ -105,6 +120,7 @@
         select:focus {
             outline: none;
             border-color: #2563eb;
+            box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.08);
         }
 
         textarea {
@@ -112,8 +128,36 @@
             resize: vertical;
         }
 
+        .skills-area {
+            min-height: 100px;
+        }
+
+        .hint {
+            margin-top: 7px;
+            font-size: 12px;
+            color: #6b7280;
+        }
+
+        .checkbox-field {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding-top: 10px;
+        }
+
+        .checkbox-field input {
+            width: 18px;
+            height: 18px;
+            cursor: pointer;
+        }
+
+        .checkbox-field label {
+            margin: 0;
+            cursor: pointer;
+        }
+
         .actions {
-            margin-top: 30px;
+            margin-top: 35px;
             display: flex;
             justify-content: flex-end;
         }
@@ -123,8 +167,9 @@
             color: white;
             border: none;
             border-radius: 8px;
-            padding: 12px 24px;
+            padding: 13px 28px;
             font-size: 15px;
+            font-weight: 600;
             cursor: pointer;
         }
 
@@ -145,6 +190,14 @@
             .container {
                 margin: 10px auto;
             }
+
+            .card {
+                padding: 20px;
+            }
+
+            .actions button {
+                width: 100%;
+            }
         }
 
     </style>
@@ -162,17 +215,21 @@
         </h1>
 
         <p>
-            Manage your professional information
-            and career goals.
+            Tell CareerInDe about your professional background,
+            skills and career goals.
         </p>
 
     </div>
+
+
+    <!-- SUCCESS MESSAGE -->
 
     <div
         class="success"
         th:if="${successMessage}"
         th:text="${successMessage}">
     </div>
+
 
     <div class="card">
 
@@ -181,13 +238,19 @@
             th:object="${profile}"
             method="post">
 
-            <!-- Spring Security CSRF -->
+
+            <!-- CSRF -->
 
             <input
                 type="hidden"
                 th:if="${_csrf != null}"
                 th:name="${_csrf.parameterName}"
                 th:value="${_csrf.token}">
+
+
+            <!-- ================================================= -->
+            <!-- PERSONAL INFORMATION -->
+            <!-- ================================================= -->
 
             <h2 class="section-title">
                 Personal Information
@@ -197,11 +260,12 @@
 
                 <div class="field">
 
-                    <label>
+                    <label for="firstName">
                         First Name
                     </label>
 
                     <input
+                        id="firstName"
                         type="text"
                         th:field="*{firstName}"
                         placeholder="First name">
@@ -211,11 +275,12 @@
 
                 <div class="field">
 
-                    <label>
+                    <label for="lastName">
                         Last Name
                     </label>
 
                     <input
+                        id="lastName"
                         type="text"
                         th:field="*{lastName}"
                         placeholder="Last name">
@@ -225,11 +290,12 @@
 
                 <div class="field">
 
-                    <label>
+                    <label for="nationality">
                         Nationality
                     </label>
 
                     <input
+                        id="nationality"
                         type="text"
                         th:field="*{nationality}"
                         placeholder="Nationality">
@@ -239,12 +305,13 @@
 
                 <div class="field">
 
-                    <label>
+                    <label for="phone">
                         Phone
                     </label>
 
                     <input
-                        type="text"
+                        id="phone"
+                        type="tel"
                         th:field="*{phone}"
                         placeholder="+49 ...">
 
@@ -252,6 +319,10 @@
 
             </div>
 
+
+            <!-- ================================================= -->
+            <!-- LOCATION -->
+            <!-- ================================================= -->
 
             <h2 class="section-title">
                 Location
@@ -261,11 +332,12 @@
 
                 <div class="field">
 
-                    <label>
+                    <label for="country">
                         Country
                     </label>
 
                     <input
+                        id="country"
                         type="text"
                         th:field="*{country}"
                         placeholder="Germany">
@@ -275,11 +347,12 @@
 
                 <div class="field">
 
-                    <label>
+                    <label for="city">
                         Current City
                     </label>
 
                     <input
+                        id="city"
                         type="text"
                         th:field="*{city}"
                         placeholder="Current city">
@@ -289,33 +362,71 @@
 
                 <div class="field">
 
-                    <label>
+                    <label for="targetCity">
                         Target City
                     </label>
 
                     <input
+                        id="targetCity"
                         type="text"
                         th:field="*{targetCity}"
-                        placeholder="Target city">
+                        placeholder="Berlin, Hamburg, Cologne...">
+
+                </div>
+
+
+                <div class="field">
+
+                    <label for="willingToRelocate">
+                        Relocation
+                    </label>
+
+                    <select
+                        id="willingToRelocate"
+                        th:field="*{willingToRelocate}">
+
+                        <option value="">
+                            Select
+                        </option>
+
+                        <option value="true">
+                            Yes, I am willing to relocate
+                        </option>
+
+                        <option value="false">
+                            No
+                        </option>
+
+                    </select>
 
                 </div>
 
             </div>
 
 
+            <!-- ================================================= -->
+            <!-- CAREER -->
+            <!-- ================================================= -->
+
             <h2 class="section-title">
-                Career
+                Career Goals
             </h2>
+
+            <p class="section-description">
+                This information will later be used to recommend
+                relevant jobs and calculate your career fit.
+            </p>
 
             <div class="grid">
 
                 <div class="field">
 
-                    <label>
+                    <label for="targetJob">
                         Target Job
                     </label>
 
                     <input
+                        id="targetJob"
                         type="text"
                         th:field="*{targetJob}"
                         placeholder="Java Backend Developer">
@@ -325,36 +436,155 @@
 
                 <div class="field">
 
-                    <label>
-                        Experience Years
+                    <label for="experienceLevel">
+                        Experience Level
                     </label>
 
-                    <input
-                        type="number"
-                        min="0"
-                        th:field="*{experienceYears}"
-                        placeholder="0">
+                    <select
+                        id="experienceLevel"
+                        th:field="*{experienceLevel}">
+
+                        <option value="">
+                            Select experience level
+                        </option>
+
+                        <option value="STUDENT">
+                            Student
+                        </option>
+
+                        <option value="ENTRY_LEVEL">
+                            Entry Level
+                        </option>
+
+                        <option value="JUNIOR">
+                            Junior
+                        </option>
+
+                        <option value="MID">
+                            Mid-Level
+                        </option>
+
+                        <option value="SENIOR">
+                            Senior
+                        </option>
+
+                    </select>
 
                 </div>
 
 
                 <div class="field">
 
-                    <label>
-                        Salary Expectation
+                    <label for="experienceYears">
+                        Years of Experience
                     </label>
 
                     <input
+                        id="experienceYears"
                         type="number"
                         min="0"
-                        step="0.01"
+                        max="50"
+                        th:field="*{experienceYears}"
+                        placeholder="2">
+
+                </div>
+
+
+                <div class="field">
+
+                    <label for="salaryExpectation">
+                        Salary Expectation (€ / year)
+                    </label>
+
+                    <input
+                        id="salaryExpectation"
+                        type="number"
+                        min="0"
+                        step="500"
                         th:field="*{salaryExpectation}"
-                        placeholder="50000">
+                        placeholder="55000">
+
+                </div>
+
+
+                <div class="field">
+
+                    <label for="preferredWorkMode">
+                        Preferred Work Mode
+                    </label>
+
+                    <select
+                        id="preferredWorkMode"
+                        th:field="*{preferredWorkMode}">
+
+                        <option value="">
+                            Select work mode
+                        </option>
+
+                        <option value="ONSITE">
+                            On-site
+                        </option>
+
+                        <option value="HYBRID">
+                            Hybrid
+                        </option>
+
+                        <option value="REMOTE">
+                            Remote
+                        </option>
+
+                        <option value="FLEXIBLE">
+                            Flexible
+                        </option>
+
+                    </select>
 
                 </div>
 
             </div>
 
+
+            <!-- ================================================= -->
+            <!-- SKILLS -->
+            <!-- ================================================= -->
+
+            <h2 class="section-title">
+                Skills
+            </h2>
+
+            <p class="section-description">
+                Add your most important professional and technical skills.
+                Separate them with commas.
+            </p>
+
+            <div class="grid">
+
+                <div class="field full-width">
+
+                    <label for="skills">
+                        Your Skills
+                    </label>
+
+                    <textarea
+                        id="skills"
+                        class="skills-area"
+                        th:field="*{skills}"
+                        maxlength="3000"
+                        placeholder="Java, Spring Boot, PostgreSQL, Docker, Git, AWS">
+                    </textarea>
+
+                    <div class="hint">
+                        Example: Java, Spring Boot, PostgreSQL, Docker, Git
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <!-- ================================================= -->
+            <!-- LANGUAGES -->
+            <!-- ================================================= -->
 
             <h2 class="section-title">
                 Languages
@@ -364,11 +594,12 @@
 
                 <div class="field">
 
-                    <label>
+                    <label for="germanLevel">
                         German Level
                     </label>
 
                     <select
+                        id="germanLevel"
                         th:field="*{germanLevel}">
 
                         <option value="">
@@ -381,6 +612,7 @@
                         <option value="B2">B2</option>
                         <option value="C1">C1</option>
                         <option value="C2">C2</option>
+                        <option value="NATIVE">Native</option>
 
                     </select>
 
@@ -389,11 +621,12 @@
 
                 <div class="field">
 
-                    <label>
+                    <label for="englishLevel">
                         English Level
                     </label>
 
                     <select
+                        id="englishLevel"
                         th:field="*{englishLevel}">
 
                         <option value="">
@@ -406,6 +639,7 @@
                         <option value="B2">B2</option>
                         <option value="C1">C1</option>
                         <option value="C2">C2</option>
+                        <option value="NATIVE">Native</option>
 
                     </select>
 
@@ -413,6 +647,10 @@
 
             </div>
 
+
+            <!-- ================================================= -->
+            <!-- PROFESSIONAL LINKS -->
+            <!-- ================================================= -->
 
             <h2 class="section-title">
                 Professional Links
@@ -422,11 +660,12 @@
 
                 <div class="field">
 
-                    <label>
+                    <label for="linkedinUrl">
                         LinkedIn
                     </label>
 
                     <input
+                        id="linkedinUrl"
                         type="url"
                         th:field="*{linkedinUrl}"
                         placeholder="https://linkedin.com/in/...">
@@ -436,11 +675,12 @@
 
                 <div class="field">
 
-                    <label>
+                    <label for="githubUrl">
                         GitHub
                     </label>
 
                     <input
+                        id="githubUrl"
                         type="url"
                         th:field="*{githubUrl}"
                         placeholder="https://github.com/...">
@@ -450,11 +690,12 @@
 
                 <div class="field full-width">
 
-                    <label>
+                    <label for="portfolioUrl">
                         Portfolio
                     </label>
 
                     <input
+                        id="portfolioUrl"
                         type="url"
                         th:field="*{portfolioUrl}"
                         placeholder="https://...">
@@ -464,6 +705,10 @@
             </div>
 
 
+            <!-- ================================================= -->
+            <!-- ABOUT -->
+            <!-- ================================================= -->
+
             <h2 class="section-title">
                 About Me
             </h2>
@@ -472,16 +717,25 @@
 
                 <div class="field full-width">
 
+                    <label for="aboutMe">
+                        Professional Summary
+                    </label>
+
                     <textarea
+                        id="aboutMe"
                         th:field="*{aboutMe}"
                         maxlength="2000"
-                        placeholder="Tell us about your professional background...">
+                        placeholder="Tell us about your professional background, experience and career goals...">
                     </textarea>
 
                 </div>
 
             </div>
 
+
+            <!-- ================================================= -->
+            <!-- SAVE -->
+            <!-- ================================================= -->
 
             <div class="actions">
 

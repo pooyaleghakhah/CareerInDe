@@ -14,6 +14,10 @@ public class Profile {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    // =========================================================
+    // PERSONAL INFORMATION
+    // =========================================================
+
     private String firstName;
 
     private String lastName;
@@ -22,13 +26,76 @@ public class Profile {
 
     private String city;
 
-    private String targetCity;
+    private String phone;
+
+    private String nationality;
+
+    // =========================================================
+    // CAREER INFORMATION
+    // =========================================================
 
     private String targetJob;
 
+    private String targetCity;
+
     private Integer experienceYears;
 
+    /*
+     * Examples:
+     * STUDENT
+     * ENTRY_LEVEL
+     * JUNIOR
+     * MID
+     * SENIOR
+     */
+    private String experienceLevel;
+
     private Double salaryExpectation;
+
+    // =========================================================
+    // JOB PREFERENCES
+    // =========================================================
+
+    /*
+     * Examples:
+     * REMOTE
+     * HYBRID
+     * ONSITE
+     * FLEXIBLE
+     */
+    private String preferredWorkMode;
+
+    private Boolean willingToRelocate;
+
+    // =========================================================
+    // SKILLS
+    // =========================================================
+
+    /*
+     * Temporary MVP format:
+     *
+     * Java, Spring Boot, PostgreSQL, Docker, Git
+     *
+     * Later we can move skills into their own table.
+     */
+    @Column(length = 3000)
+    private String skills;
+
+    // =========================================================
+    // LANGUAGES
+    // =========================================================
+
+    /*
+     * Examples:
+     * A1, A2, B1, B2, C1, C2, NATIVE
+     */
+    private String germanLevel;
+
+    private String englishLevel;
+
+    // =========================================================
+    // PROFESSIONAL LINKS
+    // =========================================================
 
     private String linkedinUrl;
 
@@ -36,38 +103,62 @@ public class Profile {
 
     private String portfolioUrl;
 
-    private String phone;
-
-    private String nationality;
+    // =========================================================
+    // ABOUT
+    // =========================================================
 
     @Column(length = 2000)
     private String aboutMe;
 
-    private String germanLevel;
-
-    private String englishLevel;
+    // =========================================================
+    // TIMESTAMPS
+    // =========================================================
 
     private LocalDateTime createdAt;
 
     private LocalDateTime updatedAt;
 
+    // =========================================================
+    // USER RELATIONSHIP
+    // =========================================================
+
     @OneToOne
-    @JoinColumn(name = "user_id")
+    @JoinColumn(
+            name = "user_id",
+            nullable = false,
+            unique = true
+    )
     private User user;
+
+    // =========================================================
+    // CONSTRUCTOR
+    // =========================================================
 
     public Profile() {
     }
 
+    // =========================================================
+    // ENTITY LIFECYCLE
+    // =========================================================
+
     @PrePersist
     public void prePersist() {
-        createdAt = LocalDateTime.now();
-        updatedAt = LocalDateTime.now();
+
+        LocalDateTime now = LocalDateTime.now();
+
+        createdAt = now;
+        updatedAt = now;
     }
 
     @PreUpdate
     public void preUpdate() {
+
         updatedAt = LocalDateTime.now();
     }
+
+    // =========================================================
+    // GETTERS / SETTERS
+    // =========================================================
 
     public Long getId() {
         return id;
@@ -109,12 +200,20 @@ public class Profile {
         this.city = city;
     }
 
-    public String getTargetCity() {
-        return targetCity;
+    public String getPhone() {
+        return phone;
     }
 
-    public void setTargetCity(String targetCity) {
-        this.targetCity = targetCity;
+    public void setPhone(String phone) {
+        this.phone = phone;
+    }
+
+    public String getNationality() {
+        return nationality;
+    }
+
+    public void setNationality(String nationality) {
+        this.nationality = nationality;
     }
 
     public String getTargetJob() {
@@ -125,6 +224,14 @@ public class Profile {
         this.targetJob = targetJob;
     }
 
+    public String getTargetCity() {
+        return targetCity;
+    }
+
+    public void setTargetCity(String targetCity) {
+        this.targetCity = targetCity;
+    }
+
     public Integer getExperienceYears() {
         return experienceYears;
     }
@@ -133,12 +240,60 @@ public class Profile {
         this.experienceYears = experienceYears;
     }
 
+    public String getExperienceLevel() {
+        return experienceLevel;
+    }
+
+    public void setExperienceLevel(String experienceLevel) {
+        this.experienceLevel = experienceLevel;
+    }
+
     public Double getSalaryExpectation() {
         return salaryExpectation;
     }
 
     public void setSalaryExpectation(Double salaryExpectation) {
         this.salaryExpectation = salaryExpectation;
+    }
+
+    public String getPreferredWorkMode() {
+        return preferredWorkMode;
+    }
+
+    public void setPreferredWorkMode(String preferredWorkMode) {
+        this.preferredWorkMode = preferredWorkMode;
+    }
+
+    public Boolean getWillingToRelocate() {
+        return willingToRelocate;
+    }
+
+    public void setWillingToRelocate(Boolean willingToRelocate) {
+        this.willingToRelocate = willingToRelocate;
+    }
+
+    public String getSkills() {
+        return skills;
+    }
+
+    public void setSkills(String skills) {
+        this.skills = skills;
+    }
+
+    public String getGermanLevel() {
+        return germanLevel;
+    }
+
+    public void setGermanLevel(String germanLevel) {
+        this.germanLevel = germanLevel;
+    }
+
+    public String getEnglishLevel() {
+        return englishLevel;
+    }
+
+    public void setEnglishLevel(String englishLevel) {
+        this.englishLevel = englishLevel;
     }
 
     public String getLinkedinUrl() {
@@ -165,44 +320,12 @@ public class Profile {
         this.portfolioUrl = portfolioUrl;
     }
 
-    public String getPhone() {
-        return phone;
-    }
-
-    public void setPhone(String phone) {
-        this.phone = phone;
-    }
-
-    public String getNationality() {
-        return nationality;
-    }
-
-    public void setNationality(String nationality) {
-        this.nationality = nationality;
-    }
-
     public String getAboutMe() {
         return aboutMe;
     }
 
     public void setAboutMe(String aboutMe) {
         this.aboutMe = aboutMe;
-    }
-
-    public String getGermanLevel() {
-        return germanLevel;
-    }
-
-    public void setGermanLevel(String germanLevel) {
-        this.germanLevel = germanLevel;
-    }
-
-    public String getEnglishLevel() {
-        return englishLevel;
-    }
-
-    public void setEnglishLevel(String englishLevel) {
-        this.englishLevel = englishLevel;
     }
 
     public LocalDateTime getCreatedAt() {

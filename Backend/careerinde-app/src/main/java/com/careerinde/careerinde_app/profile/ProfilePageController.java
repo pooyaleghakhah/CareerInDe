@@ -1,6 +1,7 @@
 package com.careerinde.careerinde_app.profile;
 
 import java.security.Principal;
+import java.util.Locale;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -25,6 +26,10 @@ public class ProfilePageController {
         this.userRepository = userRepository;
     }
 
+    // =========================================================
+    // SHOW PROFILE
+    // =========================================================
+
     @GetMapping("/profile")
     public String showProfile(
             Model model,
@@ -34,13 +39,22 @@ public class ProfilePageController {
             return "redirect:/login";
         }
 
+        String email = principal
+                .getName()
+                .trim()
+                .toLowerCase(Locale.ROOT);
+
         User user = userRepository
-                .findByEmail(principal.getName())
+                .findByEmail(email)
                 .orElseThrow(() ->
-                        new RuntimeException("User not found"));
+                        new RuntimeException(
+                                "User not found"
+                        )
+                );
 
         Profile profile =
-                profileService.getProfileOrEmpty(user);
+                profileService
+                        .getProfileOrEmpty(user);
 
         model.addAttribute(
                 "profile",
@@ -49,6 +63,10 @@ public class ProfilePageController {
 
         return "profile";
     }
+
+    // =========================================================
+    // SAVE / UPDATE PROFILE
+    // =========================================================
 
     @PostMapping("/profile")
     public String saveProfile(
@@ -60,10 +78,18 @@ public class ProfilePageController {
             return "redirect:/login";
         }
 
+        String email = principal
+                .getName()
+                .trim()
+                .toLowerCase(Locale.ROOT);
+
         User user = userRepository
-                .findByEmail(principal.getName())
+                .findByEmail(email)
                 .orElseThrow(() ->
-                        new RuntimeException("User not found"));
+                        new RuntimeException(
+                                "User not found"
+                        )
+                );
 
         profileService.saveProfileForUser(
                 user,

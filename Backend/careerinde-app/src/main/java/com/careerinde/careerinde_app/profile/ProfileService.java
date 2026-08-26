@@ -18,6 +18,10 @@ public class ProfileService {
         this.profileRepository = profileRepository;
     }
 
+    // =========================================================
+    // CREATE PROFILE
+    // =========================================================
+
     public Profile createProfile(Profile profile) {
 
         if (profile.getUser() == null) {
@@ -37,10 +41,18 @@ public class ProfileService {
         return profileRepository.save(profile);
     }
 
+    // =========================================================
+    // GET ALL PROFILES
+    // =========================================================
+
     public List<Profile> getAllProfiles() {
 
         return profileRepository.findAll();
     }
+
+    // =========================================================
+    // GET PROFILE BY ID
+    // =========================================================
 
     public Profile getProfileById(Long id) {
 
@@ -53,6 +65,10 @@ public class ProfileService {
                 );
     }
 
+    // =========================================================
+    // GET PROFILE BY USER
+    // =========================================================
+
     public Profile getProfileByUser(User user) {
 
         return profileRepository
@@ -63,6 +79,10 @@ public class ProfileService {
                         )
                 );
     }
+
+    // =========================================================
+    // GET EXISTING PROFILE OR CREATE EMPTY PROFILE
+    // =========================================================
 
     public Profile getProfileOrEmpty(User user) {
 
@@ -79,6 +99,10 @@ public class ProfileService {
                 });
     }
 
+    // =========================================================
+    // SAVE PROFILE FOR LOGGED-IN USER
+    // =========================================================
+
     @Transactional
     public Profile saveProfileForUser(
             User user,
@@ -89,6 +113,12 @@ public class ProfileService {
                         .findByUser(user)
                         .orElseGet(Profile::new);
 
+        /*
+         * Important:
+         * We always assign the authenticated user here.
+         *
+         * We do NOT trust user_id coming from the HTML form.
+         */
         profile.setUser(user);
 
         copyProfileData(
@@ -98,6 +128,10 @@ public class ProfileService {
 
         return profileRepository.save(profile);
     }
+
+    // =========================================================
+    // UPDATE PROFILE
+    // =========================================================
 
     @Transactional
     public Profile updateProfile(
@@ -117,6 +151,10 @@ public class ProfileService {
         );
     }
 
+    // =========================================================
+    // DELETE PROFILE
+    // =========================================================
+
     public void deleteProfile(Long id) {
 
         Profile profile =
@@ -125,9 +163,15 @@ public class ProfileService {
         profileRepository.delete(profile);
     }
 
+    // =========================================================
+    // COPY PROFILE DATA
+    // =========================================================
+
     private void copyProfileData(
             Profile source,
             Profile target) {
+
+        // Personal information
 
         target.setFirstName(
                 source.getFirstName());
@@ -141,17 +185,56 @@ public class ProfileService {
         target.setCity(
                 source.getCity());
 
-        target.setTargetCity(
-                source.getTargetCity());
+        target.setPhone(
+                source.getPhone());
+
+        target.setNationality(
+                source.getNationality());
+
+
+        // Career information
 
         target.setTargetJob(
                 source.getTargetJob());
 
+        target.setTargetCity(
+                source.getTargetCity());
+
         target.setExperienceYears(
                 source.getExperienceYears());
 
+        target.setExperienceLevel(
+                source.getExperienceLevel());
+
         target.setSalaryExpectation(
                 source.getSalaryExpectation());
+
+
+        // Job preferences
+
+        target.setPreferredWorkMode(
+                source.getPreferredWorkMode());
+
+        target.setWillingToRelocate(
+                source.getWillingToRelocate());
+
+
+        // Skills
+
+        target.setSkills(
+                source.getSkills());
+
+
+        // Languages
+
+        target.setGermanLevel(
+                source.getGermanLevel());
+
+        target.setEnglishLevel(
+                source.getEnglishLevel());
+
+
+        // Professional links
 
         target.setLinkedinUrl(
                 source.getLinkedinUrl());
@@ -162,19 +245,10 @@ public class ProfileService {
         target.setPortfolioUrl(
                 source.getPortfolioUrl());
 
-        target.setPhone(
-                source.getPhone());
 
-        target.setNationality(
-                source.getNationality());
+        // About
 
         target.setAboutMe(
                 source.getAboutMe());
-
-        target.setGermanLevel(
-                source.getGermanLevel());
-
-        target.setEnglishLevel(
-                source.getEnglishLevel());
     }
 }
