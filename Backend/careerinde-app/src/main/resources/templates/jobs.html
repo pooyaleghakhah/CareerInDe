@@ -1,0 +1,547 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <title>CareerInDe | Jobs</title>
+
+    <style>
+
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background: #f8fafc;
+            color: #111827;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 1100px;
+            margin: 40px auto;
+            padding: 20px;
+        }
+
+        .header {
+            margin-bottom: 30px;
+        }
+
+        .header h1 {
+            margin-bottom: 8px;
+        }
+
+        .header p {
+            margin: 0;
+            color: #6b7280;
+        }
+
+        /* ============================= */
+        /* SEARCH                       */
+        /* ============================= */
+
+        .search-card {
+            background: white;
+            border: 1px solid #e5e7eb;
+            border-radius: 12px;
+            padding: 25px;
+            margin-bottom: 30px;
+        }
+
+        .search-form {
+            display: grid;
+            grid-template-columns: 1fr 1fr auto;
+            gap: 15px;
+            align-items: end;
+        }
+
+        .field {
+            display: flex;
+            flex-direction: column;
+        }
+
+        label {
+            margin-bottom: 7px;
+            font-size: 14px;
+            font-weight: 600;
+        }
+
+        input {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #d1d5db;
+            border-radius: 8px;
+            font-size: 15px;
+        }
+
+        input:focus {
+            outline: none;
+            border-color: #2563eb;
+        }
+
+        .search-button {
+            height: 43px;
+            padding: 0 25px;
+            border: none;
+            border-radius: 8px;
+            background: #2563eb;
+            color: white;
+            font-size: 15px;
+            font-weight: 600;
+            cursor: pointer;
+        }
+
+        .search-button:hover {
+            background: #1d4ed8;
+        }
+
+        /* ============================= */
+        /* ERROR                        */
+        /* ============================= */
+
+        .error {
+            padding: 15px;
+            margin-bottom: 25px;
+            border-radius: 8px;
+            background: #fee2e2;
+            color: #991b1b;
+        }
+
+        /* ============================= */
+        /* RESULTS                      */
+        /* ============================= */
+
+        .results-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .results-header h2 {
+            margin: 0;
+        }
+
+        .provider {
+            color: #6b7280;
+            font-size: 13px;
+        }
+
+        .jobs {
+            display: flex;
+            flex-direction: column;
+            gap: 18px;
+        }
+
+        /* ============================= */
+        /* JOB CARD                     */
+        /* ============================= */
+
+        .job-card {
+            background: white;
+            border: 1px solid #e5e7eb;
+            border-radius: 12px;
+            padding: 24px;
+        }
+
+        .job-card:hover {
+            border-color: #bfdbfe;
+        }
+
+        .job-title {
+            margin: 0 0 10px;
+            font-size: 20px;
+        }
+
+        .company {
+            font-weight: 600;
+            margin-bottom: 6px;
+        }
+
+        .location {
+            color: #6b7280;
+            margin-bottom: 15px;
+        }
+
+        .meta {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+            margin-bottom: 15px;
+        }
+
+        .badge {
+            background: #f3f4f6;
+            padding: 6px 10px;
+            border-radius: 6px;
+            font-size: 12px;
+            color: #374151;
+        }
+
+        .description {
+            color: #4b5563;
+            line-height: 1.6;
+            margin-bottom: 20px;
+        }
+
+        .job-actions {
+            display: flex;
+            gap: 10px;
+        }
+
+        .apply-button {
+            display: inline-block;
+            padding: 10px 18px;
+            background: #2563eb;
+            color: white;
+            text-decoration: none;
+            border-radius: 7px;
+            font-size: 14px;
+            font-weight: 600;
+        }
+
+        .apply-button:hover {
+            background: #1d4ed8;
+        }
+
+        /* ============================= */
+        /* EMPTY STATES                 */
+        /* ============================= */
+
+        .empty-state {
+            background: white;
+            border: 1px solid #e5e7eb;
+            border-radius: 12px;
+            padding: 50px 20px;
+            text-align: center;
+            color: #6b7280;
+        }
+
+        .empty-state h3 {
+            color: #111827;
+            margin-top: 0;
+        }
+
+        /* ============================= */
+        /* MOBILE                       */
+        /* ============================= */
+
+        @media (max-width: 750px) {
+
+            .search-form {
+                grid-template-columns: 1fr;
+            }
+
+            .search-button {
+                width: 100%;
+            }
+
+            .results-header {
+                align-items: flex-start;
+                flex-direction: column;
+                gap: 5px;
+            }
+
+            .container {
+                margin: 15px auto;
+            }
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+<div class="container">
+
+    <!-- ============================== -->
+    <!-- HEADER                         -->
+    <!-- ============================== -->
+
+    <div class="header">
+
+        <h1>
+            Find Jobs
+        </h1>
+
+        <p>
+            Search for job opportunities that match your career goals.
+        </p>
+
+    </div>
+
+
+    <!-- ============================== -->
+    <!-- SEARCH FORM                    -->
+    <!-- ============================== -->
+
+    <div class="search-card">
+
+        <form
+            class="search-form"
+            th:action="@{/jobs}"
+            method="get">
+
+
+            <div class="field">
+
+                <label for="keywords">
+                    Job title or keywords
+                </label>
+
+                <input
+                    id="keywords"
+                    name="keywords"
+                    type="text"
+                    th:value="${keywords}"
+                    placeholder="Java Developer"
+                    required>
+
+            </div>
+
+
+            <div class="field">
+
+                <label for="location">
+                    Location
+                </label>
+
+                <input
+                    id="location"
+                    name="location"
+                    type="text"
+                    th:value="${location}"
+                    placeholder="Berlin">
+
+            </div>
+
+
+            <button
+                class="search-button"
+                type="submit">
+
+                Search Jobs
+
+            </button>
+
+        </form>
+
+    </div>
+
+
+    <!-- ============================== -->
+    <!-- ERROR                          -->
+    <!-- ============================== -->
+
+    <div
+        class="error"
+        th:if="${errorMessage}"
+        th:text="${errorMessage}">
+    </div>
+
+
+    <!-- ============================== -->
+    <!-- INITIAL STATE                  -->
+    <!-- ============================== -->
+
+    <div
+        class="empty-state"
+        th:if="${searched == false}">
+
+        <h3>
+            Find your next opportunity
+        </h3>
+
+        <p>
+            Enter a job title and location to start searching.
+        </p>
+
+    </div>
+
+
+    <!-- ============================== -->
+    <!-- SEARCH RESULTS                 -->
+    <!-- ============================== -->
+
+    <div
+        th:if="${searched == true
+                and errorMessage == null}">
+
+
+        <div class="results-header">
+
+            <h2>
+                Job Results
+            </h2>
+
+            <span
+                class="provider"
+                th:if="${provider != null}">
+
+                Powered by
+                <span th:text="${provider}">
+                    JOOBLE
+                </span>
+
+            </span>
+
+        </div>
+
+
+        <!-- NO RESULTS -->
+
+        <div
+            class="empty-state"
+            th:if="${#lists.isEmpty(jobs)}">
+
+            <h3>
+                No jobs found
+            </h3>
+
+            <p>
+                Try another job title or location.
+            </p>
+
+        </div>
+
+
+        <!-- JOB LIST -->
+
+        <div
+            class="jobs"
+            th:if="${!#lists.isEmpty(jobs)}">
+
+
+            <div
+                class="job-card"
+                th:each="job : ${jobs}">
+
+
+                <!-- TITLE -->
+
+                <h3
+                    class="job-title"
+                    th:text="${job.title}">
+
+                    Java Backend Developer
+
+                </h3>
+
+
+                <!-- COMPANY -->
+
+                <div
+                    class="company"
+                    th:if="${job.company != null
+                            and !job.company.isBlank()}"
+                    th:text="${job.company}">
+
+                    Example GmbH
+
+                </div>
+
+
+                <!-- LOCATION -->
+
+                <div
+                    class="location"
+                    th:if="${job.location != null
+                            and !job.location.isBlank()}"
+                    th:text="${job.location}">
+
+                    Berlin
+
+                </div>
+
+
+                <!-- META -->
+
+                <div class="meta">
+
+
+                    <span
+                        class="badge"
+                        th:if="${job.type != null
+                                and !job.type.isBlank()}"
+                        th:text="${job.type}">
+
+                        Full-time
+
+                    </span>
+
+
+                    <span
+                        class="badge"
+                        th:if="${job.salary != null
+                                and !job.salary.isBlank()}"
+                        th:text="${job.salary}">
+
+                        €55,000
+
+                    </span>
+
+
+                    <span
+                        class="badge"
+                        th:if="${job.source != null}"
+                        th:text="${job.source}">
+
+                        JOOBLE
+
+                    </span>
+
+                </div>
+
+
+                <!-- DESCRIPTION -->
+
+                <div
+                    class="description"
+                    th:if="${job.description != null
+                            and !job.description.isBlank()}"
+                    th:text="${job.description}">
+
+                    Job description...
+
+                </div>
+
+
+                <!-- APPLY -->
+
+                <div
+                    class="job-actions"
+                    th:if="${job.link != null
+                            and !job.link.isBlank()}">
+
+                    <a
+                        class="apply-button"
+                        th:href="${job.link}"
+                        target="_blank"
+                        rel="noopener noreferrer">
+
+                        View Job / Apply
+
+                    </a>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+</body>
+</html>

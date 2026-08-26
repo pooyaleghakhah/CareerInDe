@@ -445,27 +445,31 @@
 
         <nav class="menu">
 
-            <a href="/dashboard" class="active">
+            <a th:href="@{/dashboard}" class="active">
                 ▣ &nbsp; Dashboard
             </a>
 
-            <a href="/profile">
+            <a th:href="@{/profile}">
                 ◯ &nbsp; Profile
             </a>
 
-            <a href="/resume/upload">
+            <a th:href="@{/resume/upload}">
                 ↑ &nbsp; My CV
             </a>
 
-            <a href="/job-match">
+            <a th:href="@{/jobs}">
+                ⌕ &nbsp; Find Jobs
+            </a>
+
+            <a th:href="@{/job-match}">
                 ◎ &nbsp; Job Matches
             </a>
 
-            <a href="/skill-gap">
+            <a th:href="@{/skill-gap}">
                 ◇ &nbsp; Skill Gap
             </a>
 
-            <a href="/applications">
+            <a th:href="@{/applications}">
                 ▤ &nbsp; Applications
             </a>
 
@@ -739,19 +743,27 @@
 
                 <div class="quick-actions">
 
-                    <a class="action" href="/resume/upload">
+                    <a
+                        class="action"
+                        th:href="@{/resume/upload}">
                         ↑ Upload CV
                     </a>
 
-                    <a class="action" href="/skill-gap">
+                    <a
+                        class="action"
+                        th:href="@{/skill-gap}">
                         ◇ View Skill Gap
                     </a>
 
-                    <a class="action" href="/job-match">
-                        ◎ Find Jobs
+                    <a
+                        class="action"
+                        th:href="@{/jobs}">
+                        ⌕ Find Jobs
                     </a>
 
-                    <a class="action" href="/applications">
+                    <a
+                        class="action"
+                        th:href="@{/applications}">
                         ↗ Applications
                     </a>
 
