@@ -1,13 +1,19 @@
 <!DOCTYPE html>
+
 <html xmlns:th="http://www.thymeleaf.org">
 
 <head>
+
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0">
 
     <title>CV Analysis | CareerInDe</title>
 
     <style>
+
         * {
             margin: 0;
             padding: 0;
@@ -21,7 +27,10 @@
             min-height: 100vh;
         }
 
-        /* TOP BAR */
+
+        /* ===================================================== */
+        /* TOP BAR                                               */
+        /* ===================================================== */
 
         .topbar {
             height: 72px;
@@ -48,6 +57,7 @@
         .dashboard-link {
             color: #475467;
             text-decoration: none;
+
             font-size: 14px;
             font-weight: 600;
 
@@ -63,7 +73,9 @@
         }
 
 
-        /* PAGE */
+        /* ===================================================== */
+        /* PAGE                                                  */
+        /* ===================================================== */
 
         .page {
             max-width: 1180px;
@@ -72,7 +84,9 @@
         }
 
 
-        /* HEADER */
+        /* ===================================================== */
+        /* HEADER                                                */
+        /* ===================================================== */
 
         .page-header {
             margin-bottom: 35px;
@@ -80,10 +94,13 @@
 
         .eyebrow {
             color: #2f6df6;
+
             font-size: 12px;
             font-weight: 700;
+
             letter-spacing: .8px;
             text-transform: uppercase;
+
             margin-bottom: 12px;
         }
 
@@ -101,13 +118,16 @@
         }
 
 
-        /* STEPS */
+        /* ===================================================== */
+        /* PROGRESS STEPS                                        */
+        /* ===================================================== */
 
         .steps {
             display: flex;
             align-items: center;
 
             background: white;
+
             border: 1px solid #e4e9f2;
             border-radius: 14px;
 
@@ -118,15 +138,15 @@
         .step {
             display: flex;
             align-items: center;
+
             gap: 10px;
 
             color: #98a2b3;
+
             font-size: 13px;
             font-weight: 600;
-        }
 
-        .step.active {
-            color: #2f6df6;
+            transition: 0.25s;
         }
 
         .step-number {
@@ -138,9 +158,16 @@
             justify-content: center;
 
             border-radius: 50%;
+
             background: #f2f4f7;
 
             font-size: 12px;
+
+            transition: 0.25s;
+        }
+
+        .step.active {
+            color: #2f6df6;
         }
 
         .step.active .step-number {
@@ -148,28 +175,58 @@
             color: #2f6df6;
         }
 
+        .step.completed {
+            color: #12b76a;
+        }
+
+        .step.completed .step-number {
+            background: #ecfdf3;
+            color: #12b76a;
+        }
+
         .step-line {
             flex: 1;
-            height: 1px;
+
+            height: 2px;
+
             background: #e4e7ec;
+
             margin: 0 20px;
+
+            transition: 0.25s;
+        }
+
+        .step-line.completed {
+            background: #12b76a;
+        }
+
+        .step-line.active {
+            background: #2f6df6;
         }
 
 
-        /* MAIN GRID */
+        /* ===================================================== */
+        /* MAIN GRID                                             */
+        /* ===================================================== */
 
         .content-grid {
             display: grid;
+
             grid-template-columns: 1.45fr .75fr;
+
             gap: 28px;
+
             align-items: start;
         }
 
 
-        /* CARDS */
+        /* ===================================================== */
+        /* CARDS                                                 */
+        /* ===================================================== */
 
         .card {
             background: white;
+
             border: 1px solid #e4e9f2;
             border-radius: 18px;
         }
@@ -189,12 +246,15 @@
 
         .card-header p {
             color: #667085;
+
             font-size: 14px;
             line-height: 1.6;
         }
 
 
-        /* DROP ZONE */
+        /* ===================================================== */
+        /* DROP ZONE                                             */
+        /* ===================================================== */
 
         .upload-box {
             position: relative;
@@ -210,6 +270,7 @@
             justify-content: center;
 
             text-align: center;
+
             padding: 40px;
 
             background: #fbfcfe;
@@ -249,13 +310,16 @@
         .upload-text {
             font-size: 17px;
             font-weight: 700;
+
             margin-bottom: 7px;
         }
 
         .upload-subtext {
             color: #667085;
+
             font-size: 13px;
             line-height: 1.6;
+
             margin-bottom: 20px;
         }
 
@@ -265,8 +329,8 @@
             justify-content: center;
 
             background: white;
-            border: 1px solid #d0d5dd;
 
+            border: 1px solid #d0d5dd;
             border-radius: 9px;
 
             padding: 10px 16px;
@@ -279,14 +343,19 @@
 
         input[type="file"] {
             position: absolute;
+
             width: 1px;
             height: 1px;
+
             opacity: 0;
+
             pointer-events: none;
         }
 
 
-        /* FILE SELECTED */
+        /* ===================================================== */
+        /* FILE SELECTED                                         */
+        /* ===================================================== */
 
         .file-selected {
             display: none;
@@ -294,6 +363,7 @@
             margin-top: 18px;
 
             border: 1px solid #dbe5f5;
+
             background: #f8faff;
 
             border-radius: 12px;
@@ -301,6 +371,7 @@
             padding: 14px 16px;
 
             align-items: center;
+
             gap: 13px;
         }
 
@@ -321,7 +392,8 @@
             align-items: center;
             justify-content: center;
 
-            font-size: 16px;
+            font-size: 12px;
+            font-weight: 700;
         }
 
         .file-details {
@@ -345,7 +417,9 @@
         }
 
 
-        /* ANALYZE BUTTON */
+        /* ===================================================== */
+        /* ANALYZE BUTTON                                        */
+        /* ===================================================== */
 
         .upload-btn {
             width: 100%;
@@ -373,15 +447,123 @@
 
         .upload-btn:hover {
             background: #245bd5;
-            box-shadow: 0 8px 22px rgba(47,109,246,.20);
+
+            box-shadow:
+                0 8px 22px rgba(47,109,246,.20);
         }
 
         .upload-btn:active {
             transform: translateY(1px);
         }
 
+        .upload-btn:disabled {
+            background: #98b6fa;
 
-        /* SECURITY */
+            cursor: not-allowed;
+
+            box-shadow: none;
+
+            transform: none;
+        }
+
+
+        /* ===================================================== */
+        /* ANALYSIS LOADING                                      */
+        /* ===================================================== */
+
+        .analysis-loading {
+            display: none;
+
+            margin-top: 22px;
+
+            padding: 22px;
+
+            border: 1px solid #dbe5f5;
+            border-radius: 14px;
+
+            background: #f8faff;
+        }
+
+        .analysis-loading.show {
+            display: block;
+        }
+
+        .analysis-header {
+            display: flex;
+            align-items: center;
+
+            gap: 12px;
+
+            margin-bottom: 20px;
+        }
+
+        .spinner {
+            width: 25px;
+            height: 25px;
+
+            flex-shrink: 0;
+
+            border: 3px solid #dbe7ff;
+
+            border-top-color: #2f6df6;
+
+            border-radius: 50%;
+
+            animation:
+                spin .8s linear infinite;
+        }
+
+        @keyframes spin {
+
+            to {
+                transform: rotate(360deg);
+            }
+        }
+
+        .analysis-header h4 {
+            font-size: 15px;
+
+            margin-bottom: 4px;
+        }
+
+        .analysis-header p {
+            color: #667085;
+
+            font-size: 12px;
+        }
+
+        .analysis-tasks {
+            display: flex;
+            flex-direction: column;
+
+            gap: 13px;
+        }
+
+        .analysis-task {
+            display: flex;
+            align-items: center;
+
+            gap: 10px;
+
+            color: #98a2b3;
+
+            font-size: 12px;
+        }
+
+        .analysis-task.done {
+            color: #12b76a;
+        }
+
+        .analysis-task.processing {
+            color: #2f6df6;
+
+            font-weight: 600;
+        }
+
+
+        /* ===================================================== */
+        /* SECURITY                                              */
+        /* ===================================================== */
 
         .security {
             display: flex;
@@ -391,6 +573,7 @@
             gap: 7px;
 
             color: #667085;
+
             font-size: 11px;
 
             margin-top: 16px;
@@ -401,7 +584,9 @@
         }
 
 
-        /* RIGHT PANEL */
+        /* ===================================================== */
+        /* RIGHT PANEL                                           */
+        /* ===================================================== */
 
         .insight-card {
             padding: 30px;
@@ -414,6 +599,7 @@
 
         .insight-intro {
             color: #667085;
+
             font-size: 13px;
             line-height: 1.6;
 
@@ -422,6 +608,7 @@
 
         .feature {
             display: flex;
+
             gap: 13px;
 
             padding: 17px 0;
@@ -453,23 +640,31 @@
 
         .feature-content h4 {
             font-size: 13px;
+
             margin-bottom: 5px;
         }
 
         .feature-content p {
             color: #667085;
+
             font-size: 12px;
             line-height: 1.5;
         }
 
 
-        /* AI BOX */
+        /* ===================================================== */
+        /* AI BOX                                                */
+        /* ===================================================== */
 
         .ai-box {
             margin-top: 22px;
 
             background:
-                linear-gradient(135deg, #13275b, #2f6df6);
+                linear-gradient(
+                    135deg,
+                    #13275b,
+                    #2f6df6
+                );
 
             color: white;
 
@@ -485,6 +680,7 @@
             font-weight: 700;
 
             letter-spacing: .8px;
+
             text-transform: uppercase;
 
             margin-bottom: 9px;
@@ -492,17 +688,21 @@
 
         .ai-box h4 {
             font-size: 16px;
+
             margin-bottom: 8px;
         }
 
         .ai-box p {
             color: #dce6ff;
+
             font-size: 12px;
             line-height: 1.6;
         }
 
 
-        /* RESPONSIVE */
+        /* ===================================================== */
+        /* RESPONSIVE                                            */
+        /* ===================================================== */
 
         @media (max-width: 850px) {
 
@@ -531,6 +731,7 @@
             }
         }
 
+
         @media (max-width: 500px) {
 
             .page-header h1 {
@@ -548,13 +749,16 @@
         }
 
     </style>
+
 </head>
 
 
 <body>
 
 
-<!-- TOP BAR -->
+<!-- ========================================================= -->
+<!-- TOP BAR                                                   -->
+<!-- ========================================================= -->
 
 <header class="topbar">
 
@@ -562,8 +766,12 @@
         CareerIn<span>De</span>
     </div>
 
-    <a href="/dashboard" class="dashboard-link">
+    <a
+        th:href="@{/dashboard}"
+        class="dashboard-link">
+
         ← Back to Dashboard
+
     </a>
 
 </header>
@@ -573,7 +781,9 @@
 <main class="page">
 
 
-    <!-- PAGE HEADER -->
+    <!-- ===================================================== -->
+    <!-- PAGE HEADER                                           -->
+    <!-- ===================================================== -->
 
     <div class="page-header">
 
@@ -581,7 +791,9 @@
             AI Career Intelligence
         </div>
 
-        <h1>Analyze your CV</h1>
+        <h1>
+            Analyze your CV
+        </h1>
 
         <p>
             Upload your CV and get personalized insights
@@ -592,35 +804,77 @@
 
 
 
-    <!-- PROGRESS STEPS -->
+    <!-- ===================================================== -->
+    <!-- PROGRESS STEPS                                        -->
+    <!-- ===================================================== -->
 
     <div class="steps">
 
-        <div class="step active">
+        <div
+            class="step active"
+            id="step1">
 
-            <div class="step-number">1</div>
+            <div
+                class="step-number"
+                id="stepNumber1">
 
-            <span>Upload CV</span>
+                1
+
+            </div>
+
+            <span>
+                Upload CV
+            </span>
 
         </div>
 
-        <div class="step-line"></div>
 
-        <div class="step">
+        <div
+            class="step-line"
+            id="line1">
+        </div>
 
-            <div class="step-number">2</div>
 
-            <span>AI Analysis</span>
+        <div
+            class="step"
+            id="step2">
+
+            <div
+                class="step-number"
+                id="stepNumber2">
+
+                2
+
+            </div>
+
+            <span>
+                AI Analysis
+            </span>
 
         </div>
 
-        <div class="step-line"></div>
 
-        <div class="step">
+        <div
+            class="step-line"
+            id="line2">
+        </div>
 
-            <div class="step-number">3</div>
 
-            <span>Career Report</span>
+        <div
+            class="step"
+            id="step3">
+
+            <div
+                class="step-number"
+                id="stepNumber3">
+
+                3
+
+            </div>
+
+            <span>
+                Career Report
+            </span>
 
         </div>
 
@@ -628,20 +882,29 @@
 
 
 
+    <!-- ===================================================== -->
+    <!-- CONTENT                                               -->
+    <!-- ===================================================== -->
+
     <div class="content-grid">
 
 
-        <!-- UPLOAD -->
+        <!-- ================================================= -->
+        <!-- UPLOAD                                           -->
+        <!-- ================================================= -->
 
         <div class="card upload-card">
 
             <div class="card-header">
 
-                <h2>Upload your CV</h2>
+                <h2>
+                    Upload your CV
+                </h2>
 
                 <p>
                     Select your current CV in PDF format.
-                    CareerInDe will analyze its content and career positioning.
+                    CareerInDe will analyze its content
+                    and career positioning.
                 </p>
 
             </div>
@@ -653,6 +916,17 @@
                 enctype="multipart/form-data"
                 id="uploadForm">
 
+
+                <!-- CSRF if enabled -->
+
+                <input
+                    type="hidden"
+                    th:if="${_csrf != null}"
+                    th:name="${_csrf.parameterName}"
+                    th:value="${_csrf.token}">
+
+
+                <!-- DROP ZONE -->
 
                 <label
                     for="cvFile"
@@ -671,9 +945,13 @@
 
 
                     <div class="upload-subtext">
+
                         or choose a file from your computer
+
                         <br>
+
                         PDF · Maximum recommended size 10 MB
+
                     </div>
 
 
@@ -693,15 +971,19 @@
 
 
 
-                <!-- SELECTED FILE -->
+                <!-- ================================================= -->
+                <!-- SELECTED FILE                                     -->
+                <!-- ================================================= -->
 
                 <div
                     class="file-selected"
                     id="fileSelected">
 
+
                     <div class="file-icon">
                         PDF
                     </div>
+
 
                     <div class="file-details">
 
@@ -709,6 +991,7 @@
                             class="file-name"
                             id="fileName">
                         </div>
+
 
                         <div class="file-status">
                             Ready for analysis
@@ -720,6 +1003,10 @@
 
 
 
+                <!-- ================================================= -->
+                <!-- ANALYZE BUTTON                                    -->
+                <!-- ================================================= -->
+
                 <button
                     class="upload-btn"
                     type="submit"
@@ -730,9 +1017,88 @@
                 </button>
 
 
+
+                <!-- ================================================= -->
+                <!-- ANALYSIS LOADING                                  -->
+                <!-- ================================================= -->
+
+                <div
+                    class="analysis-loading"
+                    id="analysisLoading">
+
+
+                    <div class="analysis-header">
+
+                        <div class="spinner"></div>
+
+                        <div>
+
+                            <h4>
+                                Analyzing your CV...
+                            </h4>
+
+                            <p>
+                                CareerInDe is preparing your career analysis.
+                            </p>
+
+                        </div>
+
+                    </div>
+
+
+                    <div class="analysis-tasks">
+
+
+                        <div
+                            class="analysis-task done"
+                            id="analysisTask1">
+
+                            ✓ CV uploaded successfully
+
+                        </div>
+
+
+                        <div
+                            class="analysis-task processing"
+                            id="analysisTask2">
+
+                            ● Extracting skills and experience
+
+                        </div>
+
+
+                        <div
+                            class="analysis-task"
+                            id="analysisTask3">
+
+                            ○ Running AI career analysis
+
+                        </div>
+
+
+                        <div
+                            class="analysis-task"
+                            id="analysisTask4">
+
+                            ○ Preparing your career report
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+
+
+                <!-- ================================================= -->
+                <!-- SECURITY                                          -->
+                <!-- ================================================= -->
+
                 <div class="security">
 
-                    <span class="security-icon">●</span>
+                    <span class="security-icon">
+                        ●
+                    </span>
 
                     Your CV is processed securely.
 
@@ -744,19 +1110,28 @@
 
 
 
-        <!-- RIGHT PANEL -->
+        <!-- ================================================= -->
+        <!-- RIGHT PANEL                                      -->
+        <!-- ================================================= -->
 
         <aside>
 
             <div class="card insight-card">
 
-                <h3>What you'll get</h3>
+
+                <h3>
+                    What you'll get
+                </h3>
+
 
                 <p class="insight-intro">
                     Your CV is analyzed across the key areas
                     that influence your career positioning.
                 </p>
 
+
+
+                <!-- ATS -->
 
                 <div class="feature">
 
@@ -766,7 +1141,9 @@
 
                     <div class="feature-content">
 
-                        <h4>ATS Score</h4>
+                        <h4>
+                            ATS Score
+                        </h4>
 
                         <p>
                             Evaluate how effectively your CV
@@ -778,6 +1155,9 @@
                 </div>
 
 
+
+                <!-- AI -->
+
                 <div class="feature">
 
                     <div class="feature-icon">
@@ -786,7 +1166,9 @@
 
                     <div class="feature-content">
 
-                        <h4>AI Career Analysis</h4>
+                        <h4>
+                            AI Career Analysis
+                        </h4>
 
                         <p>
                             Identify strengths and opportunities
@@ -798,6 +1180,9 @@
                 </div>
 
 
+
+                <!-- SKILL GAP -->
+
                 <div class="feature">
 
                     <div class="feature-icon">
@@ -806,7 +1191,9 @@
 
                     <div class="feature-content">
 
-                        <h4>Skill Gap</h4>
+                        <h4>
+                            Skill Gap
+                        </h4>
 
                         <p>
                             Discover skills that could strengthen
@@ -818,6 +1205,9 @@
                 </div>
 
 
+
+                <!-- JOB MATCH -->
+
                 <div class="feature">
 
                     <div class="feature-icon">
@@ -826,7 +1216,9 @@
 
                     <div class="feature-content">
 
-                        <h4>Job Match Insights</h4>
+                        <h4>
+                            Job Match Insights
+                        </h4>
 
                         <p>
                             Understand where your profile fits
@@ -838,6 +1230,9 @@
                 </div>
 
 
+
+                <!-- GERMANY -->
+
                 <div class="feature">
 
                     <div class="feature-icon">
@@ -846,7 +1241,9 @@
 
                     <div class="feature-content">
 
-                        <h4>German Market Insights</h4>
+                        <h4>
+                            German Market Insights
+                        </h4>
 
                         <p>
                             Get recommendations tailored
@@ -857,6 +1254,9 @@
 
                 </div>
 
+
+
+                <!-- CAREER INTELLIGENCE -->
 
                 <div class="ai-box">
 
@@ -886,6 +1286,10 @@
 
 
 
+<!-- ========================================================= -->
+<!-- JAVASCRIPT                                                -->
+<!-- ========================================================= -->
+
 <script>
 
     const fileInput =
@@ -906,39 +1310,143 @@
     const analyzeButton =
         document.getElementById("analyzeButton");
 
+    const analysisLoading =
+        document.getElementById("analysisLoading");
+
+
+    /* ======================================================== */
+    /* STEPS                                                    */
+    /* ======================================================== */
+
+    const step1 =
+        document.getElementById("step1");
+
+    const step2 =
+        document.getElementById("step2");
+
+    const step3 =
+        document.getElementById("step3");
+
+    const stepNumber1 =
+        document.getElementById("stepNumber1");
+
+    const stepNumber2 =
+        document.getElementById("stepNumber2");
+
+    const stepNumber3 =
+        document.getElementById("stepNumber3");
+
+    const line1 =
+        document.getElementById("line1");
+
+    const line2 =
+        document.getElementById("line2");
+
+
+    /* ======================================================== */
+    /* LOADING TASKS                                            */
+    /* ======================================================== */
+
+    const analysisTask2 =
+        document.getElementById("analysisTask2");
+
+    const analysisTask3 =
+        document.getElementById("analysisTask3");
+
+    const analysisTask4 =
+        document.getElementById("analysisTask4");
+
+
+    /* ======================================================== */
+    /* VALIDATE + SHOW FILE                                     */
+    /* ======================================================== */
 
     function showFile(file) {
 
         if (!file) {
-            return;
+            return false;
         }
 
-        if (file.type !== "application/pdf") {
 
-            alert("Please select a PDF file.");
+        const isPdf =
+            file.type === "application/pdf"
+            ||
+            file.name
+                .toLowerCase()
+                .endsWith(".pdf");
+
+
+        if (!isPdf) {
+
+            alert(
+                "Please select a PDF file."
+            );
 
             fileInput.value = "";
 
-            fileSelected.classList.remove("show");
+            fileSelected
+                .classList
+                .remove("show");
 
-            return;
+            return false;
         }
 
-        fileName.textContent = file.name;
 
-        fileSelected.classList.add("show");
+        /*
+         * 10 MB
+         */
+        const maxSize =
+            10 * 1024 * 1024;
+
+
+        if (file.size > maxSize) {
+
+            alert(
+                "Your PDF is larger than 10 MB. Please choose a smaller file."
+            );
+
+            fileInput.value = "";
+
+            fileSelected
+                .classList
+                .remove("show");
+
+            return false;
+        }
+
+
+        fileName.textContent =
+            file.name;
+
+
+        fileSelected
+            .classList
+            .add("show");
+
+
+        return true;
     }
 
+
+    /* ======================================================== */
+    /* NORMAL FILE SELECTION                                    */
+    /* ======================================================== */
 
     fileInput.addEventListener(
         "change",
         function () {
 
-            showFile(this.files[0]);
+            showFile(
+                this.files[0]
+            );
 
         }
     );
 
+
+    /* ======================================================== */
+    /* DRAG OVER                                                */
+    /* ======================================================== */
 
     dropZone.addEventListener(
         "dragover",
@@ -946,21 +1454,33 @@
 
             event.preventDefault();
 
-            dropZone.classList.add("dragover");
+            dropZone
+                .classList
+                .add("dragover");
 
         }
     );
 
+
+    /* ======================================================== */
+    /* DRAG LEAVE                                               */
+    /* ======================================================== */
 
     dropZone.addEventListener(
         "dragleave",
         function () {
 
-            dropZone.classList.remove("dragover");
+            dropZone
+                .classList
+                .remove("dragover");
 
         }
     );
 
+
+    /* ======================================================== */
+    /* DROP FILE                                                */
+    /* ======================================================== */
 
     dropZone.addEventListener(
         "drop",
@@ -968,31 +1488,217 @@
 
             event.preventDefault();
 
-            dropZone.classList.remove("dragover");
+
+            dropZone
+                .classList
+                .remove("dragover");
+
 
             const files =
                 event.dataTransfer.files;
 
-            if (files.length > 0) {
 
-                fileInput.files = files;
+            if (
+                !files
+                ||
+                files.length === 0
+            ) {
 
-                showFile(files[0]);
-
+                return;
             }
+
+
+            const file =
+                files[0];
+
+
+            if (!showFile(file)) {
+                return;
+            }
+
+
+            /*
+             * Assign dropped file to actual file input
+             */
+            const dataTransfer =
+                new DataTransfer();
+
+
+            dataTransfer
+                .items
+                .add(file);
+
+
+            fileInput.files =
+                dataTransfer.files;
 
         }
     );
 
 
+    /* ======================================================== */
+    /* START ANALYSIS                                           */
+    /* ======================================================== */
+
     form.addEventListener(
         "submit",
-        function () {
+        function (event) {
 
-            analyzeButton.disabled = true;
+
+            /*
+             * Make sure file exists
+             */
+            if (
+                !fileInput.files
+                ||
+                fileInput.files.length === 0
+            ) {
+
+                event.preventDefault();
+
+                alert(
+                    "Please select your CV first."
+                );
+
+                return;
+            }
+
+
+            /*
+             * Validate again
+             */
+            if (
+                !showFile(
+                    fileInput.files[0]
+                )
+            ) {
+
+                event.preventDefault();
+
+                return;
+            }
+
+
+            /* ================================================= */
+            /* PREVENT DOUBLE SUBMIT                             */
+            /* ================================================= */
+
+            analyzeButton.disabled =
+                true;
+
 
             analyzeButton.textContent =
                 "Analyzing your CV...";
+
+
+            /* ================================================= */
+            /* STEP 1 COMPLETE                                   */
+            /* ================================================= */
+
+            step1
+                .classList
+                .remove("active");
+
+
+            step1
+                .classList
+                .add("completed");
+
+
+            stepNumber1.textContent =
+                "✓";
+
+
+            /* ================================================= */
+            /* LINE 1 COMPLETE                                   */
+            /* ================================================= */
+
+            line1
+                .classList
+                .add("completed");
+
+
+            /* ================================================= */
+            /* STEP 2 ACTIVE                                     */
+            /* ================================================= */
+
+            step2
+                .classList
+                .add("active");
+
+
+            /* ================================================= */
+            /* SHOW ANALYSIS BOX                                 */
+            /* ================================================= */
+
+            analysisLoading
+                .classList
+                .add("show");
+
+
+            /*
+             * These timed transitions are UI feedback only.
+             * Backend analysis itself remains synchronous.
+             */
+
+            setTimeout(
+                function () {
+
+                    analysisTask2
+                        .classList
+                        .remove("processing");
+
+                    analysisTask2
+                        .classList
+                        .add("done");
+
+                    analysisTask2.textContent =
+                        "✓ Skills and experience extracted";
+
+
+                    analysisTask3
+                        .classList
+                        .add("processing");
+
+                    analysisTask3.textContent =
+                        "● Running AI career analysis";
+
+                },
+                900
+            );
+
+
+            setTimeout(
+                function () {
+
+                    analysisTask3
+                        .classList
+                        .remove("processing");
+
+                    analysisTask3
+                        .classList
+                        .add("done");
+
+                    analysisTask3.textContent =
+                        "✓ AI career analysis in progress";
+
+
+                    analysisTask4
+                        .classList
+                        .add("processing");
+
+                    analysisTask4.textContent =
+                        "● Preparing your career report";
+
+                },
+                2200
+            );
+
+
+            analysisLoading.scrollIntoView({
+                behavior: "smooth",
+                block: "nearest"
+            });
 
         }
     );
@@ -1001,4 +1707,5 @@
 
 
 </body>
+
 </html>
