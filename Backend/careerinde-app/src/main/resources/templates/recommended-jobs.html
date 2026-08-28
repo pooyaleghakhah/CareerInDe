@@ -1,0 +1,1472 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+            name="viewport"
+            content="width=device-width, initial-scale=1.0">
+
+    <title>Recommended Jobs | CareerInDe</title>
+
+    <style>
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --blue: #2563eb;
+            --blue-dark: #172b64;
+            --blue-light: #eff6ff;
+
+            --dark: #101828;
+            --text: #344054;
+            --muted: #667085;
+            --light-muted: #98a2b3;
+
+            --border: #e4e8f0;
+            --background: #f6f8fc;
+            --white: #ffffff;
+
+            --green: #027a48;
+            --green-light: #ecfdf3;
+
+            --orange: #b54708;
+            --orange-light: #fffaeb;
+
+            --red: #b42318;
+            --red-light: #fef3f2;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            background: var(--background);
+            color: var(--dark);
+        }
+
+        .layout {
+            display: flex;
+            min-height: 100vh;
+        }
+
+
+        /* ===================================================== */
+        /* SIDEBAR                                               */
+        /* ===================================================== */
+
+        .sidebar {
+            width: 250px;
+            background: #0c1424;
+            color: white;
+
+            padding: 35px 22px;
+
+            position: fixed;
+            top: 0;
+            bottom: 0;
+            left: 0;
+
+            overflow-y: auto;
+        }
+
+        .logo {
+            font-size: 27px;
+            font-weight: 800;
+            margin-bottom: 48px;
+        }
+
+        .logo span {
+            color: #2f6df6;
+        }
+
+        .menu-label {
+            color: #75839b;
+            font-size: 12px;
+            letter-spacing: 1.5px;
+
+            margin: 0 12px 12px;
+        }
+
+        .menu {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .menu a {
+            color: #d7deea;
+            text-decoration: none;
+
+            padding: 14px 15px;
+
+            border-radius: 10px;
+
+            font-size: 15px;
+
+            transition: .2s;
+        }
+
+        .menu a:hover {
+            background: #172238;
+            color: white;
+        }
+
+        .menu a.active {
+            background: #2f6df6;
+            color: white;
+            font-weight: 600;
+        }
+
+
+        /* ===================================================== */
+        /* MAIN                                                  */
+        /* ===================================================== */
+
+        .main {
+            margin-left: 250px;
+
+            width: calc(100% - 250px);
+
+            padding: 45px 50px 70px;
+        }
+
+        .container {
+            max-width: 1180px;
+            margin: auto;
+        }
+
+
+        /* ===================================================== */
+        /* HEADER                                                */
+        /* ===================================================== */
+
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+
+            gap: 30px;
+
+            margin-bottom: 30px;
+        }
+
+        .eyebrow {
+            color: #2f6df6;
+
+            font-size: 12px;
+            font-weight: 800;
+
+            letter-spacing: 1.2px;
+            text-transform: uppercase;
+
+            margin-bottom: 10px;
+        }
+
+        .header h1 {
+            font-size: 34px;
+            margin-bottom: 10px;
+        }
+
+        .header p {
+            color: var(--muted);
+
+            line-height: 1.6;
+
+            max-width: 650px;
+        }
+
+        .profile-badge {
+            background: white;
+
+            border: 1px solid var(--border);
+
+            border-radius: 12px;
+
+            padding: 14px 18px;
+
+            min-width: 210px;
+        }
+
+        .profile-badge-label {
+            color: var(--light-muted);
+
+            font-size: 11px;
+            font-weight: 700;
+
+            text-transform: uppercase;
+
+            margin-bottom: 5px;
+        }
+
+        .profile-badge-value {
+            font-size: 14px;
+            font-weight: 700;
+        }
+
+
+        /* ===================================================== */
+        /* INFO BAR                                              */
+        /* ===================================================== */
+
+        .match-info {
+            background:
+                    linear-gradient(
+                            120deg,
+                            var(--blue-dark),
+                            #2f6df6
+                    );
+
+            color: white;
+
+            border-radius: 18px;
+
+            padding: 27px 30px;
+
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+
+            gap: 20px;
+
+            margin-bottom: 28px;
+        }
+
+        .match-info h2 {
+            font-size: 21px;
+            margin-bottom: 7px;
+        }
+
+        .match-info p {
+            color: #dbe6ff;
+
+            font-size: 14px;
+
+            line-height: 1.6;
+
+            max-width: 720px;
+        }
+
+        .ai-badge {
+            background: rgba(255, 255, 255, .14);
+
+            border:
+                    1px solid
+                    rgba(255, 255, 255, .25);
+
+            padding: 10px 15px;
+
+            border-radius: 30px;
+
+            font-size: 12px;
+            font-weight: 700;
+
+            white-space: nowrap;
+        }
+
+
+        /* ===================================================== */
+        /* ERROR                                                 */
+        /* ===================================================== */
+
+        .error-box {
+            background: #fff4ed;
+            color: var(--red);
+
+            border: 1px solid #fecdca;
+
+            border-radius: 12px;
+
+            padding: 16px 18px;
+
+            margin-bottom: 25px;
+
+            font-size: 14px;
+        }
+
+
+        /* ===================================================== */
+        /* RESULTS HEADER                                        */
+        /* ===================================================== */
+
+        .results-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+
+            margin-bottom: 18px;
+        }
+
+        .results-header h2 {
+            font-size: 21px;
+        }
+
+        .results-count {
+            color: var(--muted);
+            font-size: 13px;
+        }
+
+
+        /* ===================================================== */
+        /* JOB LIST                                              */
+        /* ===================================================== */
+
+        .jobs {
+            display: flex;
+            flex-direction: column;
+
+            gap: 16px;
+        }
+
+        .job-card {
+            background: white;
+
+            border: 1px solid var(--border);
+
+            border-radius: 17px;
+
+            padding: 25px;
+
+            transition: .2s;
+        }
+
+        .job-card:hover {
+            border-color: #b9ccff;
+
+            box-shadow:
+                    0 8px 25px
+                    rgba(16, 24, 40, .06);
+
+            transform: translateY(-1px);
+        }
+
+
+        /* ===================================================== */
+        /* JOB TOP                                               */
+        /* ===================================================== */
+
+        .job-top {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+
+            gap: 20px;
+
+            margin-bottom: 18px;
+        }
+
+        .job-main {
+            flex: 1;
+        }
+
+        .job-title {
+            font-size: 20px;
+            font-weight: 800;
+
+            line-height: 1.4;
+
+            margin-bottom: 7px;
+        }
+
+        .company {
+            color: #475467;
+
+            font-size: 14px;
+            font-weight: 600;
+        }
+
+
+        /* ===================================================== */
+        /* CAREERINDE MATCH SCORE                                 */
+        /* ===================================================== */
+
+        .match-score-box {
+            min-width: 150px;
+            text-align: right;
+        }
+
+        .match-score {
+            color: #2f6df6;
+            font-size: 29px;
+            font-weight: 800;
+        }
+
+        .match-label {
+            color: var(--light-muted);
+
+            font-size: 10px;
+            font-weight: 700;
+
+            text-transform: uppercase;
+
+            margin-top: 3px;
+        }
+
+        .match-level {
+            display: inline-block;
+
+            margin-top: 8px;
+
+            padding: 6px 9px;
+
+            border-radius: 7px;
+
+            font-size: 10px;
+            font-weight: 700;
+        }
+
+        .excellent-match {
+            background: var(--green-light);
+            color: var(--green);
+        }
+
+        .strong-match {
+            background: #eef4ff;
+            color: #175cd3;
+        }
+
+        .good-match {
+            background: #f4f3ff;
+            color: #5925dc;
+        }
+
+        .moderate-match {
+            background: var(--orange-light);
+            color: var(--orange);
+        }
+
+        .weak-match {
+            background: var(--red-light);
+            color: var(--red);
+        }
+
+
+        /* ===================================================== */
+        /* JOB META                                              */
+        /* ===================================================== */
+
+        .job-meta {
+            display: flex;
+            flex-wrap: wrap;
+
+            gap: 9px;
+
+            margin-bottom: 18px;
+        }
+
+        .meta {
+            background: #f2f4f7;
+            color: #475467;
+
+            border-radius: 7px;
+
+            padding: 7px 10px;
+
+            font-size: 12px;
+            font-weight: 600;
+        }
+
+        .source {
+            background: var(--green-light);
+            color: var(--green);
+        }
+
+
+        /* ===================================================== */
+        /* DESCRIPTION                                           */
+        /* ===================================================== */
+
+        .description {
+            color: var(--muted);
+
+            font-size: 14px;
+            line-height: 1.65;
+
+            margin-bottom: 22px;
+
+            display: -webkit-box;
+
+            -webkit-line-clamp: 3;
+            -webkit-box-orient: vertical;
+
+            overflow: hidden;
+        }
+
+
+        /* ===================================================== */
+        /* MATCH BREAKDOWN                                       */
+        /* ===================================================== */
+
+        .match-section {
+            margin-bottom: 22px;
+        }
+
+        .match-section-title {
+            color: #475467;
+
+            font-size: 11px;
+            font-weight: 700;
+
+            text-transform: uppercase;
+
+            letter-spacing: .5px;
+
+            margin-bottom: 10px;
+        }
+
+        .match-breakdown {
+            display: grid;
+
+            grid-template-columns:
+                    repeat(5, 1fr);
+
+            gap: 10px;
+        }
+
+        .match-item {
+            background: #f8fafc;
+
+            border: 1px solid var(--border);
+
+            border-radius: 10px;
+
+            padding: 12px;
+        }
+
+        .match-item span {
+            display: block;
+
+            color: var(--muted);
+
+            font-size: 10px;
+            font-weight: 700;
+
+            text-transform: uppercase;
+
+            margin-bottom: 6px;
+        }
+
+        .match-item strong {
+            color: #101828;
+            font-size: 16px;
+        }
+
+        .match-progress {
+            width: 100%;
+            height: 4px;
+
+            background: #e4e7ec;
+
+            border-radius: 20px;
+
+            overflow: hidden;
+
+            margin-top: 8px;
+        }
+
+        .match-progress-fill {
+            height: 100%;
+
+            background: #2f6df6;
+
+            border-radius: 20px;
+        }
+
+
+        /* ===================================================== */
+        /* ACTIONS                                               */
+        /* ===================================================== */
+
+        .job-actions {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+
+            gap: 15px;
+
+            padding-top: 18px;
+
+            border-top: 1px solid #f0f2f5;
+        }
+
+        .match-note {
+            color: var(--light-muted);
+
+            font-size: 11px;
+
+            line-height: 1.5;
+
+            max-width: 570px;
+        }
+
+        .buttons {
+            display: flex;
+            align-items: center;
+
+            gap: 10px;
+
+            flex-shrink: 0;
+        }
+
+        .buttons form {
+            margin: 0;
+        }
+
+        .btn {
+            display: inline-block;
+
+            text-decoration: none;
+
+            padding: 11px 17px;
+
+            border-radius: 9px;
+
+            font-family: Arial, sans-serif;
+
+            font-size: 13px;
+            font-weight: 700;
+
+            line-height: normal;
+
+            cursor: pointer;
+
+            transition: .2s;
+        }
+
+        .btn-secondary {
+            color: #344054;
+
+            background: white;
+
+            border: 1px solid #d0d5dd;
+        }
+
+        .btn-secondary:hover {
+            border-color: #2563eb;
+            color: #2563eb;
+            background: #f8fbff;
+        }
+
+        .btn-primary {
+            color: white;
+
+            background: #2f6df6;
+
+            border: 1px solid #2f6df6;
+        }
+
+        .btn:hover {
+            opacity: .9;
+            transform: translateY(-1px);
+        }
+
+
+        /* ===================================================== */
+        /* EMPTY STATE                                           */
+        /* ===================================================== */
+
+        .empty-state {
+            background: white;
+
+            border: 1px solid var(--border);
+
+            border-radius: 18px;
+
+            padding: 55px 30px;
+
+            text-align: center;
+        }
+
+        .empty-icon {
+            width: 60px;
+            height: 60px;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            margin: 0 auto 20px;
+
+            border-radius: 16px;
+
+            background: #eef4ff;
+            color: #2f6df6;
+
+            font-size: 25px;
+        }
+
+        .empty-state h2 {
+            margin-bottom: 10px;
+        }
+
+        .empty-state p {
+            color: var(--muted);
+
+            line-height: 1.6;
+
+            margin-bottom: 22px;
+        }
+
+
+        /* ===================================================== */
+        /* RESPONSIVE                                            */
+        /* ===================================================== */
+
+        @media (max-width: 1000px) {
+
+            .match-breakdown {
+                grid-template-columns:
+                        repeat(3, 1fr);
+            }
+
+        }
+
+        @media (max-width: 950px) {
+
+            .sidebar {
+                display: none;
+            }
+
+            .main {
+                margin-left: 0;
+                width: 100%;
+                padding: 30px 20px;
+            }
+
+        }
+
+        @media (max-width: 700px) {
+
+            .header,
+            .match-info,
+            .job-top,
+            .job-actions {
+                flex-direction: column;
+            }
+
+            .profile-badge {
+                width: 100%;
+            }
+
+            .match-score-box {
+                text-align: left;
+            }
+
+            .match-breakdown {
+                grid-template-columns:
+                        1fr 1fr;
+            }
+
+            .buttons {
+                width: 100%;
+                flex-direction: column;
+            }
+
+            .buttons form {
+                width: 100%;
+            }
+
+            .btn {
+                width: 100%;
+                text-align: center;
+            }
+
+        }
+
+        @media (max-width: 480px) {
+
+            .match-breakdown {
+                grid-template-columns: 1fr;
+            }
+
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+
+<div class="layout">
+
+
+    <!-- ===================================================== -->
+    <!-- SIDEBAR                                               -->
+    <!-- ===================================================== -->
+
+    <aside class="sidebar">
+
+        <div class="logo">
+            CareerIn<span>De</span>
+        </div>
+
+
+        <div class="menu-label">
+            WORKSPACE
+        </div>
+
+
+        <nav class="menu">
+
+            <a th:href="@{/dashboard}">
+                ▣ &nbsp; Dashboard
+            </a>
+
+            <a th:href="@{/profile}">
+                ○ &nbsp; Profile
+            </a>
+
+            <a th:href="@{/resume/upload}">
+                ↑ &nbsp; My CV
+            </a>
+
+            <a th:href="@{/jobs}">
+                ⌕ &nbsp; Find Jobs
+            </a>
+
+            <a
+                    th:href="@{/recommended-jobs}"
+                    class="active">
+
+                ◎ &nbsp; Job Matches
+
+            </a>
+
+            <a th:href="@{/skill-gap}">
+                ◇ &nbsp; Skill Gap
+            </a>
+
+            <a th:href="@{/applications}">
+                ▤ &nbsp; Applications
+            </a>
+
+        </nav>
+
+    </aside>
+
+
+
+    <!-- ===================================================== -->
+    <!-- MAIN                                                  -->
+    <!-- ===================================================== -->
+
+    <main class="main">
+
+        <div class="container">
+
+
+            <!-- ================================================= -->
+            <!-- HEADER                                            -->
+            <!-- ================================================= -->
+
+            <div class="header">
+
+                <div>
+
+                    <div class="eyebrow">
+                        CareerInDe Intelligence
+                    </div>
+
+                    <h1>
+                        Top Jobs For You
+                    </h1>
+
+                    <p>
+                        Real job opportunities ranked using AI semantic
+                        relevance and your CareerInDe career profile.
+                    </p>
+
+                </div>
+
+
+                <div
+                        class="profile-badge"
+                        th:if="${profile != null}">
+
+                    <div class="profile-badge-label">
+                        Target Role
+                    </div>
+
+                    <div
+                            class="profile-badge-value"
+                            th:text="${targetJob != null && !targetJob.isBlank()
+                            ? targetJob
+                            : 'Not specified'}">
+
+                        Java Backend Developer
+
+                    </div>
+
+                </div>
+
+            </div>
+
+
+
+            <!-- ================================================= -->
+            <!-- MATCH INFO                                        -->
+            <!-- ================================================= -->
+
+            <section
+                    class="match-info"
+                    th:if="${error == null}">
+
+                <div>
+
+                    <h2>
+                        Personalized Job Discovery
+                    </h2>
+
+                    <p>
+                        CareerInDe first uses AI semantic ranking to
+                        identify relevant opportunities and then calculates
+                        a transparent Match Score based on role, location,
+                        experience and language fit.
+                    </p>
+
+                </div>
+
+                <div class="ai-badge">
+                    ✦ AI + CareerInDe Scoring
+                </div>
+
+            </section>
+
+
+
+            <!-- ================================================= -->
+            <!-- ERROR                                             -->
+            <!-- ================================================= -->
+
+            <div
+                    class="error-box"
+                    th:if="${error != null}"
+                    th:text="${error}">
+
+                Unable to load recommendations.
+
+            </div>
+
+
+
+            <!-- ================================================= -->
+            <!-- RESULTS                                           -->
+            <!-- ================================================= -->
+
+            <div
+                    th:if="${error == null
+                    and recommendedJobs != null
+                    and !#lists.isEmpty(recommendedJobs)}">
+
+
+                <div class="results-header">
+
+                    <h2>
+                        Best Matches
+                    </h2>
+
+                    <div
+                            class="results-count"
+                            th:text="${#lists.size(recommendedJobs)}
+                            + ' opportunities found'">
+
+                        10 opportunities found
+
+                    </div>
+
+                </div>
+
+
+
+                <div class="jobs">
+
+
+                    <article
+                            class="job-card"
+                            th:each="recommended : ${recommendedJobs}">
+
+
+                        <!-- ============================================= -->
+                        <!-- JOB TOP                                       -->
+                        <!-- ============================================= -->
+
+                        <div class="job-top">
+
+                            <div class="job-main">
+
+                                <div
+                                        class="job-title"
+                                        th:text="${recommended.job.title != null
+                                        && !recommended.job.title.isBlank()
+                                        ? recommended.job.title
+                                        : 'Job title not specified'}">
+
+                                    Java Backend Developer
+
+                                </div>
+
+
+                                <div
+                                        class="company"
+                                        th:text="${recommended.job.company != null
+                                        && !recommended.job.company.isBlank()
+                                        ? recommended.job.company
+                                        : 'Company not specified'}">
+
+                                    Example GmbH
+
+                                </div>
+
+                            </div>
+
+
+
+                            <!-- ========================================= -->
+                            <!-- CAREERINDE FINAL MATCH SCORE               -->
+                            <!-- ========================================= -->
+
+                            <div
+                                    class="match-score-box"
+                                    th:if="${recommended.matchScore != null}">
+
+                                <div
+                                        class="match-score"
+                                        th:text="${recommended.matchScore.overallScore}
+                                        + '%'">
+
+                                    89%
+
+                                </div>
+
+                                <div class="match-label">
+                                    CareerInDe Match
+                                </div>
+
+
+                                <div
+                                        class="match-level excellent-match"
+                                        th:if="${recommended.matchScore.overallScore >= 90}">
+
+                                    Excellent Match
+
+                                </div>
+
+
+                                <div
+                                        class="match-level strong-match"
+                                        th:if="${recommended.matchScore.overallScore >= 80
+                                        && recommended.matchScore.overallScore < 90}">
+
+                                    Strong Match
+
+                                </div>
+
+
+                                <div
+                                        class="match-level good-match"
+                                        th:if="${recommended.matchScore.overallScore >= 70
+                                        && recommended.matchScore.overallScore < 80}">
+
+                                    Good Match
+
+                                </div>
+
+
+                                <div
+                                        class="match-level moderate-match"
+                                        th:if="${recommended.matchScore.overallScore >= 55
+                                        && recommended.matchScore.overallScore < 70}">
+
+                                    Moderate Match
+
+                                </div>
+
+
+                                <div
+                                        class="match-level weak-match"
+                                        th:if="${recommended.matchScore.overallScore < 55}">
+
+                                    Weak Match
+
+                                </div>
+
+                            </div>
+
+                        </div>
+
+
+
+                        <!-- ============================================= -->
+                        <!-- JOB META                                      -->
+                        <!-- ============================================= -->
+
+                        <div class="job-meta">
+
+                            <span
+                                    class="meta"
+                                    th:if="${recommended.job.location != null
+                                    && !recommended.job.location.isBlank()}"
+                                    th:text="'⌖ ' + ${recommended.job.location}">
+
+                                Berlin
+
+                            </span>
+
+
+                            <span
+                                    class="meta"
+                                    th:if="${recommended.job.type != null
+                                    && !recommended.job.type.isBlank()}"
+                                    th:text="${recommended.job.type}">
+
+                                Full-time
+
+                            </span>
+
+
+                            <span
+                                    class="meta"
+                                    th:if="${recommended.job.salary != null
+                                    && !recommended.job.salary.isBlank()}"
+                                    th:text="${recommended.job.salary}">
+
+                                Salary
+
+                            </span>
+
+
+                            <span
+                                    class="meta source"
+                                    th:if="${recommended.job.source != null
+                                    && !recommended.job.source.isBlank()}"
+                                    th:text="${recommended.job.source}">
+
+                                Jooble
+
+                            </span>
+
+                        </div>
+
+
+
+                        <!-- ============================================= -->
+                        <!-- DESCRIPTION                                   -->
+                        <!-- ============================================= -->
+
+                        <div
+                                class="description"
+                                th:if="${recommended.job.description != null
+                                && !recommended.job.description.isBlank()}"
+                                th:text="${recommended.job.description}">
+
+                            Job description...
+
+                        </div>
+
+
+
+                        <!-- ============================================= -->
+                        <!-- MATCH BREAKDOWN                               -->
+                        <!-- ============================================= -->
+
+                        <div
+                                class="match-section"
+                                th:if="${recommended.matchScore != null}">
+
+                            <div class="match-section-title">
+                                Match Breakdown
+                            </div>
+
+
+                            <div class="match-breakdown">
+
+
+                                <!-- SEMANTIC -->
+
+                                <div class="match-item">
+
+                                    <span>
+                                        Semantic Fit
+                                    </span>
+
+                                    <strong
+                                            th:text="${recommended.matchScore.semanticScore}
+                                            + '%'">
+
+                                        91%
+
+                                    </strong>
+
+                                    <div class="match-progress">
+
+                                        <div
+                                                class="match-progress-fill"
+                                                th:style="'width: '
+                                                + ${recommended.matchScore.semanticScore}
+                                                + '%'">
+                                        </div>
+
+                                    </div>
+
+                                </div>
+
+
+
+                                <!-- ROLE -->
+
+                                <div class="match-item">
+
+                                    <span>
+                                        Role Fit
+                                    </span>
+
+                                    <strong
+                                            th:text="${recommended.matchScore.roleScore}
+                                            + '%'">
+
+                                        95%
+
+                                    </strong>
+
+                                    <div class="match-progress">
+
+                                        <div
+                                                class="match-progress-fill"
+                                                th:style="'width: '
+                                                + ${recommended.matchScore.roleScore}
+                                                + '%'">
+                                        </div>
+
+                                    </div>
+
+                                </div>
+
+
+
+                                <!-- LOCATION -->
+
+                                <div class="match-item">
+
+                                    <span>
+                                        Location
+                                    </span>
+
+                                    <strong
+                                            th:text="${recommended.matchScore.locationScore}
+                                            + '%'">
+
+                                        100%
+
+                                    </strong>
+
+                                    <div class="match-progress">
+
+                                        <div
+                                                class="match-progress-fill"
+                                                th:style="'width: '
+                                                + ${recommended.matchScore.locationScore}
+                                                + '%'">
+                                        </div>
+
+                                    </div>
+
+                                </div>
+
+
+
+                                <!-- EXPERIENCE -->
+
+                                <div class="match-item">
+
+                                    <span>
+                                        Experience
+                                    </span>
+
+                                    <strong
+                                            th:text="${recommended.matchScore.experienceScore}
+                                            + '%'">
+
+                                        80%
+
+                                    </strong>
+
+                                    <div class="match-progress">
+
+                                        <div
+                                                class="match-progress-fill"
+                                                th:style="'width: '
+                                                + ${recommended.matchScore.experienceScore}
+                                                + '%'">
+                                        </div>
+
+                                    </div>
+
+                                </div>
+
+
+
+                                <!-- LANGUAGE -->
+
+                                <div class="match-item">
+
+                                    <span>
+                                        Language
+                                    </span>
+
+                                    <strong
+                                            th:text="${recommended.matchScore.languageScore}
+                                            + '%'">
+
+                                        85%
+
+                                    </strong>
+
+                                    <div class="match-progress">
+
+                                        <div
+                                                class="match-progress-fill"
+                                                th:style="'width: '
+                                                + ${recommended.matchScore.languageScore}
+                                                + '%'">
+                                        </div>
+
+                                    </div>
+
+                                </div>
+
+
+                            </div>
+
+                        </div>
+
+
+
+                        <!-- ============================================= -->
+                        <!-- ACTIONS                                       -->
+                        <!-- ============================================= -->
+
+                        <div class="job-actions">
+
+                            <div class="match-note">
+
+                                Match calculated from AI semantic relevance,
+                                target role, location, experience and language fit.
+
+                            </div>
+
+
+                            <div class="buttons">
+
+
+                                <!-- ===================================== -->
+                                <!-- OPTIMIZE CV FOR THIS JOB              -->
+                                <!-- ===================================== -->
+
+                                <form
+                                        th:action="@{/resume/optimize-for-job}"
+                                        method="post"
+                                        th:if="${recommended.job.description != null
+                                        && !recommended.job.description.isBlank()}">
+
+                                    <input
+                                            type="hidden"
+                                            name="jobDescription"
+                                            th:value="${recommended.job.description}" />
+
+                                    <button
+                                            type="submit"
+                                            class="btn btn-secondary">
+
+                                        ✦ Optimize CV
+
+                                    </button>
+
+                                </form>
+
+
+                                <!-- ===================================== -->
+                                <!-- VIEW ORIGINAL JOB                     -->
+                                <!-- ===================================== -->
+
+                                <a
+                                        th:if="${recommended.job.link != null
+                                        && !recommended.job.link.isBlank()}"
+                                        th:href="${recommended.job.link}"
+                                        target="_blank"
+                                        rel="noopener noreferrer"
+                                        class="btn btn-primary">
+
+                                    View Job →
+
+                                </a>
+
+
+                            </div>
+
+                        </div>
+
+
+                    </article>
+
+
+                </div>
+
+
+            </div>
+
+
+
+            <!-- ================================================= -->
+            <!-- EMPTY STATE                                       -->
+            <!-- ================================================= -->
+
+            <div
+                    class="empty-state"
+                    th:if="${error == null
+                    and (
+                        recommendedJobs == null
+                        or #lists.isEmpty(recommendedJobs)
+                    )}">
+
+                <div class="empty-icon">
+                    ◎
+                </div>
+
+                <h2>
+                    No matching jobs found
+                </h2>
+
+                <p>
+                    We couldn't find suitable opportunities for your
+                    current target role and location. Try updating
+                    your career preferences.
+                </p>
+
+                <a
+                        th:href="@{/profile}"
+                        class="btn btn-primary">
+
+                    Update Profile
+
+                </a>
+
+            </div>
+
+
+        </div>
+
+    </main>
+
+
+</div>
+
+
+</body>
+
+</html>

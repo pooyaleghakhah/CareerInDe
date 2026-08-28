@@ -1,0 +1,1289 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+            name="viewport"
+            content="width=device-width, initial-scale=1.0">
+
+    <title>Optimized Resume | CareerInDe</title>
+
+    <style>
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --blue: #2563eb;
+            --blue-light: #eff6ff;
+            --dark: #0f172a;
+            --text: #334155;
+            --muted: #64748b;
+            --border: #e2e8f0;
+            --background: #f8fafc;
+            --white: #ffffff;
+            --green: #16a34a;
+            --green-light: #dcfce7;
+            --red: #b42318;
+            --red-light: #fef3f2;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            background: var(--background);
+            color: var(--dark);
+        }
+
+        .page {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 40px 25px 80px;
+        }
+
+
+        /* ===================================================== */
+        /* HEADER                                                */
+        /* ===================================================== */
+
+        .topbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 30px;
+        }
+
+        .logo {
+            font-size: 26px;
+            font-weight: 800;
+        }
+
+        .logo span {
+            color: var(--blue);
+        }
+
+        .back-link {
+            text-decoration: none;
+            color: var(--text);
+            font-size: 13px;
+            font-weight: 600;
+        }
+
+
+        /* ===================================================== */
+        /* HERO                                                  */
+        /* ===================================================== */
+
+        .hero {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            gap: 30px;
+            margin-bottom: 28px;
+        }
+
+        .hero-label {
+            color: var(--blue);
+            font-size: 11px;
+            font-weight: 800;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            margin-bottom: 9px;
+        }
+
+        .hero h1 {
+            font-size: 34px;
+            margin-bottom: 10px;
+        }
+
+        .hero p {
+            color: var(--muted);
+            font-size: 14px;
+            line-height: 1.6;
+            max-width: 650px;
+        }
+
+        .score-box {
+            background: white;
+            border: 1px solid var(--border);
+            border-radius: 14px;
+            padding: 16px 20px;
+            min-width: 210px;
+        }
+
+        .score-label {
+            color: var(--muted);
+            font-size: 10px;
+            font-weight: 700;
+            text-transform: uppercase;
+            margin-bottom: 7px;
+        }
+
+        .score-values {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .score-old {
+            color: #94a3b8;
+            font-size: 22px;
+            font-weight: 700;
+        }
+
+        .score-arrow {
+            color: var(--blue);
+            font-weight: 700;
+        }
+
+        .score-new {
+            color: var(--green);
+            font-size: 28px;
+            font-weight: 800;
+        }
+
+
+        /* ===================================================== */
+        /* ERROR                                                 */
+        /* ===================================================== */
+
+        .error-box {
+            background: var(--red-light);
+            color: var(--red);
+            border: 1px solid #fecdca;
+            border-radius: 12px;
+            padding: 16px 18px;
+            margin-bottom: 25px;
+        }
+
+
+        /* ===================================================== */
+        /* LAYOUT                                                */
+        /* ===================================================== */
+
+        .content-grid {
+            display: grid;
+            grid-template-columns: minmax(0, 1fr) 280px;
+            gap: 25px;
+            align-items: start;
+        }
+
+
+        /* ===================================================== */
+        /* RESUME                                                */
+        /* ===================================================== */
+
+        .resume-paper {
+            background: white;
+            border: 1px solid var(--border);
+            border-radius: 14px;
+            padding: 48px 52px;
+
+            box-shadow:
+                    0 10px 30px
+                    rgba(15, 23, 42, .05);
+        }
+
+        .resume-header {
+            border-bottom: 2px solid #0f172a;
+            padding-bottom: 18px;
+            margin-bottom: 22px;
+        }
+
+        .resume-name {
+            font-size: 30px;
+            font-weight: 800;
+            letter-spacing: -.5px;
+        }
+
+        .resume-role {
+            color: var(--blue);
+            font-size: 16px;
+            font-weight: 700;
+            margin-top: 5px;
+        }
+
+        .contact-line {
+            margin-top: 11px;
+
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px 14px;
+
+            color: #475569;
+
+            font-size: 11px;
+            line-height: 1.6;
+        }
+
+
+        /* ===================================================== */
+        /* RESUME SECTION                                        */
+        /* ===================================================== */
+
+        .resume-section {
+            margin-bottom: 24px;
+        }
+
+        .resume-section:last-child {
+            margin-bottom: 0;
+        }
+
+        .section-title {
+            font-size: 12px;
+            font-weight: 800;
+
+            text-transform: uppercase;
+            letter-spacing: 1px;
+
+            color: #0f172a;
+
+            border-bottom: 1px solid #cbd5e1;
+
+            padding-bottom: 6px;
+            margin-bottom: 12px;
+        }
+
+        .summary-text {
+            color: #334155;
+            font-size: 12px;
+            line-height: 1.7;
+        }
+
+
+        /* ===================================================== */
+        /* SKILLS                                                */
+        /* ===================================================== */
+
+        .skills {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 7px;
+        }
+
+        .skill {
+            background: #f1f5f9;
+            color: #334155;
+
+            border-radius: 5px;
+
+            padding: 6px 9px;
+
+            font-size: 11px;
+            font-weight: 600;
+        }
+
+
+        /* ===================================================== */
+        /* EXPERIENCE                                            */
+        /* ===================================================== */
+
+        .experience-item,
+        .education-item,
+        .project-item {
+            margin-bottom: 18px;
+        }
+
+        .experience-item:last-child,
+        .education-item:last-child,
+        .project-item:last-child {
+            margin-bottom: 0;
+        }
+
+        .item-header {
+            display: flex;
+            justify-content: space-between;
+            gap: 20px;
+            align-items: flex-start;
+            margin-bottom: 5px;
+        }
+
+        .item-title {
+            font-size: 13px;
+            font-weight: 800;
+            color: #0f172a;
+        }
+
+        .item-company {
+            color: #475569;
+            font-size: 11px;
+            font-weight: 600;
+            margin-top: 3px;
+        }
+
+        .item-date {
+            color: #64748b;
+            font-size: 10px;
+            white-space: nowrap;
+        }
+
+        .bullet-list {
+            margin-top: 8px;
+            padding-left: 18px;
+        }
+
+        .bullet-list li {
+            color: #334155;
+            font-size: 11px;
+            line-height: 1.6;
+            margin-bottom: 4px;
+        }
+
+
+        /* ===================================================== */
+        /* PROJECTS                                              */
+        /* ===================================================== */
+
+        .project-description {
+            color: #475569;
+            font-size: 11px;
+            line-height: 1.6;
+            margin-top: 6px;
+        }
+
+        .technologies {
+            color: var(--blue);
+            font-size: 10px;
+            font-weight: 700;
+            margin-top: 6px;
+        }
+
+
+        /* ===================================================== */
+        /* SIDE PANEL                                            */
+        /* ===================================================== */
+
+        .side-panel {
+            position: sticky;
+            top: 20px;
+        }
+
+        .side-card {
+            background: white;
+            border: 1px solid var(--border);
+            border-radius: 14px;
+            padding: 20px;
+            margin-bottom: 15px;
+        }
+
+        .side-card h3 {
+            font-size: 15px;
+            margin-bottom: 8px;
+        }
+
+        .side-card p {
+            color: var(--muted);
+            font-size: 11px;
+            line-height: 1.6;
+        }
+
+        .improvement {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+
+            margin-top: 16px;
+
+            background: var(--green-light);
+            color: #166534;
+
+            border-radius: 9px;
+            padding: 11px 12px;
+        }
+
+        .improvement span {
+            font-size: 11px;
+            font-weight: 700;
+        }
+
+        .improvement strong {
+            font-size: 16px;
+        }
+
+
+        /* ===================================================== */
+        /* BUTTONS                                               */
+        /* ===================================================== */
+
+        .actions {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .btn {
+            display: block;
+            width: 100%;
+
+            text-decoration: none;
+
+            border-radius: 9px;
+
+            padding: 12px 14px;
+
+            text-align: center;
+
+            font-family: inherit;
+
+            font-size: 12px;
+            font-weight: 700;
+
+            cursor: pointer;
+
+            transition: .2s;
+        }
+
+        .btn-primary {
+            background: var(--blue);
+            color: white;
+            border: 1px solid var(--blue);
+        }
+
+        .btn-secondary {
+            background: white;
+            color: var(--text);
+            border: 1px solid var(--border);
+        }
+
+        .btn:hover {
+            opacity: .9;
+            transform: translateY(-1px);
+        }
+
+
+        /* ===================================================== */
+        /* EMPTY                                                 */
+        /* ===================================================== */
+
+        .empty {
+            color: #94a3b8;
+            font-size: 11px;
+        }
+
+
+        /* ===================================================== */
+        /* RESPONSIVE                                            */
+        /* ===================================================== */
+
+        @media (max-width: 900px) {
+
+            .content-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .side-panel {
+                position: static;
+            }
+
+            .hero {
+                flex-direction: column;
+            }
+
+            .score-box {
+                width: 100%;
+            }
+        }
+
+
+        @media (max-width: 600px) {
+
+            .page {
+                padding: 25px 15px 50px;
+            }
+
+            .resume-paper {
+                padding: 30px 22px;
+            }
+
+            .item-header {
+                flex-direction: column;
+                gap: 4px;
+            }
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+
+<div class="page">
+
+
+    <!-- ===================================================== -->
+    <!-- TOP                                                   -->
+    <!-- ===================================================== -->
+
+    <div class="topbar">
+
+        <div class="logo">
+            CareerIn<span>De</span>
+        </div>
+
+        <a
+                th:href="@{/recommended-jobs}"
+                class="back-link">
+
+            ← Back to Job Matches
+
+        </a>
+
+    </div>
+
+
+
+    <!-- ===================================================== -->
+    <!-- ERROR                                                 -->
+    <!-- ===================================================== -->
+
+    <div
+            class="error-box"
+            th:if="${error != null}"
+            th:text="${error}">
+
+        Resume optimization unavailable.
+
+    </div>
+
+
+
+    <!-- ===================================================== -->
+    <!-- CONTENT                                               -->
+    <!-- ===================================================== -->
+
+    <div th:if="${error == null and resume != null}">
+
+
+        <!-- ================================================= -->
+        <!-- HERO                                             -->
+        <!-- ================================================= -->
+
+        <div class="hero">
+
+            <div>
+
+                <div class="hero-label">
+                    AI Resume Optimization
+                </div>
+
+                <h1>
+                    Your optimized resume is ready.
+                </h1>
+
+                <p>
+                    CareerInDe improved the structure, wording and
+                    relevance of your existing CV for the selected job
+                    without adding unsupported experience or skills.
+                </p>
+
+            </div>
+
+
+            <div class="score-box">
+
+                <div class="score-label">
+                    Job Match Improvement
+                </div>
+
+                <div class="score-values">
+
+                    <span
+                            class="score-old"
+                            th:text="${resume.originalMatchScore} + '%'">
+
+                        70%
+
+                    </span>
+
+                    <span class="score-arrow">
+                        →
+                    </span>
+
+                    <span
+                            class="score-new"
+                            th:text="${resume.optimizedMatchScore} + '%'">
+
+                        86%
+
+                    </span>
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+
+        <!-- ================================================= -->
+        <!-- GRID                                             -->
+        <!-- ================================================= -->
+
+        <div class="content-grid">
+
+
+            <!-- ============================================= -->
+            <!-- RESUME PAPER                                  -->
+            <!-- ============================================= -->
+
+            <main
+                    class="resume-paper"
+                    id="resumePaper">
+
+
+                <!-- ========================================= -->
+                <!-- HEADER                                    -->
+                <!-- ========================================= -->
+
+                <header class="resume-header">
+
+                    <div
+                            class="resume-name"
+                            th:text="${resume.fullName != null
+                            && !resume.fullName.isBlank()
+                            ? resume.fullName
+                            : 'Candidate Name'}">
+
+                        Candidate Name
+
+                    </div>
+
+
+                    <div
+                            class="resume-role"
+                            th:if="${resume.targetRole != null
+                            && !resume.targetRole.isBlank()}"
+                            th:text="${resume.targetRole}">
+
+                        Java Backend Developer
+
+                    </div>
+
+
+                    <div class="contact-line">
+
+
+                        <span
+                                th:if="${resume.location != null
+                                && !resume.location.isBlank()}"
+                                th:text="${resume.location}">
+
+                            Berlin, Germany
+
+                        </span>
+
+
+                        <span
+                                th:if="${resume.phone != null
+                                && !resume.phone.isBlank()}"
+                                th:text="${resume.phone}">
+
+                            +49 ...
+
+                        </span>
+
+
+                        <span
+                                th:if="${resume.email != null
+                                && !resume.email.isBlank()}"
+                                th:text="${resume.email}">
+
+                            email@example.com
+
+                        </span>
+
+
+                        <span
+                                th:if="${resume.linkedin != null
+                                && !resume.linkedin.isBlank()}"
+                                th:text="${resume.linkedin}">
+
+                            LinkedIn
+
+                        </span>
+
+
+                        <span
+                                th:if="${resume.github != null
+                                && !resume.github.isBlank()}"
+                                th:text="${resume.github}">
+
+                            GitHub
+
+                        </span>
+
+
+                    </div>
+
+                </header>
+
+
+
+                <!-- ========================================= -->
+                <!-- PROFESSIONAL SUMMARY                      -->
+                <!-- ========================================= -->
+
+                <section
+                        class="resume-section"
+                        th:if="${resume.professionalSummary != null
+                        && !resume.professionalSummary.isBlank()}">
+
+                    <div class="section-title">
+                        Professional Summary
+                    </div>
+
+                    <p
+                            class="summary-text"
+                            th:text="${resume.professionalSummary}">
+
+                        Professional summary...
+
+                    </p>
+
+                </section>
+
+
+
+                <!-- ========================================= -->
+                <!-- SKILLS                                    -->
+                <!-- ========================================= -->
+
+                <section
+                        class="resume-section"
+                        th:if="${resume.skills != null
+                        && !#lists.isEmpty(resume.skills)}">
+
+                    <div class="section-title">
+                        Core Skills
+                    </div>
+
+
+                    <div class="skills">
+
+                        <span
+                                class="skill"
+                                th:each="skill : ${resume.skills}"
+                                th:text="${skill}">
+
+                            Java
+
+                        </span>
+
+                    </div>
+
+                </section>
+
+
+
+                <!-- ========================================= -->
+                <!-- EXPERIENCE                                -->
+                <!-- ========================================= -->
+
+                <section
+                        class="resume-section"
+                        th:if="${resume.experiences != null
+                        && !#lists.isEmpty(resume.experiences)}">
+
+                    <div class="section-title">
+                        Professional Experience
+                    </div>
+
+
+                    <div
+                            class="experience-item"
+                            th:each="experience : ${resume.experiences}">
+
+
+                        <div class="item-header">
+
+                            <div>
+
+                                <div
+                                        class="item-title"
+                                        th:text="${experience.jobTitle}">
+
+                                    Job Title
+
+                                </div>
+
+
+                                <div class="item-company">
+
+                                    <span
+                                            th:text="${experience.company}">
+                                        Company
+                                    </span>
+
+
+                                    <span
+                                            th:if="${experience.location != null
+                                            && !experience.location.isBlank()}">
+
+                                        ·
+
+                                        <span
+                                                th:text="${experience.location}">
+                                            Berlin
+                                        </span>
+
+                                    </span>
+
+                                </div>
+
+                            </div>
+
+
+                            <div class="item-date">
+
+                                <span
+                                        th:if="${experience.startDate != null
+                                        && !experience.startDate.isBlank()}"
+                                        th:text="${experience.startDate}">
+                                    2024
+                                </span>
+
+                                <span
+                                        th:if="${(experience.startDate != null
+                                        && !experience.startDate.isBlank())
+                                        ||
+                                        (experience.endDate != null
+                                        && !experience.endDate.isBlank())}">
+                                    –
+                                </span>
+
+                                <span
+                                        th:if="${experience.endDate != null
+                                        && !experience.endDate.isBlank()}"
+                                        th:text="${experience.endDate}">
+                                    Present
+                                </span>
+
+                            </div>
+
+                        </div>
+
+
+                        <ul
+                                class="bullet-list"
+                                th:if="${experience.bulletPoints != null
+                                && !#lists.isEmpty(experience.bulletPoints)}">
+
+                            <li
+                                    th:each="bullet : ${experience.bulletPoints}"
+                                    th:text="${bullet}">
+
+                                Achievement
+
+                            </li>
+
+                        </ul>
+
+
+                    </div>
+
+                </section>
+
+
+
+                <!-- ========================================= -->
+                <!-- PROJECTS                                  -->
+                <!-- ========================================= -->
+
+                <section
+                        class="resume-section"
+                        th:if="${resume.projects != null
+                        && !#lists.isEmpty(resume.projects)}">
+
+                    <div class="section-title">
+                        Projects
+                    </div>
+
+
+                    <div
+                            class="project-item"
+                            th:each="project : ${resume.projects}">
+
+
+                        <div
+                                class="item-title"
+                                th:text="${project.title}">
+
+                            Project
+
+                        </div>
+
+
+                        <p
+                                class="project-description"
+                                th:if="${project.description != null
+                                && !project.description.isBlank()}"
+                                th:text="${project.description}">
+
+                            Project description
+
+                        </p>
+
+
+                        <div
+                                class="technologies"
+                                th:if="${project.technologies != null
+                                && !#lists.isEmpty(project.technologies)}">
+
+                            Technologies:
+
+                            <span
+                                    th:each="technology, stat : ${project.technologies}">
+
+                                <span
+                                        th:text="${technology}">
+                                    Java
+                                </span>
+
+                                <span
+                                        th:if="${!stat.last}">
+                                    ·
+                                </span>
+
+                            </span>
+
+                        </div>
+
+
+                        <ul
+                                class="bullet-list"
+                                th:if="${project.bulletPoints != null
+                                && !#lists.isEmpty(project.bulletPoints)}">
+
+                            <li
+                                    th:each="bullet : ${project.bulletPoints}"
+                                    th:text="${bullet}">
+
+                                Project achievement
+
+                            </li>
+
+                        </ul>
+
+
+                    </div>
+
+                </section>
+
+
+
+                <!-- ========================================= -->
+                <!-- EDUCATION                                 -->
+                <!-- ========================================= -->
+
+                <section
+                        class="resume-section"
+                        th:if="${resume.education != null
+                        && !#lists.isEmpty(resume.education)}">
+
+                    <div class="section-title">
+                        Education
+                    </div>
+
+
+                    <div
+                            class="education-item"
+                            th:each="education : ${resume.education}">
+
+
+                        <div class="item-header">
+
+                            <div>
+
+                                <div class="item-title">
+
+                                    <span
+                                            th:if="${education.degree != null
+                                            && !education.degree.isBlank()}"
+                                            th:text="${education.degree}">
+                                        Master of Science
+                                    </span>
+
+                                    <span
+                                            th:if="${education.fieldOfStudy != null
+                                            && !education.fieldOfStudy.isBlank()}">
+
+                                        in
+
+                                        <span
+                                                th:text="${education.fieldOfStudy}">
+                                            Computer Science
+                                        </span>
+
+                                    </span>
+
+                                </div>
+
+
+                                <div class="item-company">
+
+                                    <span
+                                            th:if="${education.institution != null
+                                            && !education.institution.isBlank()}"
+                                            th:text="${education.institution}">
+                                        University
+                                    </span>
+
+
+                                    <span
+                                            th:if="${education.location != null
+                                            && !education.location.isBlank()}">
+
+                                        ·
+
+                                        <span
+                                                th:text="${education.location}">
+                                            Germany
+                                        </span>
+
+                                    </span>
+
+                                </div>
+
+                            </div>
+
+
+                            <div class="item-date">
+
+                                <span
+                                        th:if="${education.startDate != null
+                                        && !education.startDate.isBlank()}"
+                                        th:text="${education.startDate}">
+                                    2022
+                                </span>
+
+                                <span
+                                        th:if="${(education.startDate != null
+                                        && !education.startDate.isBlank())
+                                        ||
+                                        (education.endDate != null
+                                        && !education.endDate.isBlank())}">
+                                    –
+                                </span>
+
+                                <span
+                                        th:if="${education.endDate != null
+                                        && !education.endDate.isBlank()}"
+                                        th:text="${education.endDate}">
+                                    Present
+                                </span>
+
+                            </div>
+
+                        </div>
+
+
+                        <div
+                                class="project-description"
+                                th:if="${education.grade != null
+                                && !education.grade.isBlank()}">
+
+                            Grade:
+
+                            <span th:text="${education.grade}">
+                                2.0
+                            </span>
+
+                        </div>
+
+
+                    </div>
+
+                </section>
+
+
+
+                <!-- ========================================= -->
+                <!-- CERTIFICATIONS                            -->
+                <!-- ========================================= -->
+
+                <section
+                        class="resume-section"
+                        th:if="${resume.certifications != null
+                        && !#lists.isEmpty(resume.certifications)}">
+
+                    <div class="section-title">
+                        Certifications
+                    </div>
+
+
+                    <ul class="bullet-list">
+
+                        <li
+                                th:each="certificate : ${resume.certifications}"
+                                th:text="${certificate}">
+
+                            Certification
+
+                        </li>
+
+                    </ul>
+
+                </section>
+
+
+
+                <!-- ========================================= -->
+                <!-- LANGUAGES                                 -->
+                <!-- ========================================= -->
+
+                <section
+                        class="resume-section"
+                        th:if="${resume.languages != null
+                        && !#lists.isEmpty(resume.languages)}">
+
+                    <div class="section-title">
+                        Languages
+                    </div>
+
+
+                    <div class="skills">
+
+                        <span
+                                class="skill"
+                                th:each="language : ${resume.languages}"
+                                th:text="${language}">
+
+                            German B2
+
+                        </span>
+
+                    </div>
+
+                </section>
+
+
+            </main>
+
+
+
+            <!-- ============================================= -->
+            <!-- SIDE PANEL                                    -->
+            <!-- ============================================= -->
+
+            <aside class="side-panel">
+
+
+                <!-- SCORE -->
+
+                <div class="side-card">
+
+                    <h3>
+                        Optimization Result
+                    </h3>
+
+                    <p>
+                        This version emphasizes your existing
+                        qualifications that are most relevant to
+                        the selected position.
+                    </p>
+
+
+                    <div class="improvement">
+
+                        <span>
+                            Match improvement
+                        </span>
+
+                        <strong
+                                th:text="'+' +
+                                ${resume.optimizedMatchScore
+                                - resume.originalMatchScore}
+                                + '%'">
+
+                            +16%
+
+                        </strong>
+
+                    </div>
+
+                </div>
+
+
+
+                <!-- ========================================= -->
+                <!-- REAL PDF DOWNLOAD                         -->
+                <!-- ========================================= -->
+
+                <div class="side-card">
+
+                    <h3>
+                        Export Resume
+                    </h3>
+
+                    <p style="margin-bottom:15px;">
+                        Your optimized resume is ready in a clean,
+                        professional and ATS-friendly PDF format.
+                    </p>
+
+
+                    <div class="actions">
+
+
+                        <a
+                                th:href="@{/resume/download-pdf}"
+                                class="btn btn-primary">
+
+                            Download ATS-Ready PDF
+
+                        </a>
+
+
+                        <a
+                                th:href="@{/recommended-jobs}"
+                                class="btn btn-secondary">
+
+                            Back to Job Matches
+
+                        </a>
+
+
+                    </div>
+
+                </div>
+
+
+
+                <!-- TRUST -->
+
+                <div class="side-card">
+
+                    <h3>
+                        No fake experience
+                    </h3>
+
+                    <p>
+                        CareerInDe improves wording, structure and
+                        relevance only. Unsupported jobs, skills,
+                        degrees or certifications should not be added.
+                    </p>
+
+                </div>
+
+
+            </aside>
+
+
+        </div>
+
+
+    </div>
+
+
+</div>
+
+
+</body>
+
+</html>

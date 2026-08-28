@@ -2,156 +2,462 @@
 
 <project xmlns="http://maven.apache.org/POM/4.0.0"
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0
+         xsi:schemaLocation="
+         http://maven.apache.org/POM/4.0.0
          https://maven.apache.org/xsd/maven-4.0.0.xsd">
 
     <modelVersion>4.0.0</modelVersion>
 
+
+    <!-- ===================================================== -->
+    <!-- SPRING BOOT PARENT                                    -->
+    <!-- ===================================================== -->
+
     <parent>
+
         <groupId>org.springframework.boot</groupId>
-        <artifactId>spring-boot-starter-parent</artifactId>
+
+        <artifactId>
+            spring-boot-starter-parent
+        </artifactId>
+
         <version>4.0.6</version>
+
         <relativePath/>
+
     </parent>
 
-    <groupId>com.careerinde</groupId>
-    <artifactId>careerinde-app</artifactId>
-    <version>0.0.1-SNAPSHOT</version>
 
-    <name>careerinde-app</name>
-    <description>Careerinde SaaS Platform</description>
+    <!-- ===================================================== -->
+    <!-- PROJECT                                               -->
+    <!-- ===================================================== -->
+
+    <groupId>
+        com.careerinde
+    </groupId>
+
+    <artifactId>
+        careerinde-app
+    </artifactId>
+
+    <version>
+        0.0.1-SNAPSHOT
+    </version>
+
+    <name>
+        careerinde-app
+    </name>
+
+    <description>
+        Careerinde SaaS Platform
+    </description>
+
+
+    <!-- ===================================================== -->
+    <!-- PROPERTIES                                            -->
+    <!-- ===================================================== -->
 
     <properties>
-        <java.version>21</java.version>
+
+        <java.version>
+            21
+        </java.version>
+
     </properties>
+
+
+    <!-- ===================================================== -->
+    <!-- DEPENDENCIES                                          -->
+    <!-- ===================================================== -->
 
     <dependencies>
 
-        <!-- Spring Data JPA -->
+
+        <!-- ================================================= -->
+        <!-- SPRING DATA JPA                                   -->
+        <!-- ================================================= -->
+
         <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-data-jpa</artifactId>
+
+            <groupId>
+                org.springframework.boot
+            </groupId>
+
+            <artifactId>
+                spring-boot-starter-data-jpa
+            </artifactId>
+
         </dependency>
 
-        <!-- Spring Security -->
+
+        <!-- ================================================= -->
+        <!-- SPRING SECURITY                                   -->
+        <!-- ================================================= -->
+
         <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-security</artifactId>
+
+            <groupId>
+                org.springframework.boot
+            </groupId>
+
+            <artifactId>
+                spring-boot-starter-security
+            </artifactId>
+
         </dependency>
 
-        <!-- Thymeleaf -->
+
+        <!-- ================================================= -->
+        <!-- THYMELEAF                                         -->
+        <!-- ================================================= -->
+
         <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-thymeleaf</artifactId>
+
+            <groupId>
+                org.springframework.boot
+            </groupId>
+
+            <artifactId>
+                spring-boot-starter-thymeleaf
+            </artifactId>
+
         </dependency>
 
-        <!-- Validation -->
+
+        <!-- ================================================= -->
+        <!-- VALIDATION                                        -->
+        <!-- ================================================= -->
+
         <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-validation</artifactId>
+
+            <groupId>
+                org.springframework.boot
+            </groupId>
+
+            <artifactId>
+                spring-boot-starter-validation
+            </artifactId>
+
         </dependency>
 
-        <!-- Spring MVC -->
+
+        <!-- ================================================= -->
+        <!-- SPRING MVC                                        -->
+        <!-- ================================================= -->
+
         <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-web</artifactId>
+
+            <groupId>
+                org.springframework.boot
+            </groupId>
+
+            <artifactId>
+                spring-boot-starter-web
+            </artifactId>
+
         </dependency>
 
-        <!-- WebClient for Groq API -->
+
+        <!-- ================================================= -->
+        <!-- WEBCLIENT                                         -->
+        <!-- Used for AI APIs                                  -->
+        <!-- ================================================= -->
+
         <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-webflux</artifactId>
+
+            <groupId>
+                org.springframework.boot
+            </groupId>
+
+            <artifactId>
+                spring-boot-starter-webflux
+            </artifactId>
+
         </dependency>
 
-        <!-- Spring Mail -->
+
+        <!-- ================================================= -->
+        <!-- SPRING MAIL                                       -->
+        <!-- ================================================= -->
+
         <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-mail</artifactId>
+
+            <groupId>
+                org.springframework.boot
+            </groupId>
+
+            <artifactId>
+                spring-boot-starter-mail
+            </artifactId>
+
         </dependency>
 
-        <!-- Jackson JSON -->
+
+        <!-- ================================================= -->
+        <!-- JACKSON JSON                                      -->
+        <!-- ================================================= -->
+
         <dependency>
-            <groupId>com.fasterxml.jackson.core</groupId>
-            <artifactId>jackson-databind</artifactId>
+
+            <groupId>
+                com.fasterxml.jackson.core
+            </groupId>
+
+            <artifactId>
+                jackson-databind
+            </artifactId>
+
         </dependency>
 
-        <!-- Thymeleaf + Spring Security -->
+
+        <!-- ================================================= -->
+        <!-- THYMELEAF + SPRING SECURITY                       -->
+        <!-- ================================================= -->
+
         <dependency>
-            <groupId>org.thymeleaf.extras</groupId>
-            <artifactId>thymeleaf-extras-springsecurity6</artifactId>
+
+            <groupId>
+                org.thymeleaf.extras
+            </groupId>
+
+            <artifactId>
+                thymeleaf-extras-springsecurity6
+            </artifactId>
+
         </dependency>
 
-        <!-- PostgreSQL -->
+
+        <!-- ================================================= -->
+        <!-- POSTGRESQL                                        -->
+        <!-- ================================================= -->
+
         <dependency>
-            <groupId>org.postgresql</groupId>
-            <artifactId>postgresql</artifactId>
-            <scope>runtime</scope>
+
+            <groupId>
+                org.postgresql
+            </groupId>
+
+            <artifactId>
+                postgresql
+            </artifactId>
+
+            <scope>
+                runtime
+            </scope>
+
         </dependency>
 
-        <!-- Lombok -->
+
+        <!-- ================================================= -->
+        <!-- LOMBOK                                            -->
+        <!-- ================================================= -->
+
         <dependency>
-            <groupId>org.projectlombok</groupId>
-            <artifactId>lombok</artifactId>
-            <optional>true</optional>
+
+            <groupId>
+                org.projectlombok
+            </groupId>
+
+            <artifactId>
+                lombok
+            </artifactId>
+
+            <optional>
+                true
+            </optional>
+
         </dependency>
 
-        <!-- PDFBox -->
+
+        <!-- ================================================= -->
+        <!-- PDFBOX                                            -->
+        <!-- Used for reading / extracting CV PDF content      -->
+        <!-- ================================================= -->
+
         <dependency>
-            <groupId>org.apache.pdfbox</groupId>
-            <artifactId>pdfbox</artifactId>
-            <version>3.0.2</version>
+
+            <groupId>
+                org.apache.pdfbox
+            </groupId>
+
+            <artifactId>
+                pdfbox
+            </artifactId>
+
+            <version>
+                3.0.2
+            </version>
+
         </dependency>
 
-        <!-- JWT API -->
+
+        <!-- ================================================= -->
+        <!-- OPENPDF                                           -->
+        <!-- Used for generating ATS-ready resume PDFs         -->
+        <!-- ================================================= -->
+
         <dependency>
-            <groupId>io.jsonwebtoken</groupId>
-            <artifactId>jjwt-api</artifactId>
-            <version>0.12.6</version>
+
+            <groupId>
+                com.github.librepdf
+            </groupId>
+
+            <artifactId>
+                openpdf
+            </artifactId>
+
+            <version>
+                2.0.3
+            </version>
+
         </dependency>
 
-        <!-- JWT Implementation -->
+
+        <!-- ================================================= -->
+        <!-- JWT API                                           -->
+        <!-- ================================================= -->
+
         <dependency>
-            <groupId>io.jsonwebtoken</groupId>
-            <artifactId>jjwt-impl</artifactId>
-            <version>0.12.6</version>
-            <scope>runtime</scope>
+
+            <groupId>
+                io.jsonwebtoken
+            </groupId>
+
+            <artifactId>
+                jjwt-api
+            </artifactId>
+
+            <version>
+                0.12.6
+            </version>
+
         </dependency>
 
-        <!-- JWT Jackson -->
+
+        <!-- ================================================= -->
+        <!-- JWT IMPLEMENTATION                                -->
+        <!-- ================================================= -->
+
         <dependency>
-            <groupId>io.jsonwebtoken</groupId>
-            <artifactId>jjwt-jackson</artifactId>
-            <version>0.12.6</version>
-            <scope>runtime</scope>
+
+            <groupId>
+                io.jsonwebtoken
+            </groupId>
+
+            <artifactId>
+                jjwt-impl
+            </artifactId>
+
+            <version>
+                0.12.6
+            </version>
+
+            <scope>
+                runtime
+            </scope>
+
         </dependency>
 
-        <!-- Tests -->
+
+        <!-- ================================================= -->
+        <!-- JWT JACKSON                                       -->
+        <!-- ================================================= -->
+
         <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-test</artifactId>
-            <scope>test</scope>
+
+            <groupId>
+                io.jsonwebtoken
+            </groupId>
+
+            <artifactId>
+                jjwt-jackson
+            </artifactId>
+
+            <version>
+                0.12.6
+            </version>
+
+            <scope>
+                runtime
+            </scope>
+
         </dependency>
 
-        <!-- Spring Security Tests -->
+
+        <!-- ================================================= -->
+        <!-- TESTS                                             -->
+        <!-- ================================================= -->
+
         <dependency>
-            <groupId>org.springframework.security</groupId>
-            <artifactId>spring-security-test</artifactId>
-            <scope>test</scope>
+
+            <groupId>
+                org.springframework.boot
+            </groupId>
+
+            <artifactId>
+                spring-boot-starter-test
+            </artifactId>
+
+            <scope>
+                test
+            </scope>
+
         </dependency>
+
+
+        <!-- ================================================= -->
+        <!-- SPRING SECURITY TESTS                             -->
+        <!-- ================================================= -->
+
+        <dependency>
+
+            <groupId>
+                org.springframework.security
+            </groupId>
+
+            <artifactId>
+                spring-security-test
+            </artifactId>
+
+            <scope>
+                test
+            </scope>
+
+        </dependency>
+
 
     </dependencies>
+
+
+    <!-- ===================================================== -->
+    <!-- BUILD                                                 -->
+    <!-- ===================================================== -->
 
     <build>
 
         <plugins>
 
+
+            <!-- ================================================= -->
+            <!-- SPRING BOOT MAVEN PLUGIN                          -->
+            <!-- ================================================= -->
+
             <plugin>
-                <groupId>org.springframework.boot</groupId>
-                <artifactId>spring-boot-maven-plugin</artifactId>
+
+                <groupId>
+                    org.springframework.boot
+                </groupId>
+
+                <artifactId>
+                    spring-boot-maven-plugin
+                </artifactId>
+
             </plugin>
+
 
         </plugins>
 
     </build>
+
 
 </project>
