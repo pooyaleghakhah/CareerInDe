@@ -17,11 +17,20 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 @Service
 public class GeminiAIService {
 
+    private static final int MAX_ATTEMPTS = 4;
+
+    private static final long[] RETRY_DELAYS = {
+            2000L,
+            5000L,
+            10000L
+    };
+
     private final WebClient webClient;
     private final ObjectMapper objectMapper;
 
     private final String apiKey;
     private final String model;
+
 
     public GeminiAIService(
             @Value("${gemini.api.key}") String apiKey,
@@ -33,7 +42,9 @@ public class GeminiAIService {
         this.objectMapper = new ObjectMapper();
 
         this.webClient = WebClient.builder()
-                .baseUrl("https://generativelanguage.googleapis.com/v1")
+                .baseUrl(
+                        "https://generativelanguage.googleapis.com/v1"
+                )
                 .defaultHeader(
                         HttpHeaders.CONTENT_TYPE,
                         MediaType.APPLICATION_JSON_VALUE
@@ -65,8 +76,11 @@ public class GeminiAIService {
 
         Map<String, Object> generationConfig =
                 Map.of(
-                        "temperature", temperature,
-                        "maxOutputTokens", maxOutputTokens
+                        "temperature",
+                        temperature,
+
+                        "maxOutputTokens",
+                        maxOutputTokens
                 );
 
         return execute(
@@ -124,12 +138,15 @@ public class GeminiAIService {
                         responseSchema
                 );
 
-        String result = execute(
-                prompt,
-                generationConfig
-        );
+        String result =
+                execute(
+                        prompt,
+                        generationConfig
+                );
 
-        validateJson(result);
+        validateJson(
+                result
+        );
 
         return result;
     }
@@ -166,40 +183,17 @@ public class GeminiAIService {
                 );
 
 
-        int maxAttempts = 2;
-
         RuntimeException lastException = null;
 
 
         for (int attempt = 1;
-             attempt <= maxAttempts;
+             attempt <= MAX_ATTEMPTS;
              attempt++) {
 
             try {
 
-                System.out.println();
-                System.out.println(
-                        "======================================"
-                );
-
-                System.out.println(
-                        "CAREERINDE CENTRAL GEMINI"
-                );
-
-                System.out.println(
-                        "Attempt: "
-                                + attempt
-                                + "/"
-                                + maxAttempts
-                );
-
-                System.out.println(
-                        "Model: "
-                                + model
-                );
-
-                System.out.println(
-                        "======================================"
+                logAttempt(
+                        attempt
                 );
 
 
@@ -233,39 +227,36 @@ public class GeminiAIService {
                                 );
 
 
-                return extractText(
-                        response
+                String result =
+                        extractText(
+                                response
+                        );
+
+
+                System.out.println();
+
+                System.out.println(
+                        "======================================"
                 );
+
+                System.out.println(
+                        "GEMINI REQUEST SUCCESS"
+                );
+
+                System.out.println(
+                        "Attempt: "
+                                + attempt
+                );
+
+                System.out.println(
+                        "======================================"
+                );
+
+
+                return result;
 
 
             } catch (WebClientResponseException exception) {
-
-                System.err.println();
-                System.err.println(
-                        "===== GEMINI API ERROR ====="
-                );
-
-                System.err.println(
-                        "Status: "
-                                + exception.getStatusCode()
-                );
-
-                System.err.println(
-                        "Response: "
-                                + exception.getResponseBodyAsString()
-                );
-
-                System.err.println(
-                        "============================"
-                );
-
-
-                lastException =
-                        new RuntimeException(
-                                "Gemini API request failed.",
-                                exception
-                        );
-
 
                 int status =
                         exception
@@ -273,35 +264,74 @@ public class GeminiAIService {
                                 .value();
 
 
-                /*
-                 * Retry:
-                 * 429 Rate Limit
-                 * 5xx Server Errors
-                 */
-                boolean retryable =
-                        status == 429 ||
-                        status >= 500;
+                logApiError(
+                        status,
+                        exception
+                );
 
 
-                if (!retryable) {
+                lastException =
+                        new RuntimeException(
+                                buildFailureMessage(
+                                        status
+                                ),
+                                exception
+                        );
+
+
+                if (!isRetryableStatus(status)) {
 
                     throw lastException;
                 }
 
 
+                if (attempt >= MAX_ATTEMPTS) {
+
+                    break;
+                }
+
+
+                long delay =
+                        getRetryDelay(
+                                attempt
+                        );
+
+
+                logRetry(
+                        attempt,
+                        delay,
+                        status
+                );
+
+
+                sleep(
+                        delay
+                );
+
+
             } catch (Exception exception) {
 
                 System.err.println();
+
                 System.err.println(
-                        "===== GEMINI ERROR ====="
+                        "===== GEMINI INTERNAL ERROR ====="
                 );
 
                 System.err.println(
-                        exception.getMessage()
+                        "Type: "
+                                + exception
+                                .getClass()
+                                .getSimpleName()
                 );
 
                 System.err.println(
-                        "========================"
+                        "Message: "
+                                + exception
+                                .getMessage()
+                );
+
+                System.err.println(
+                        "================================="
                 );
 
 
@@ -310,21 +340,216 @@ public class GeminiAIService {
                                 "Gemini request failed.",
                                 exception
                         );
-            }
 
 
-            if (attempt < maxAttempts) {
+                if (attempt >= MAX_ATTEMPTS) {
+
+                    break;
+                }
+
+
+                long delay =
+                        getRetryDelay(
+                                attempt
+                        );
+
+
+                logRetry(
+                        attempt,
+                        delay,
+                        null
+                );
+
 
                 sleep(
-                        3000L * attempt
+                        delay
                 );
             }
         }
 
 
         throw new RuntimeException(
-                "Gemini request failed after retries.",
+                "Gemini is temporarily unavailable after "
+                        + MAX_ATTEMPTS
+                        + " attempts.",
                 lastException
+        );
+    }
+
+
+    // =========================================================
+    // RETRYABLE STATUS
+    // =========================================================
+
+    private boolean isRetryableStatus(
+            int status) {
+
+        return status == 429
+                || status == 500
+                || status == 502
+                || status == 503
+                || status == 504;
+    }
+
+
+    // =========================================================
+    // RETRY DELAY
+    // =========================================================
+
+    private long getRetryDelay(
+            int attempt) {
+
+        int index =
+                Math.min(
+                        attempt - 1,
+                        RETRY_DELAYS.length - 1
+                );
+
+        return RETRY_DELAYS[index];
+    }
+
+
+    // =========================================================
+    // ERROR MESSAGE
+    // =========================================================
+
+    private String buildFailureMessage(
+            int status) {
+
+        if (status == 429) {
+
+            return "Gemini rate limit exceeded.";
+        }
+
+
+        if (status == 503) {
+
+            return "Gemini service is temporarily unavailable.";
+        }
+
+
+        if (status == 500
+                || status == 502
+                || status == 504) {
+
+            return "Gemini server is temporarily unavailable.";
+        }
+
+
+        if (status == 401
+                || status == 403) {
+
+            return "Gemini authentication failed.";
+        }
+
+
+        return "Gemini API request failed with HTTP status "
+                + status
+                + ".";
+    }
+
+
+    // =========================================================
+    // LOG ATTEMPT
+    // =========================================================
+
+    private void logAttempt(
+            int attempt) {
+
+        System.out.println();
+
+        System.out.println(
+                "======================================"
+        );
+
+        System.out.println(
+                "CAREERINDE CENTRAL GEMINI"
+        );
+
+        System.out.println(
+                "Attempt: "
+                        + attempt
+                        + "/"
+                        + MAX_ATTEMPTS
+        );
+
+        System.out.println(
+                "Model: "
+                        + model
+        );
+
+        System.out.println(
+                "======================================"
+        );
+    }
+
+
+    // =========================================================
+    // API ERROR LOG
+    // =========================================================
+
+    private void logApiError(
+            int status,
+            WebClientResponseException exception) {
+
+        System.err.println();
+
+        System.err.println(
+                "===== GEMINI API ERROR ====="
+        );
+
+        System.err.println(
+                "HTTP Status: "
+                        + status
+        );
+
+        System.err.println(
+                "Response:"
+        );
+
+        System.err.println(
+                exception
+                        .getResponseBodyAsString()
+        );
+
+        System.err.println(
+                "============================"
+        );
+    }
+
+
+    // =========================================================
+    // RETRY LOG
+    // =========================================================
+
+    private void logRetry(
+            int attempt,
+            long delay,
+            Integer status) {
+
+        System.out.println();
+
+        System.out.println(
+                "Gemini request will retry."
+        );
+
+        if (status != null) {
+
+            System.out.println(
+                    "HTTP Status: "
+                            + status
+            );
+        }
+
+        System.out.println(
+                "Next Attempt: "
+                        + (attempt + 1)
+        );
+
+        System.out.println(
+                "Waiting: "
+                        + delay
+                        + " ms"
         );
     }
 
@@ -350,10 +575,8 @@ public class GeminiAIService {
                 );
 
 
-        if (!(candidatesObject
-                instanceof List<?> candidates)
-                ||
-                candidates.isEmpty()) {
+        if (!(candidatesObject instanceof List<?> candidates)
+                || candidates.isEmpty()) {
 
             throw new RuntimeException(
                     "Gemini returned no candidates."
@@ -365,8 +588,7 @@ public class GeminiAIService {
                 candidates.get(0);
 
 
-        if (!(firstCandidate
-                instanceof Map<?, ?> candidate)) {
+        if (!(firstCandidate instanceof Map<?, ?> candidate)) {
 
             throw new RuntimeException(
                     "Invalid Gemini candidate."
@@ -414,8 +636,7 @@ public class GeminiAIService {
                 );
 
 
-        if (!(contentObject
-                instanceof Map<?, ?> content)) {
+        if (!(contentObject instanceof Map<?, ?> content)) {
 
             throw new RuntimeException(
                     "Gemini returned no content."
@@ -429,8 +650,7 @@ public class GeminiAIService {
                 );
 
 
-        if (!(partsObject
-                instanceof List<?> parts)) {
+        if (!(partsObject instanceof List<?> parts)) {
 
             throw new RuntimeException(
                     "Gemini returned no parts."
@@ -444,8 +664,7 @@ public class GeminiAIService {
 
         for (Object partObject : parts) {
 
-            if (!(partObject
-                    instanceof Map<?, ?> part)) {
+            if (!(partObject instanceof Map<?, ?> part)) {
 
                 continue;
             }
@@ -577,8 +796,8 @@ public class GeminiAIService {
     private void validatePrompt(
             String prompt) {
 
-        if (prompt == null ||
-                prompt.isBlank()) {
+        if (prompt == null
+                || prompt.isBlank()) {
 
             throw new IllegalArgumentException(
                     "Gemini prompt cannot be empty."
