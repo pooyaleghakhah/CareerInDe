@@ -17,6 +17,8 @@ import com.careerinde.careerinde_app.analysis.Analysis;
 import com.careerinde.careerinde_app.analysis.AnalysisRepository;
 import com.careerinde.careerinde_app.ats.AtsAnalyzerService;
 import com.careerinde.careerinde_app.ats.RecommendationService;
+import com.careerinde.careerinde_app.job.matching.scoring.JobMatchScore;
+import com.careerinde.careerinde_app.job.matching.scoring.JobMatchScoringService;
 
 @Controller
 public class ResumeController {
@@ -25,24 +27,21 @@ public class ResumeController {
     private final AtsAnalyzerService atsAnalyzerService;
     private final RecommendationService recommendationService;
     private final AnalysisRepository analysisRepository;
+    private final JobMatchScoringService jobMatchScoringService;
 
 
     public ResumeController(
             PdfService pdfService,
             AtsAnalyzerService atsAnalyzerService,
             RecommendationService recommendationService,
-            AnalysisRepository analysisRepository) {
+            AnalysisRepository analysisRepository,
+            JobMatchScoringService jobMatchScoringService) {
 
         this.pdfService = pdfService;
-
-        this.atsAnalyzerService =
-                atsAnalyzerService;
-
-        this.recommendationService =
-                recommendationService;
-
-        this.analysisRepository =
-                analysisRepository;
+        this.atsAnalyzerService = atsAnalyzerService;
+        this.recommendationService = recommendationService;
+        this.analysisRepository = analysisRepository;
+        this.jobMatchScoringService = jobMatchScoringService;
     }
 
 
@@ -58,7 +57,7 @@ public class ResumeController {
 
 
     // =========================================================
-    // UPLOAD + LOCAL ATS ANALYSIS
+    // UPLOAD + ATS + OPTIONAL JOB MATCH
     // =========================================================
 
     @PostMapping("/resume/upload")
@@ -66,6 +65,16 @@ public class ResumeController {
 
             @RequestParam("file")
             MultipartFile file,
+
+            @RequestParam(
+                    value = "jobTitle",
+                    required = false)
+            String jobTitle,
+
+            @RequestParam(
+                    value = "jobDescription",
+                    required = false)
+            String jobDescription,
 
             Model model,
 
@@ -78,8 +87,7 @@ public class ResumeController {
         // VALIDATE FILE
         // =====================================================
 
-        if (file == null ||
-                file.isEmpty()) {
+        if (file == null || file.isEmpty()) {
 
             model.addAttribute(
                     "error",
@@ -156,7 +164,7 @@ public class ResumeController {
 
 
         // =====================================================
-        // EXTRACT TEXT
+        // EXTRACT CV TEXT
         // =====================================================
 
         String extractedText =
@@ -178,6 +186,26 @@ public class ResumeController {
 
 
         // =====================================================
+        // NORMALIZE OPTIONAL TARGET JOB
+        // =====================================================
+
+        jobTitle =
+                normalizeOptionalText(
+                        jobTitle
+                );
+
+
+        jobDescription =
+                normalizeOptionalText(
+                        jobDescription
+                );
+
+
+        boolean hasJobDescription =
+                jobDescription != null;
+
+
+        // =====================================================
         // SESSION
         // =====================================================
 
@@ -193,9 +221,39 @@ public class ResumeController {
         );
 
 
+        if (jobTitle != null) {
+
+            session.setAttribute(
+                    "latestTargetJobTitle",
+                    jobTitle
+            );
+
+        } else {
+
+            session.removeAttribute(
+                    "latestTargetJobTitle"
+            );
+        }
+
+
+        if (jobDescription != null) {
+
+            session.setAttribute(
+                    "latestJobDescription",
+                    jobDescription
+            );
+
+        } else {
+
+            session.removeAttribute(
+                    "latestJobDescription"
+            );
+        }
+
+
         // =====================================================
         // LOCAL ATS ANALYSIS
-        // NO AI API CALL HERE
+        // NO AI CALL
         // =====================================================
 
         List<String> skills =
@@ -218,7 +276,7 @@ public class ResumeController {
 
 
         // =====================================================
-        // LOCAL ATS SCORE
+        // GENERAL ATS SCORE
         // =====================================================
 
         int atsScore =
@@ -230,7 +288,7 @@ public class ResumeController {
 
 
         // =====================================================
-        // BASIC PROFILE INFORMATION
+        // PROFILE LEVEL
         // =====================================================
 
         String profileLevel =
@@ -239,10 +297,56 @@ public class ResumeController {
                 );
 
 
-        String bestJobMatch =
-                determineBestJobMatch(
-                        skills
-                );
+        // =====================================================
+        // BASIC JOB PROFILE
+        // =====================================================
+
+        String bestJobMatch;
+
+
+        if (jobTitle != null) {
+
+            bestJobMatch =
+                    jobTitle;
+
+        } else {
+
+            bestJobMatch =
+                    determineBestJobMatch(
+                            skills
+                    );
+        }
+
+
+        // =====================================================
+        // CAREERINDE JOB MATCH ENGINE
+        // ONLY WHEN JOB DESCRIPTION EXISTS
+        // =====================================================
+
+        JobMatchScore jobMatchScore =
+                null;
+
+
+        if (hasJobDescription) {
+
+            jobMatchScore =
+                    jobMatchScoringService
+                            .calculateScore(
+                                    extractedText,
+                                    jobDescription
+                            );
+
+
+            session.setAttribute(
+                    "latestJobMatchScore",
+                    jobMatchScore
+            );
+        } else {
+
+            session.removeAttribute(
+                    "latestJobMatchScore"
+            );
+        }
 
 
         // =====================================================
@@ -293,7 +397,7 @@ public class ResumeController {
 
 
         // =====================================================
-        // SEND TO VIEW
+        // SEND GENERAL ATS DATA TO VIEW
         // =====================================================
 
         model.addAttribute(
@@ -344,6 +448,94 @@ public class ResumeController {
         );
 
 
+        // =====================================================
+        // SEND TARGET JOB DATA TO VIEW
+        // =====================================================
+
+        model.addAttribute(
+                "hasJobDescription",
+                hasJobDescription
+        );
+
+
+        model.addAttribute(
+                "jobTitle",
+                jobTitle
+        );
+
+
+        model.addAttribute(
+                "jobDescription",
+                jobDescription
+        );
+
+
+        // =====================================================
+        // SEND MATCH SCORE TO VIEW
+        // =====================================================
+
+        if (jobMatchScore != null) {
+
+            model.addAttribute(
+                    "jobMatchScore",
+                    jobMatchScore
+            );
+
+
+            model.addAttribute(
+                    "matchScore",
+                    jobMatchScore
+                            .getOverallScore()
+            );
+
+
+            model.addAttribute(
+                    "matchSkillScore",
+                    jobMatchScore
+                            .getSkillScore()
+            );
+
+
+            model.addAttribute(
+                    "matchKeywordScore",
+                    jobMatchScore
+                            .getKeywordScore()
+            );
+
+
+            model.addAttribute(
+                    "matchExperienceScore",
+                    jobMatchScore
+                            .getExperienceScore()
+            );
+
+
+            model.addAttribute(
+                    "matchEducationScore",
+                    jobMatchScore
+                            .getEducationScore()
+            );
+
+
+            model.addAttribute(
+                    "matchedJobSkills",
+                    jobMatchScore
+                            .getMatchedSkills()
+            );
+
+
+            model.addAttribute(
+                    "missingJobSkills",
+                    jobMatchScore
+                            .getMissingSkills()
+            );
+        }
+
+
+        // =====================================================
+        // LOG
+        // =====================================================
+
         System.out.println();
         System.out.println(
                 "======================================"
@@ -371,6 +563,40 @@ public class ResumeController {
                 "Skills detected: "
                         + skills.size()
         );
+
+
+        if (jobDescription != null) {
+
+            System.out.println(
+                    "Target Job: "
+                            + (
+                            jobTitle != null
+                                    ? jobTitle
+                                    : "Custom Job"
+                    )
+            );
+
+
+            System.out.println(
+                    "Job Description length: "
+                            + jobDescription.length()
+            );
+
+
+            System.out.println(
+                    "CareerInDe Match Score: "
+                            + jobMatchScore
+                            .getOverallScore()
+                            + "%"
+            );
+
+        } else {
+
+            System.out.println(
+                    "Job-specific Match: NOT REQUESTED"
+            );
+        }
+
 
         System.out.println(
                 "======================================"
@@ -582,6 +808,34 @@ public class ResumeController {
 
 
         return "Software Developer";
+    }
+
+
+    // =========================================================
+    // OPTIONAL TEXT HELPER
+    // =========================================================
+
+    private String normalizeOptionalText(
+            String value) {
+
+
+        if (value == null) {
+
+            return null;
+        }
+
+
+        String normalized =
+                value.trim();
+
+
+        if (normalized.isEmpty()) {
+
+            return null;
+        }
+
+
+        return normalized;
     }
 
 
