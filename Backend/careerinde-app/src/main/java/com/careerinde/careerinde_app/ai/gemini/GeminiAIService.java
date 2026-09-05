@@ -270,6 +270,42 @@ public class GeminiAIService {
                 );
 
 
+                // =============================================
+                // IMPORTANT:
+                // 429 MUST FAIL FAST
+                //
+                // Free-tier daily quota exhaustion cannot be
+                // fixed by immediately retrying the same call.
+                // =============================================
+
+                if (status == 429) {
+
+                    System.err.println();
+
+                    System.err.println(
+                            "======================================"
+                    );
+
+                    System.err.println(
+                            "GEMINI RATE LIMIT / QUOTA EXCEEDED"
+                    );
+
+                    System.err.println(
+                            "Retry skipped to avoid unnecessary delay."
+                    );
+
+                    System.err.println(
+                            "======================================"
+                    );
+
+
+                    throw new GeminiQuotaExceededException(
+                            "Gemini quota or rate limit exceeded.",
+                            exception
+                    );
+                }
+
+
                 lastException =
                         new RuntimeException(
                                 buildFailureMessage(
@@ -279,17 +315,29 @@ public class GeminiAIService {
                         );
 
 
+                // =============================================
+                // NON-RETRYABLE HTTP ERROR
+                // =============================================
+
                 if (!isRetryableStatus(status)) {
 
                     throw lastException;
                 }
 
 
+                // =============================================
+                // MAX ATTEMPTS REACHED
+                // =============================================
+
                 if (attempt >= MAX_ATTEMPTS) {
 
                     break;
                 }
 
+
+                // =============================================
+                // RETRY TEMPORARY SERVER ERROR
+                // =============================================
 
                 long delay =
                         getRetryDelay(
@@ -307,6 +355,15 @@ public class GeminiAIService {
                 sleep(
                         delay
                 );
+
+
+            } catch (GeminiQuotaExceededException exception) {
+
+                // =============================================
+                // DO NOT ALLOW GENERIC CATCH TO RETRY 429
+                // =============================================
+
+                throw exception;
 
 
             } catch (Exception exception) {
@@ -378,14 +435,19 @@ public class GeminiAIService {
 
 
     // =========================================================
-    // RETRYABLE STATUS
+    // RETRYABLE HTTP STATUS
     // =========================================================
 
     private boolean isRetryableStatus(
             int status) {
 
-        return status == 429
-                || status == 500
+        /*
+         * 429 is intentionally NOT retryable here.
+         *
+         * Temporary Gemini server errors are retried.
+         */
+
+        return status == 500
                 || status == 502
                 || status == 503
                 || status == 504;
@@ -418,7 +480,7 @@ public class GeminiAIService {
 
         if (status == 429) {
 
-            return "Gemini rate limit exceeded.";
+            return "Gemini quota or rate limit exceeded.";
         }
 
 
@@ -841,5 +903,24 @@ public class GeminiAIService {
     public String getModel() {
 
         return model;
+    }
+
+
+    // =========================================================
+    // GEMINI QUOTA EXCEPTION
+    // =========================================================
+
+    public static class GeminiQuotaExceededException
+            extends RuntimeException {
+
+        public GeminiQuotaExceededException(
+                String message,
+                Throwable cause) {
+
+            super(
+                    message,
+                    cause
+            );
+        }
     }
 }

@@ -5,20 +5,29 @@ import java.util.Map;
 
 import org.springframework.stereotype.Service;
 
+import com.careerinde.careerinde_app.ai.OpenAIService;
 import com.careerinde.careerinde_app.ai.gemini.GeminiAIService;
 
 @Service
 public class GeminiResumeAIService {
 
     private final GeminiAIService geminiAIService;
+    private final OpenAIService groqService;
 
     private static final int MAX_CV_LENGTH = 6500;
     private static final int MAX_JOB_DESCRIPTION_LENGTH = 3000;
 
+
+    // =========================================================
+    // CONSTRUCTOR
+    // =========================================================
+
     public GeminiResumeAIService(
-            GeminiAIService geminiAIService) {
+            GeminiAIService geminiAIService,
+            OpenAIService groqService) {
 
         this.geminiAIService = geminiAIService;
+        this.groqService = groqService;
     }
 
 
@@ -35,11 +44,13 @@ public class GeminiResumeAIService {
                 jobDescription
         );
 
+
         String safeCv =
                 limitText(
                         cvText,
                         MAX_CV_LENGTH
                 );
+
 
         String safeJobDescription =
                 limitText(
@@ -47,11 +58,13 @@ public class GeminiResumeAIService {
                         MAX_JOB_DESCRIPTION_LENGTH
                 );
 
+
         String prompt =
                 buildPrompt(
                         safeCv,
                         safeJobDescription
                 );
+
 
         Map<String, Object> schema =
                 buildResumeSchema();
@@ -65,22 +78,157 @@ public class GeminiResumeAIService {
                 "CAREERINDE RESUME AI"
         );
         System.out.println(
-                "Compact Professional Prompt: ENABLED"
+                "Primary Provider: Gemini"
         );
         System.out.println(
-                "Model: " + geminiAIService.getModel()
+                "Fallback Provider: Groq"
+        );
+        System.out.println(
+                "Gemini Model: "
+                        + geminiAIService.getModel()
         );
         System.out.println(
                 "=========================================="
         );
 
 
-        return geminiAIService.generateJson(
-                prompt,
-                schema,
-                0.1,
-                3500
-        );
+        // =====================================================
+        // PRIMARY PROVIDER: GEMINI
+        // =====================================================
+
+        try {
+
+            long start =
+                    System.currentTimeMillis();
+
+
+            String result =
+                    geminiAIService.generateJson(
+                            prompt,
+                            schema,
+                            0.1,
+                            3500
+                    );
+
+
+            long duration =
+                    System.currentTimeMillis()
+                            - start;
+
+
+            System.out.println();
+            System.out.println(
+                    "=========================================="
+            );
+            System.out.println(
+                    "RESUME PROVIDER: GEMINI"
+            );
+            System.out.println(
+                    "Generation Time: "
+                            + duration
+                            + " ms"
+            );
+            System.out.println(
+                    "=========================================="
+            );
+
+
+            return result;
+
+
+        } catch (Exception geminiException) {
+
+
+            // =================================================
+            // GEMINI FAILED -> GROQ FALLBACK
+            // =================================================
+
+            System.err.println();
+            System.err.println(
+                    "=========================================="
+            );
+            System.err.println(
+                    "GEMINI RESUME OPTIMIZATION FAILED"
+            );
+            System.err.println(
+                    "Reason: "
+                            + geminiException.getMessage()
+            );
+            System.err.println(
+                    "Switching to Groq fallback..."
+            );
+            System.err.println(
+                    "=========================================="
+            );
+
+
+            try {
+
+                long start =
+                        System.currentTimeMillis();
+
+
+                String result =
+                        groqService.sendPrompt(
+                                prompt,
+                                3000
+                        );
+
+
+                long duration =
+                        System.currentTimeMillis()
+                                - start;
+
+
+                System.out.println();
+                System.out.println(
+                        "=========================================="
+                );
+                System.out.println(
+                        "RESUME PROVIDER: GROQ FALLBACK"
+                );
+                System.out.println(
+                        "Generation Time: "
+                                + duration
+                                + " ms"
+                );
+                System.out.println(
+                        "=========================================="
+                );
+
+
+                return result;
+
+
+            } catch (Exception groqException) {
+
+
+                System.err.println();
+                System.err.println(
+                        "=========================================="
+                );
+                System.err.println(
+                        "ALL RESUME AI PROVIDERS FAILED"
+                );
+                System.err.println(
+                        "Gemini: "
+                                + geminiException.getMessage()
+                );
+                System.err.println(
+                        "Groq: "
+                                + groqException.getMessage()
+                );
+                System.err.println(
+                        "=========================================="
+                );
+
+
+                throw new IllegalStateException(
+                        "AI resume optimization is temporarily unavailable.",
+                        groqException
+                );
+            }
+        }
     }
 
 
@@ -288,11 +436,60 @@ CareerInDe calculates the real scores separately.
 
 OUTPUT:
 
-Return ONLY JSON matching the provided schema.
+Return ONLY valid JSON matching this exact structure:
+
+{
+  "fullName": "",
+  "targetRole": "",
+  "email": "",
+  "phone": "",
+  "location": "",
+  "linkedin": "",
+  "github": "",
+  "professionalSummary": "",
+  "skills": [],
+  "experiences": [
+    {
+      "jobTitle": "",
+      "company": "",
+      "location": "",
+      "startDate": "",
+      "endDate": "",
+      "bulletPoints": []
+    }
+  ],
+  "education": [
+    {
+      "degree": "",
+      "fieldOfStudy": "",
+      "institution": "",
+      "location": "",
+      "startDate": "",
+      "endDate": "",
+      "grade": ""
+    }
+  ],
+  "projects": [
+    {
+      "title": "",
+      "description": "",
+      "technologies": [],
+      "bulletPoints": []
+    }
+  ],
+  "languages": [],
+  "certifications": [],
+  "originalMatchScore": 0,
+  "optimizedMatchScore": 0
+}
 
 No markdown.
 No explanations.
 No comments.
+No code fences.
+
+The first character must be {
+The last character must be }
 
 
 ================ ORIGINAL CV ================
@@ -318,11 +515,13 @@ No comments.
                         "string"
                 );
 
+
         Map<String, Object> integerSchema =
                 Map.of(
                         "type",
                         "integer"
                 );
+
 
         Map<String, Object> stringArraySchema =
                 Map.of(
@@ -610,6 +809,7 @@ No comments.
             );
         }
 
+
         if (jobDescription == null ||
                 jobDescription.isBlank()) {
 
@@ -629,8 +829,10 @@ No comments.
             int maxLength) {
 
         if (text == null) {
+
             return "";
         }
+
 
         String cleaned =
                 text
@@ -640,9 +842,13 @@ No comments.
                         )
                         .trim();
 
-        if (cleaned.length() <= maxLength) {
+
+        if (cleaned.length()
+                <= maxLength) {
+
             return cleaned;
         }
+
 
         return cleaned.substring(
                 0,

@@ -5,6 +5,7 @@ import java.util.Map;
 
 import org.springframework.stereotype.Service;
 
+import com.careerinde.careerinde_app.ai.OpenAIService;
 import com.careerinde.careerinde_app.ai.gemini.GeminiAIService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
@@ -12,17 +13,24 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 public class CoverLetterService {
 
     private final GeminiAIService geminiAIService;
+    private final OpenAIService groqService;
     private final ObjectMapper objectMapper;
 
     private static final int MAX_CV_LENGTH = 6500;
     private static final int MAX_JOB_DESCRIPTION_LENGTH = 3000;
 
 
+    // =========================================================
+    // CONSTRUCTOR
+    // =========================================================
+
     public CoverLetterService(
             GeminiAIService geminiAIService,
+            OpenAIService groqService,
             ObjectMapper objectMapper) {
 
         this.geminiAIService = geminiAIService;
+        this.groqService = groqService;
         this.objectMapper = objectMapper;
     }
 
@@ -42,11 +50,13 @@ public class CoverLetterService {
                 jobDescription
         );
 
+
         String safeCvText =
                 limitText(
                         cvText,
                         MAX_CV_LENGTH
                 );
+
 
         String safeJobDescription =
                 limitText(
@@ -54,17 +64,20 @@ public class CoverLetterService {
                         MAX_JOB_DESCRIPTION_LENGTH
                 );
 
+
         String safeJobTitle =
                 normalizeOptional(
                         jobTitle,
                         "Advertised Position"
                 );
 
+
         String safeCompanyName =
                 normalizeOptional(
                         companyName,
                         "Company"
                 );
+
 
         String prompt =
                 buildPrompt(
@@ -73,6 +86,7 @@ public class CoverLetterService {
                         safeJobTitle,
                         safeCompanyName
                 );
+
 
         Map<String, Object> schema =
                 buildResponseSchema();
@@ -86,23 +100,154 @@ public class CoverLetterService {
                 "CAREERINDE COVER LETTER AI"
         );
         System.out.println(
-                "Compact Professional Prompt: ENABLED"
+                "Primary Provider: Gemini"
         );
         System.out.println(
-                "Model: " + geminiAIService.getModel()
+                "Fallback Provider: Groq"
         );
         System.out.println(
                 "=========================================="
         );
 
 
-        String response =
-                geminiAIService.generateJson(
-                        prompt,
-                        schema,
-                        0.15,
-                        1800
+        String response;
+
+
+        // =====================================================
+        // PRIMARY PROVIDER: GEMINI
+        // =====================================================
+
+        try {
+
+            long start =
+                    System.currentTimeMillis();
+
+
+            response =
+                    geminiAIService.generateJson(
+                            prompt,
+                            schema,
+                            0.15,
+                            1800
+                    );
+
+
+            long duration =
+                    System.currentTimeMillis()
+                            - start;
+
+
+            System.out.println();
+            System.out.println(
+                    "=========================================="
+            );
+            System.out.println(
+                    "COVER LETTER PROVIDER: GEMINI"
+            );
+            System.out.println(
+                    "Generation Time: "
+                            + duration
+                            + " ms"
+            );
+            System.out.println(
+                    "=========================================="
+            );
+
+
+        } catch (Exception geminiException) {
+
+
+            // =================================================
+            // GEMINI FAILED -> GROQ FALLBACK
+            // =================================================
+
+            System.err.println();
+            System.err.println(
+                    "=========================================="
+            );
+            System.err.println(
+                    "GEMINI COVER LETTER FAILED"
+            );
+            System.err.println(
+                    "Reason: "
+                            + geminiException.getMessage()
+            );
+            System.err.println(
+                    "Switching to Groq fallback..."
+            );
+            System.err.println(
+                    "=========================================="
+            );
+
+
+            try {
+
+                long start =
+                        System.currentTimeMillis();
+
+
+                response =
+                        groqService.sendPrompt(
+                                prompt,
+                                1200
+                        );
+
+
+                long duration =
+                        System.currentTimeMillis()
+                                - start;
+
+
+                System.out.println();
+                System.out.println(
+                        "=========================================="
                 );
+                System.out.println(
+                        "COVER LETTER PROVIDER: GROQ FALLBACK"
+                );
+                System.out.println(
+                        "Generation Time: "
+                                + duration
+                                + " ms"
+                );
+                System.out.println(
+                        "=========================================="
+                );
+
+
+            } catch (Exception groqException) {
+
+                System.err.println();
+                System.err.println(
+                        "=========================================="
+                );
+                System.err.println(
+                        "ALL COVER LETTER PROVIDERS FAILED"
+                );
+                System.err.println(
+                        "Gemini: "
+                                + geminiException.getMessage()
+                );
+                System.err.println(
+                        "Groq: "
+                                + groqException.getMessage()
+                );
+                System.err.println(
+                        "=========================================="
+                );
+
+
+                throw new IllegalStateException(
+                        "AI cover letter generation is temporarily unavailable.",
+                        groqException
+                );
+            }
+        }
+
+
+        // =====================================================
+        // PARSE FINAL RESPONSE
+        // =====================================================
 
         return parseResponse(
                 response
@@ -121,6 +266,7 @@ public class CoverLetterService {
                         "type",
                         "STRING"
                 );
+
 
         Map<String, Object> properties =
                 Map.of(
@@ -146,6 +292,7 @@ public class CoverLetterService {
                         stringSchema
                 );
 
+
         return Map.of(
                 "type",
                 "OBJECT",
@@ -168,7 +315,7 @@ public class CoverLetterService {
 
 
     // =========================================================
-    // COMPACT PROFESSIONAL COVER LETTER PROMPT
+    // PROFESSIONAL COVER LETTER PROMPT
     // =========================================================
 
     private String buildPrompt(
@@ -180,9 +327,22 @@ public class CoverLetterService {
         return """
 You are CareerInDe's professional cover letter engine.
 
-Write a personalized, recruiter-friendly cover letter for
-the supplied job using ONLY verified facts from the CV.
+Write a personalized and recruiter-friendly cover letter
+for the supplied job using ONLY verified facts from the CV.
 
+Return ONLY valid JSON.
+
+The JSON MUST use exactly this structure:
+
+{
+  "jobTitle": "...",
+  "companyName": "...",
+  "subject": "...",
+  "greeting": "...",
+  "body": "...",
+  "closing": "...",
+  "candidateName": "..."
+}
 
 FACTUAL SAFETY:
 
@@ -200,19 +360,19 @@ Never invent or assume:
 - language proficiency
 - company facts
 
-The JOB DESCRIPTION is not evidence about the candidate.
+The JOB DESCRIPTION is NOT evidence about the candidate.
 
 Only claim a qualification when the CV supports it.
 
 Do not transfer skills between contexts.
 
-Example:
-If Java or Spring Boot appears only in a project or skills
-section, do not claim the candidate used it at a specific
-employer unless the CV explicitly says so.
+If Java, Spring Boot, AWS or another technology appears only
+in a project or skills section, do not claim the candidate
+used it at a specific employer unless the CV explicitly
+supports that connection.
 
 If a degree is still in progress, never describe the
-candidate as already holding that completed degree.
+candidate as already holding the completed degree.
 
 If uncertain, omit the claim.
 
@@ -223,29 +383,29 @@ Internally identify the 3-5 most important job requirements.
 
 Match them to the strongest verified evidence in the CV.
 
-Use supported evidence to build the letter.
+Use only supported evidence in the letter.
 
-Do not mention unsupported requirements simply because
-they appear in the job advertisement.
-
-Do not output the analysis.
+Do not output this analysis.
 
 
-PERSONALIZATION:
+TARGET JOB:
 
-Target Job:
+Job Title:
 %s
 
 Company:
 %s
 
+
+PERSONALIZATION:
+
 Make the letter clearly specific to this role.
 
-Use company-specific facts only when supplied in the job
-description.
+Use company-specific facts only when explicitly supplied
+in the job description.
 
-Never invent company culture, products, technologies,
-projects, values or strategy.
+Never invent company culture, products, projects,
+technologies, values, strategy or achievements.
 
 
 LANGUAGE:
@@ -253,15 +413,18 @@ LANGUAGE:
 Use the primary language of the job description.
 
 For German:
-- use natural professional German
-- use "Sie"
+- write natural professional German
+- use formal "Sie"
 - if no real contact person exists, use:
   "Sehr geehrte Damen und Herren,"
 - normally close with:
   "Mit freundlichen Grüßen"
 
 For English:
-use natural professional business English.
+- write natural professional business English
+- if no contact person exists, use:
+  "Dear Hiring Team,"
+- use a professional closing
 
 Never invent a contact person.
 
@@ -309,7 +472,7 @@ FINAL FACT CHECK:
 Before returning the response, verify every candidate claim
 against the CV.
 
-Check especially:
+Especially check:
 - degree status
 - technologies
 - skill-to-experience attribution
@@ -320,42 +483,47 @@ Check especially:
 - metrics
 - years of experience
 
-Remove anything that cannot be supported.
+Remove unsupported claims.
 
 Verify company-specific statements against the supplied
 job description.
 
 
-OUTPUT:
+OUTPUT RULES:
 
-Return ONLY JSON matching the provided schema.
+Return ONLY JSON.
+
+No Markdown.
+No ```json.
+No code fences.
+No explanations before JSON.
+No explanations after JSON.
 
 jobTitle:
-Return the supplied job title.
+Return exactly:
+%s
 
 companyName:
-Return the supplied company name.
+Return exactly:
+%s
 
 subject:
 Professional application subject.
 
 greeting:
-Use a real contact person only if supplied.
+Use a real contact person only when explicitly supplied.
 Otherwise use a professional generic greeting.
 
 body:
 Only the main cover letter body.
-Do not repeat greeting, closing or candidate name.
+Do not include greeting, closing or candidate name.
 
 closing:
 Professional closing phrase only.
 
 candidateName:
-Use the name only if clearly identifiable from the CV.
-Otherwise return an empty string.
-
-No markdown.
-No explanations.
+Use the candidate name only if clearly identifiable
+from the CV. Otherwise return an empty string.
 
 
 ================ CANDIDATE CV ================
@@ -368,6 +536,8 @@ No explanations.
 %s
 """
                 .formatted(
+                        jobTitle,
+                        companyName,
                         jobTitle,
                         companyName,
                         cvText,
@@ -387,23 +557,33 @@ No explanations.
                 || response.isBlank()) {
 
             throw new IllegalStateException(
-                    "Gemini returned an empty cover letter."
+                    "AI returned an empty cover letter."
             );
         }
 
+
         try {
+
+            String cleaned =
+                    cleanJson(
+                            response
+                    );
+
 
             CoverLetter coverLetter =
                     objectMapper.readValue(
-                            response,
+                            cleaned,
                             CoverLetter.class
                     );
+
 
             validateGeneratedCoverLetter(
                     coverLetter
             );
 
+
             return coverLetter;
+
 
         } catch (Exception exception) {
 
@@ -412,6 +592,83 @@ No explanations.
                     exception
             );
         }
+    }
+
+
+    // =========================================================
+    // CLEAN JSON
+    // =========================================================
+
+    private String cleanJson(
+            String response) {
+
+        if (response == null
+                || response.isBlank()) {
+
+            return "";
+        }
+
+
+        String cleaned =
+                response.trim();
+
+
+        if (cleaned.startsWith(
+                "```json")) {
+
+            cleaned =
+                    cleaned
+                            .substring(7)
+                            .trim();
+
+        } else if (
+                cleaned.startsWith(
+                        "```")) {
+
+            cleaned =
+                    cleaned
+                            .substring(3)
+                            .trim();
+        }
+
+
+        if (cleaned.endsWith(
+                "```")) {
+
+            cleaned =
+                    cleaned
+                            .substring(
+                                    0,
+                                    cleaned.length() - 3
+                            )
+                            .trim();
+        }
+
+
+        int firstBrace =
+                cleaned.indexOf(
+                        '{'
+                );
+
+
+        int lastBrace =
+                cleaned.lastIndexOf(
+                        '}'
+                );
+
+
+        if (firstBrace >= 0
+                && lastBrace > firstBrace) {
+
+            cleaned =
+                    cleaned.substring(
+                            firstBrace,
+                            lastBrace + 1
+                    );
+        }
+
+
+        return cleaned;
     }
 
 
@@ -428,6 +685,7 @@ No explanations.
                     "Generated cover letter is empty."
             );
         }
+
 
         if (coverLetter.getBody() == null
                 || coverLetter.getBody().isBlank()) {
@@ -455,6 +713,7 @@ No explanations.
             );
         }
 
+
         if (jobDescription == null
                 || jobDescription.isBlank()) {
 
@@ -479,6 +738,7 @@ No explanations.
             return fallback;
         }
 
+
         return value.trim();
     }
 
@@ -492,8 +752,10 @@ No explanations.
             int maxLength) {
 
         if (text == null) {
+
             return "";
         }
+
 
         String cleaned =
                 text
@@ -503,9 +765,13 @@ No explanations.
                         )
                         .trim();
 
-        if (cleaned.length() <= maxLength) {
+
+        if (cleaned.length()
+                <= maxLength) {
+
             return cleaned;
         }
+
 
         return cleaned.substring(
                 0,

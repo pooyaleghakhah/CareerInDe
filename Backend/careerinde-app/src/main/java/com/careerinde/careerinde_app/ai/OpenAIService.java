@@ -29,6 +29,8 @@ public class OpenAIService {
 
     private static final int MAX_RETRIES = 3;
 
+    private static final int DEFAULT_PROMPT_MAX_TOKENS = 1600;
+
 
     // =========================================================
     // CONSTRUCTOR
@@ -330,12 +332,32 @@ Never invent candidate information.
 
     // =========================================================
     // GENERIC AI PROMPT
-    //
-    // Used by ResumeOptimizationService
+    // BACKWARD-COMPATIBLE VERSION
     // =========================================================
 
     public String sendPrompt(
             String prompt) {
+
+        return sendPrompt(
+                prompt,
+                DEFAULT_PROMPT_MAX_TOKENS
+        );
+    }
+
+
+    // =========================================================
+    // GENERIC AI PROMPT WITH CUSTOM TOKEN LIMIT
+    //
+    // Resume:
+    // sendPrompt(prompt, 3000)
+    //
+    // Cover Letter:
+    // sendPrompt(prompt, 1200)
+    // =========================================================
+
+    public String sendPrompt(
+            String prompt,
+            int maxTokens) {
 
         if (prompt == null ||
                 prompt.isBlank()) {
@@ -346,22 +368,12 @@ Never invent candidate information.
         }
 
 
-        /*
-         * IMPORTANT:
-         *
-         * We intentionally DO NOT use:
-         *
-         * response_format = json_object
-         *
-         * because Groq returned:
-         *
-         * json_validate_failed
-         *
-         * with the current model.
-         *
-         * JSON output is instead enforced
-         * through the system prompt.
-         */
+        if (maxTokens < 100) {
+
+            throw new IllegalArgumentException(
+                    "maxTokens must be at least 100."
+            );
+        }
 
 
         Map<String, Object> requestBody =
@@ -377,23 +389,17 @@ Never invent candidate information.
                                         "system",
                                         "content",
                                         """
-You are CareerInDe's resume optimization engine.
-
-Your job is to optimize resumes for specific
-job descriptions.
+You are CareerInDe's professional AI writing engine.
 
 IMPORTANT OUTPUT RULES:
 
 Return ONLY valid JSON.
 
 Do not use Markdown.
-
 Do not use code fences.
-
 Do not write ```json.
 
 Do not include explanations before JSON.
-
 Do not include explanations after JSON.
 
 The first character of your response
@@ -402,15 +408,16 @@ must be {
 The last character of your response
 must be }
 
+FACTUAL SAFETY:
+
 Never invent candidate information.
 
 Never invent:
-
 - employers
 - job titles
 - dates
 - education
-- degrees
+- degree completion
 - certifications
 - technologies
 - projects
@@ -418,13 +425,16 @@ Never invent:
 - metrics
 - languages
 - responsibilities
+- years of experience
+
+The supplied job description is NOT
+evidence about the candidate.
+
+Every factual statement about the candidate
+must be supported by the original CV.
 
 You may improve wording and structure,
-but every factual statement must be
-supported by the original CV.
-
-Write professional,
-ATS-friendly resume content.
+but you must preserve factual accuracy.
 """
                                 ),
 
@@ -440,11 +450,29 @@ ATS-friendly resume content.
                         0.1,
 
                         "max_tokens",
-                        1600
+                        maxTokens
                 );
 
 
         try {
+
+            System.out.println();
+            System.out.println(
+                    "=========================================="
+            );
+            System.out.println(
+                    "CAREERINDE GROQ"
+            );
+            System.out.println(
+                    "Model: " + MODEL
+            );
+            System.out.println(
+                    "Max Tokens: " + maxTokens
+            );
+            System.out.println(
+                    "=========================================="
+            );
+
 
             String content =
                     executeRequestWithRetry(
@@ -630,7 +658,7 @@ ATS-friendly resume content.
 
 
                         System.out.println(
-                                "Rate limit reached."
+                                "Groq rate limit reached."
                         );
 
                         System.out.println(
@@ -653,12 +681,9 @@ ATS-friendly resume content.
                 }
 
 
-                /*
-                 * 400 means request/model/output problem.
-                 *
-                 * Retrying the identical request normally
-                 * does not solve it.
-                 */
+                // =============================================
+                // 400 BAD REQUEST
+                // =============================================
 
                 if (exception.getStatusCode()
                         == HttpStatus.BAD_REQUEST) {
@@ -669,6 +694,68 @@ ATS-friendly resume content.
                                     .getResponseBodyAsString(),
                             exception
                     );
+                }
+
+
+                // =============================================
+                // AUTHENTICATION
+                // =============================================
+
+                if (exception.getStatusCode()
+                        == HttpStatus.UNAUTHORIZED
+                        ||
+                        exception.getStatusCode()
+                                == HttpStatus.FORBIDDEN) {
+
+                    throw new RuntimeException(
+                            "Groq authentication failed.",
+                            exception
+                    );
+                }
+
+
+                // =============================================
+                // SERVER ERRORS
+                // =============================================
+
+                if (exception.getStatusCode()
+                        .is5xxServerError()) {
+
+
+                    lastException =
+                            new RuntimeException(
+                                    "Groq server is temporarily unavailable.",
+                                    exception
+                            );
+
+
+                    if (attempt < MAX_RETRIES) {
+
+                        long waitMillis =
+                                1500L * attempt;
+
+
+                        System.out.println(
+                                "Groq temporary server error."
+                        );
+
+                        System.out.println(
+                                "Retrying in "
+                                        + waitMillis
+                                        + " ms..."
+                        );
+
+
+                        sleep(
+                                waitMillis
+                        );
+
+
+                        continue;
+                    }
+
+
+                    break;
                 }
 
 
@@ -697,7 +784,7 @@ ATS-friendly resume content.
 
 
                     System.out.println(
-                            "Temporary AI failure."
+                            "Temporary Groq failure."
                     );
 
                     System.out.println(
@@ -912,8 +999,6 @@ ATS-friendly resume content.
                 response.trim();
 
 
-        // Remove ```json
-
         if (cleaned.startsWith(
                 "```json")) {
 
@@ -924,8 +1009,6 @@ ATS-friendly resume content.
         }
 
 
-        // Remove generic ```
-
         else if (cleaned.startsWith(
                 "```")) {
 
@@ -935,8 +1018,6 @@ ATS-friendly resume content.
                             .trim();
         }
 
-
-        // Remove ending ```
 
         if (cleaned.endsWith(
                 "```")) {
@@ -950,10 +1031,6 @@ ATS-friendly resume content.
                             .trim();
         }
 
-
-        /*
-         * Extract only JSON object.
-         */
 
         int firstBrace =
                 cleaned.indexOf(
