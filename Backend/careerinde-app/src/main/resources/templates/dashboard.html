@@ -1,412 +1,913 @@
 <!DOCTYPE html>
+
 <html xmlns:th="http://www.thymeleaf.org">
 
 <head>
+
     <meta charset="UTF-8">
+
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
     <title>CareerInDe Dashboard</title>
 
     <style>
+
         * {
+
             margin: 0;
+
             padding: 0;
+
             box-sizing: border-box;
+
         }
 
         :root {
+
             --blue: #2563eb;
+
             --blue-light: #eff6ff;
+
             --dark: #0f172a;
+
             --text: #334155;
+
             --muted: #64748b;
+
             --border: #e2e8f0;
+
             --background: #f8fafc;
+
             --white: #ffffff;
+
             --green: #16a34a;
+
         }
 
         body {
+
             font-family: Arial, sans-serif;
+
             background: var(--background);
+
             color: var(--dark);
+
         }
 
         .layout {
+
             display: flex;
+
             min-height: 100vh;
+
         }
 
         .sidebar {
+
             width: 245px;
+
             background: #0b1220;
+
             color: white;
+
             padding: 32px 20px;
+
             position: fixed;
+
             top: 0;
+
             bottom: 0;
+
             left: 0;
+
         }
 
         .logo {
+
             font-size: 25px;
+
             font-weight: 800;
+
             padding: 0 12px;
+
             margin-bottom: 42px;
+
         }
 
         .logo span {
+
             color: #3b82f6;
+
         }
 
         .menu-label {
+
             font-size: 11px;
+
             color: #64748b;
+
             text-transform: uppercase;
+
             letter-spacing: 1.2px;
+
             margin: 25px 12px 10px;
+
         }
 
         .menu {
+
             display: flex;
+
             flex-direction: column;
+
             gap: 5px;
+
         }
 
         .menu a {
+
             color: #cbd5e1;
+
             text-decoration: none;
+
             padding: 13px 14px;
+
             border-radius: 9px;
+
             font-size: 14px;
+
             transition: 0.2s;
+
         }
 
         .menu a:hover {
+
             background: #172033;
+
             color: white;
+
         }
 
         .menu a.active {
+
             background: #2563eb;
+
             color: white;
+
             font-weight: 600;
+
         }
 
         .main {
+
             flex: 1;
+
             margin-left: 245px;
+
             padding: 38px 45px 60px;
+
             max-width: 1700px;
+
         }
 
         .topbar {
+
             display: flex;
+
             justify-content: space-between;
+
             align-items: center;
+
             margin-bottom: 35px;
+
         }
 
         .welcome h1 {
+
             font-size: 30px;
+
             margin-bottom: 8px;
+
         }
 
         .welcome p {
+
             color: var(--muted);
+
             font-size: 15px;
+
         }
 
         .top-actions {
+
             display: flex;
+
             align-items: center;
+
             gap: 12px;
+
         }
 
         .logout-btn {
+
             padding: 11px 18px;
+
             border: 1px solid var(--border);
+
             border-radius: 9px;
+
             background: white;
+
             color: var(--dark);
+
             cursor: pointer;
+
             font-weight: 600;
+
         }
 
         .logout-btn:hover {
+
             background: #f1f5f9;
+
         }
 
         .career-overview {
+
             background: linear-gradient(135deg, #172554, #2563eb);
+
             color: white;
+
             border-radius: 20px;
+
             padding: 30px 34px;
+
             margin-bottom: 28px;
+
             display: flex;
+
             justify-content: space-between;
+
             align-items: center;
+
         }
 
         .career-overview h2 {
+
             font-size: 23px;
+
             margin-bottom: 9px;
+
         }
 
         .career-overview p {
+
             color: #dbeafe;
+
             line-height: 1.6;
+
             font-size: 14px;
+
         }
 
         .overview-score {
+
             text-align: center;
+
             min-width: 130px;
+
         }
 
         .overview-score strong {
+
             display: block;
+
             font-size: 42px;
+
         }
 
         .overview-score span {
+
             font-size: 12px;
+
             color: #dbeafe;
+
         }
 
         .cards {
+
             display: grid;
+
             grid-template-columns: repeat(4, 1fr);
+
             gap: 18px;
+
             margin-bottom: 28px;
+
         }
 
         .card {
+
             background: white;
+
             padding: 23px;
+
             border-radius: 15px;
+
             border: 1px solid var(--border);
+
         }
 
         .card-top {
+
             display: flex;
+
             justify-content: space-between;
+
             align-items: center;
+
             margin-bottom: 18px;
+
         }
 
         .card-title {
+
             color: var(--muted);
+
             font-size: 13px;
+
             font-weight: 600;
+
         }
 
         .card-icon {
+
             width: 36px;
+
             height: 36px;
+
             border-radius: 9px;
+
             background: var(--blue-light);
+
             color: var(--blue);
+
             display: flex;
+
             align-items: center;
+
             justify-content: center;
+
             font-size: 17px;
+
         }
 
         .card-value {
+
             font-size: 31px;
+
             font-weight: 750;
+
         }
 
         .card-description {
+
             margin-top: 7px;
+
             color: var(--muted);
+
             font-size: 12px;
+
+        }
+
+        /* ===================================================== */
+        /* APPLICATION TOOLS                                     */
+        /* ===================================================== */
+
+        .tools-section {
+
+            margin-bottom: 28px;
+
+        }
+
+        .tools-header {
+
+            margin-bottom: 16px;
+
+        }
+
+        .tools-header h2 {
+
+            font-size: 20px;
+
+            margin-bottom: 6px;
+
+        }
+
+        .tools-header p {
+
+            color: var(--muted);
+
+            font-size: 13px;
+
+        }
+
+        .tools-grid {
+
+            display: grid;
+
+            grid-template-columns: repeat(3, 1fr);
+
+            gap: 18px;
+
+        }
+
+        .tool-card {
+
+            background: white;
+
+            border: 1px solid var(--border);
+
+            border-radius: 16px;
+
+            padding: 22px;
+
+            transition: 0.2s;
+
+        }
+
+        .tool-card:hover {
+
+            transform: translateY(-2px);
+
+            border-color: #bfdbfe;
+
+            box-shadow: 0 8px 24px rgba(15, 23, 42, 0.06);
+
+        }
+
+        .tool-card.featured {
+
+            border-color: #93c5fd;
+
+            background: linear-gradient(180deg, #ffffff, #f8fbff);
+
+        }
+
+        .tool-icon {
+
+            width: 42px;
+
+            height: 42px;
+
+            border-radius: 11px;
+
+            display: flex;
+
+            align-items: center;
+
+            justify-content: center;
+
+            background: var(--blue-light);
+
+            color: var(--blue);
+
+            font-size: 18px;
+
+            margin-bottom: 16px;
+
+        }
+
+        .tool-card h3 {
+
+            font-size: 17px;
+
+            margin-bottom: 8px;
+
+        }
+
+        .tool-card p {
+
+            color: var(--muted);
+
+            font-size: 13px;
+
+            line-height: 1.6;
+
+            margin-bottom: 18px;
+
+            min-height: 62px;
+
+        }
+
+        .tool-link,
+
+        .tool-button {
+
+            width: 100%;
+
+            min-height: 43px;
+
+            border-radius: 10px;
+
+            border: 1px solid var(--border);
+
+            background: white;
+
+            color: var(--dark);
+
+            text-decoration: none;
+
+            font-family: inherit;
+
+            font-size: 13px;
+
+            font-weight: 700;
+
+            cursor: pointer;
+
+            display: inline-flex;
+
+            align-items: center;
+
+            justify-content: center;
+
+            transition: 0.2s;
+
+        }
+
+        .tool-link:hover,
+
+        .tool-button:hover {
+
+            border-color: var(--blue);
+
+            color: var(--blue);
+
+            background: #f8fbff;
+
+        }
+
+        .tool-card.featured .tool-button {
+
+            background: var(--blue);
+
+            color: white;
+
+            border-color: var(--blue);
+
+        }
+
+        .tool-card.featured .tool-button:hover {
+
+            background: #1d4ed8;
+
+            color: white;
+
+        }
+
+        .tool-form {
+
+            width: 100%;
+
         }
 
         .content-grid {
+
             display: grid;
+
             grid-template-columns: 1.4fr 1fr;
+
             gap: 22px;
+
         }
 
         .panel {
+
             background: white;
+
             border: 1px solid var(--border);
+
             border-radius: 16px;
+
             padding: 26px;
+
         }
 
         .panel-header {
+
             margin-bottom: 24px;
+
         }
 
         .panel-header h2 {
+
             font-size: 18px;
+
             margin-bottom: 6px;
+
         }
 
         .panel-header p {
+
             color: var(--muted);
+
             font-size: 13px;
+
         }
 
         .progress-number {
+
             display: flex;
+
             justify-content: space-between;
+
             font-size: 13px;
+
             margin-bottom: 10px;
+
         }
 
         .progress-number strong {
+
             color: var(--blue);
+
         }
 
         .progress-bar {
+
             width: 100%;
+
             height: 9px;
+
             background: #e2e8f0;
+
             border-radius: 20px;
+
             overflow: hidden;
+
             margin-bottom: 28px;
+
         }
 
         .progress-fill {
+
             height: 100%;
+
             width: 72%;
+
             background: var(--blue);
+
             border-radius: 20px;
+
         }
 
         .steps {
+
             display: flex;
+
             flex-direction: column;
+
             gap: 17px;
+
         }
 
         .step {
+
             display: flex;
+
             align-items: center;
+
             gap: 13px;
+
         }
 
         .step-status {
+
             width: 30px;
+
             height: 30px;
+
             border-radius: 50%;
+
             display: flex;
+
             align-items: center;
+
             justify-content: center;
+
             font-size: 13px;
+
             flex-shrink: 0;
+
         }
 
         .done {
+
             background: #dcfce7;
+
             color: #15803d;
+
         }
 
         .current {
+
             background: #dbeafe;
+
             color: #2563eb;
+
         }
 
         .waiting {
+
             background: #f1f5f9;
+
             color: #94a3b8;
+
         }
 
         .step-text strong {
+
             display: block;
+
             font-size: 14px;
+
             margin-bottom: 3px;
+
         }
 
         .step-text span {
+
             color: var(--muted);
+
             font-size: 12px;
+
         }
 
         .ai-box {
+
             background: var(--blue-light);
+
             border: 1px solid #dbeafe;
+
             border-radius: 13px;
+
             padding: 20px;
+
             margin-bottom: 20px;
+
         }
 
         .ai-label {
+
             font-size: 12px;
+
             color: var(--blue);
+
             font-weight: bold;
+
             margin-bottom: 10px;
+
         }
 
         .ai-box h3 {
+
             font-size: 16px;
+
             margin-bottom: 8px;
+
         }
 
         .ai-box p {
+
             color: var(--text);
+
             font-size: 13px;
+
             line-height: 1.6;
+
         }
 
         .quick-actions {
+
             display: grid;
+
             grid-template-columns: 1fr 1fr;
+
             gap: 10px;
+
         }
 
         .action {
+
             text-decoration: none;
+
             color: var(--dark);
+
             border: 1px solid var(--border);
+
             border-radius: 10px;
+
             padding: 15px;
+
             font-size: 13px;
+
             font-weight: 600;
+
             transition: 0.2s;
+
+            background: white;
+
+            cursor: pointer;
+
+            font-family: inherit;
+
+            width: 100%;
+
+            text-align: left;
+
         }
 
         .action:hover {
+
             border-color: var(--blue);
+
             color: var(--blue);
+
             background: #f8fbff;
+
+        }
+
+        .quick-action-form {
+
+            width: 100%;
+
         }
 
         @media (max-width: 1050px) {
+
             .cards {
+
                 grid-template-columns: repeat(2, 1fr);
+
+            }
+
+            .tools-grid {
+
+                grid-template-columns: 1fr;
+
             }
 
             .content-grid {
+
                 grid-template-columns: 1fr;
+
             }
+
         }
 
         @media (max-width: 700px) {
+
             .sidebar {
+
                 display: none;
+
             }
 
             .main {
+
                 margin-left: 0;
+
                 padding: 25px 18px;
+
             }
 
             .cards {
+
                 grid-template-columns: 1fr;
+
             }
 
             .career-overview {
+
                 align-items: flex-start;
+
                 gap: 25px;
+
                 flex-direction: column;
+
             }
+
+            .quick-actions {
+
+                grid-template-columns: 1fr;
+
+            }
+
         }
+
     </style>
+
 </head>
 
 <body>
@@ -416,7 +917,9 @@
     <aside class="sidebar">
 
         <div class="logo">
+
             Career<span>InDe</span>
+
         </div>
 
         <div class="menu-label">Workspace</div>
@@ -424,31 +927,45 @@
         <nav class="menu">
 
             <a th:href="@{/dashboard}" class="active">
+
                 ▣ &nbsp; Dashboard
+
             </a>
 
             <a th:href="@{/profile}">
+
                 ◯ &nbsp; Profile
+
             </a>
 
             <a th:href="@{/resume/upload}">
+
                 ↑ &nbsp; My CV
+
             </a>
 
             <a th:href="@{/jobs}">
+
                 ⌕ &nbsp; Find Jobs
+
             </a>
 
             <a th:href="@{/recommended-jobs}">
+
                 ◎ &nbsp; Job Matches
+
             </a>
 
             <a th:href="@{/skill-gap}">
+
                 ◇ &nbsp; Skill Gap
+
             </a>
 
             <a th:href="@{/applications}">
+
                 ▤ &nbsp; Applications
+
             </a>
 
         </nav>
@@ -463,13 +980,19 @@
             <div class="welcome">
 
                 <h1>
+
                     Welcome back,
+
                     <span th:text="${email}"></span>
+
                     👋
+
                 </h1>
 
                 <p>
+
                     Here's an overview of your career progress in Germany.
+
                 </p>
 
             </div>
@@ -478,8 +1001,16 @@
 
                 <form th:action="@{/logout}" method="post">
 
+                    <input
+                            type="hidden"
+                            th:if="${_csrf != null}"
+                            th:name="${_csrf.parameterName}"
+                            th:value="${_csrf.token}">
+
                     <button class="logout-btn" type="submit">
+
                         Logout
+
                     </button>
 
                 </form>
@@ -496,8 +1027,11 @@
                 <h2>Your Career Readiness</h2>
 
                 <p>
+
                     You're making good progress. Complete your CV analysis
+
                     and skill profile to unlock better job matches.
+
                 </p>
 
             </div>
@@ -518,14 +1052,19 @@
             <div class="card">
 
                 <div class="card-top">
+
                     <span class="card-title">ATS SCORE</span>
+
                     <div class="card-icon">✓</div>
+
                 </div>
 
                 <div class="card-value">78%</div>
 
                 <div class="card-description">
+
                     CV compatibility
+
                 </div>
 
             </div>
@@ -534,14 +1073,19 @@
             <div class="card">
 
                 <div class="card-top">
+
                     <span class="card-title">JOB MATCHES</span>
+
                     <div class="card-icon">◎</div>
+
                 </div>
 
                 <div class="card-value">12</div>
 
                 <div class="card-description">
+
                     Matching opportunities
+
                 </div>
 
             </div>
@@ -550,14 +1094,19 @@
             <div class="card">
 
                 <div class="card-top">
+
                     <span class="card-title">MISSING SKILLS</span>
+
                     <div class="card-icon">◇</div>
+
                 </div>
 
                 <div class="card-value">4</div>
 
                 <div class="card-description">
+
                     Skills to improve
+
                 </div>
 
             </div>
@@ -566,14 +1115,149 @@
             <div class="card">
 
                 <div class="card-top">
+
                     <span class="card-title">APPLICATIONS</span>
+
                     <div class="card-icon">↗</div>
+
                 </div>
 
                 <div class="card-value">7</div>
 
                 <div class="card-description">
+
                     Applications tracked
+
+                </div>
+
+            </div>
+
+        </section>
+
+
+        <!-- ================================================= -->
+        <!-- APPLICATION TOOLS                                -->
+        <!-- ================================================= -->
+
+        <section class="tools-section">
+
+            <div class="tools-header">
+
+                <h2>Application Tools</h2>
+
+                <p>
+                    Analyze, optimize and prepare your application documents.
+                </p>
+
+            </div>
+
+
+            <div class="tools-grid">
+
+
+                <!-- ========================================= -->
+                <!-- CV ANALYSIS                               -->
+                <!-- ========================================= -->
+
+                <div class="tool-card">
+
+                    <div class="tool-icon">
+                        ✓
+                    </div>
+
+                    <h3>
+                        Analyze Your CV
+                    </h3>
+
+                    <p>
+                        Upload your resume and check ATS compatibility,
+                        detected skills and missing keywords.
+                    </p>
+
+                    <a
+                            class="tool-link"
+                            th:href="@{/resume/upload}">
+
+                        Analyze CV →
+
+                    </a>
+
+                </div>
+
+
+                <!-- ========================================= -->
+                <!-- JOB MATCH                                 -->
+                <!-- ========================================= -->
+
+                <div class="tool-card">
+
+                    <div class="tool-icon">
+                        ◎
+                    </div>
+
+                    <h3>
+                        Match CV to a Job
+                    </h3>
+
+                    <p>
+                        Compare your resume with a target position and
+                        calculate your CareerInDe Match Score.
+                    </p>
+
+                    <a
+                            class="tool-link"
+                            th:href="@{/resume/upload}">
+
+                        Match CV →
+
+                    </a>
+
+                </div>
+
+
+                <!-- ========================================= -->
+                <!-- AI COVER LETTER                           -->
+                <!-- ========================================= -->
+
+                <div class="tool-card featured">
+
+                    <div class="tool-icon">
+                        ✦
+                    </div>
+
+                    <h3>
+                        AI Cover Letter
+                    </h3>
+
+                    <p>
+                        Generate a personalized cover letter from your
+                        uploaded CV and latest target job description.
+                    </p>
+
+
+                    <form
+                            class="tool-form"
+                            th:action="@{/cover-letter/generate}"
+                            method="post">
+
+
+                        <input
+                                type="hidden"
+                                th:if="${_csrf != null}"
+                                th:name="${_csrf.parameterName}"
+                                th:value="${_csrf.token}">
+
+
+                        <button
+                                class="tool-button"
+                                type="submit">
+
+                            ✦ Generate Cover Letter
+
+                        </button>
+
+                    </form>
+
                 </div>
 
             </div>
@@ -590,7 +1274,9 @@
                     <h2>Your Career Progress</h2>
 
                     <p>
+
                         Complete these steps to improve your job readiness.
+
                     </p>
 
                 </div>
@@ -684,7 +1370,9 @@
                     <h2>AI Career Insights</h2>
 
                     <p>
+
                         Personalized recommendations for your profile.
+
                     </p>
 
                 </div>
@@ -693,17 +1381,25 @@
                 <div class="ai-box">
 
                     <div class="ai-label">
+
                         ✦ NEXT BEST ACTION
+
                     </div>
 
                     <h3>
+
                         Strengthen your Backend profile
+
                     </h3>
 
                     <p>
+
                         Docker and cloud skills appear frequently in
+
                         Java Backend positions. Adding these skills
+
                         could improve your job matching potential.
+
                     </p>
 
                 </div>
@@ -712,28 +1408,63 @@
                 <div class="quick-actions">
 
                     <a
-                        class="action"
-                        th:href="@{/resume/upload}">
+                            class="action"
+                            th:href="@{/resume/upload}">
+
                         ↑ Upload CV
+
                     </a>
 
+
                     <a
-                        class="action"
-                        th:href="@{/skill-gap}">
+                            class="action"
+                            th:href="@{/skill-gap}">
+
                         ◇ View Skill Gap
+
                     </a>
 
+
                     <a
-                        class="action"
-                        th:href="@{/jobs}">
+                            class="action"
+                            th:href="@{/jobs}">
+
                         ⌕ Find Jobs
+
                     </a>
 
+
                     <a
-                        class="action"
-                        th:href="@{/applications}">
+                            class="action"
+                            th:href="@{/applications}">
+
                         ↗ Applications
+
                     </a>
+
+
+                    <form
+                            class="quick-action-form"
+                            th:action="@{/cover-letter/generate}"
+                            method="post">
+
+
+                        <input
+                                type="hidden"
+                                th:if="${_csrf != null}"
+                                th:name="${_csrf.parameterName}"
+                                th:value="${_csrf.token}">
+
+
+                        <button
+                                class="action"
+                                type="submit">
+
+                            ✦ AI Cover Letter
+
+                        </button>
+
+                    </form>
 
                 </div>
 
@@ -746,4 +1477,5 @@
 </div>
 
 </body>
+
 </html>
