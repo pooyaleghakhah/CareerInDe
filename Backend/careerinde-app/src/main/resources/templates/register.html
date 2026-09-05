@@ -1,8 +1,11 @@
 <!DOCTYPE html>
+
 <html xmlns:th="http://www.thymeleaf.org">
 
 <head>
+
     <meta charset="UTF-8">
+
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
     <title>Create Account | CareerInDe</title>
@@ -35,16 +38,23 @@
             overflow: hidden;
 
             background:
-                radial-gradient(circle at 20% 20%,
-                rgba(67,120,255,.30), transparent 35%),
-
-                radial-gradient(circle at 80% 80%,
-                rgba(47,109,246,.22), transparent 35%),
-
-                linear-gradient(145deg, #091326, #13295c);
+                radial-gradient(
+                    circle at 20% 20%,
+                    rgba(67,120,255,.30),
+                    transparent 35%
+                ),
+                radial-gradient(
+                    circle at 80% 80%,
+                    rgba(47,109,246,.22),
+                    transparent 35%
+                ),
+                linear-gradient(
+                    145deg,
+                    #091326,
+                    #13295c
+                );
 
             color: white;
-
             padding: 60px 70px;
 
             display: flex;
@@ -73,7 +83,6 @@
 
             font-size: 29px;
             font-weight: 800;
-
             letter-spacing: -.5px;
         }
 
@@ -107,7 +116,6 @@
 
         .brand-content h1 {
             font-size: clamp(40px, 4vw, 62px);
-
             line-height: 1.08;
             letter-spacing: -2px;
 
@@ -132,7 +140,6 @@
         .features {
             display: flex;
             flex-direction: column;
-
             gap: 17px;
         }
 
@@ -224,6 +231,26 @@
 
             font-size: 15px;
             line-height: 1.6;
+        }
+
+
+        /* ERROR MESSAGE */
+
+        .error-message {
+            margin-bottom: 20px;
+
+            padding: 12px 14px;
+
+            border-radius: 10px;
+
+            background: #fef3f2;
+
+            border: 1px solid #fecdca;
+
+            color: #b42318;
+
+            font-size: 13px;
+            line-height: 1.5;
         }
 
 
@@ -328,6 +355,7 @@
             border-radius: 10px;
 
             background: #2f6df6;
+
             color: white;
 
             font-size: 15px;
@@ -482,10 +510,12 @@
                 Your career journey starts here
             </div>
 
+
             <h1>
                 Turn your experience into
                 <span>opportunity.</span>
             </h1>
+
 
             <p class="brand-description">
                 Create your CareerInDe profile and get
@@ -498,7 +528,9 @@
 
                 <div class="feature">
 
-                    <div class="feature-icon">✓</div>
+                    <div class="feature-icon">
+                        ✓
+                    </div>
 
                     <span>
                         Analyze your CV with AI
@@ -509,7 +541,9 @@
 
                 <div class="feature">
 
-                    <div class="feature-icon">◎</div>
+                    <div class="feature-icon">
+                        ◎
+                    </div>
 
                     <span>
                         Discover your strongest career matches
@@ -520,7 +554,9 @@
 
                 <div class="feature">
 
-                    <div class="feature-icon">↗</div>
+                    <div class="feature-icon">
+                        ↗
+                    </div>
 
                     <span>
                         Build a stronger profile for Germany
@@ -555,7 +591,9 @@
 
             <div class="register-header">
 
-                <h2>Create your account</h2>
+                <h2>
+                    Create your account
+                </h2>
 
                 <p>
                     Start building your personalized
@@ -565,10 +603,30 @@
             </div>
 
 
+            <!-- ERROR MESSAGE -->
+
+            <div
+                th:if="${errorMessage}"
+                th:text="${errorMessage}"
+                class="error-message">
+            </div>
+
+
+            <!-- REGISTER FORM -->
+
             <form
                 th:action="@{/register}"
                 th:object="${user}"
                 method="post">
+
+
+                <!-- CSRF -->
+
+                <input
+                    type="hidden"
+                    th:if="${_csrf != null}"
+                    th:name="${_csrf.parameterName}"
+                    th:value="${_csrf.token}">
 
 
                 <!-- EMAIL -->
@@ -611,7 +669,9 @@
                             th:field="*{password}"
                             placeholder="Create your password"
                             autocomplete="new-password"
+                            minlength="8"
                             required>
+
 
                         <button
                             type="button"
@@ -624,13 +684,16 @@
 
                     </div>
 
+
                     <div class="password-info">
-                        Choose a secure password for your account.
+                        Use at least 8 characters.
                     </div>
 
                 </div>
 
 
+
+                <!-- SUBMIT -->
 
                 <button
                     type="submit"
@@ -644,8 +707,10 @@
 
 
             <div class="terms">
+
                 By creating an account, you agree to
                 CareerInDe's Terms and Privacy Policy.
+
             </div>
 
 
@@ -658,7 +723,7 @@
 
                 Already have an account?
 
-                <a href="/login">
+                <a th:href="@{/login}">
                     Log in
                 </a>
 
@@ -682,14 +747,17 @@
         const button =
             document.querySelector(".password-toggle");
 
+
         if (password.type === "password") {
 
             password.type = "text";
+
             button.textContent = "Hide";
 
         } else {
 
             password.type = "password";
+
             button.textContent = "Show";
 
         }
@@ -699,4 +767,5 @@
 
 
 </body>
+
 </html>
