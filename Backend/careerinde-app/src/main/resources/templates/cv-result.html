@@ -16,75 +16,115 @@
     <style>
 
         * {
+
             margin: 0;
+
             padding: 0;
+
             box-sizing: border-box;
+
         }
 
 
         body {
+
             font-family: Arial, sans-serif;
+
             background: #f6f8fc;
+
             color: #101828;
+
         }
 
 
         /* ===================================================== */
+
         /* LAYOUT                                                */
+
         /* ===================================================== */
 
         .layout {
+
             display: flex;
+
             min-height: 100vh;
+
         }
 
 
         /* ===================================================== */
+
         /* SIDEBAR                                               */
+
         /* ===================================================== */
 
         .sidebar {
+
             width: 250px;
+
             background: #0c1424;
+
             color: white;
+
             padding: 35px 22px;
 
             position: fixed;
+
             top: 0;
+
             bottom: 0;
+
             left: 0;
+
         }
 
 
         .logo {
+
             font-size: 27px;
+
             font-weight: 800;
+
             margin-bottom: 48px;
+
         }
 
 
         .logo span {
+
             color: #2f6df6;
+
         }
 
 
         .menu-label {
+
             color: #75839b;
+
             font-size: 12px;
+
             letter-spacing: 1.5px;
+
             margin: 0 12px 12px;
+
         }
 
 
         .menu {
+
             display: flex;
+
             flex-direction: column;
+
             gap: 8px;
+
         }
 
 
         .menu a {
+
             color: #d7deea;
+
             text-decoration: none;
 
             padding: 14px 15px;
@@ -94,67 +134,97 @@
             font-size: 15px;
 
             transition: .2s;
+
         }
 
 
         .menu a:hover {
+
             background: #172238;
+
         }
 
 
         .menu a.active {
+
             background: #2f6df6;
+
             color: white;
+
             font-weight: 600;
+
         }
 
 
         /* ===================================================== */
+
         /* MAIN                                                  */
+
         /* ===================================================== */
 
         .main {
+
             margin-left: 250px;
+
             width: calc(100% - 250px);
+
             padding: 45px 50px 70px;
+
         }
 
 
         .container {
+
             max-width: 1250px;
+
             margin: auto;
+
         }
 
 
         /* ===================================================== */
+
         /* HEADER                                                */
+
         /* ===================================================== */
 
         .header {
+
             display: flex;
+
             justify-content: space-between;
+
             align-items: center;
 
             gap: 20px;
 
             margin-bottom: 28px;
+
         }
 
 
         .header h1 {
+
             font-size: 32px;
+
             margin-bottom: 8px;
+
         }
 
 
         .header p {
+
             color: #667085;
+
             font-size: 15px;
+
         }
 
 
         .completed-badge {
+
             background: #ecfdf3;
+
             color: #027a48;
 
             padding: 9px 15px;
@@ -162,49 +232,66 @@
             border-radius: 20px;
 
             font-size: 13px;
+
             font-weight: 600;
 
             white-space: nowrap;
+
         }
 
 
         /* ===================================================== */
+
         /* PROGRESS                                              */
+
         /* ===================================================== */
 
         .steps {
+
             display: flex;
+
             align-items: center;
 
             background: white;
 
             border: 1px solid #e4e9f2;
+
             border-radius: 14px;
 
             padding: 18px 25px;
 
             margin-bottom: 28px;
+
         }
 
 
         .step {
+
             display: flex;
+
             align-items: center;
+
             gap: 10px;
 
             color: #98a2b3;
 
             font-size: 13px;
+
             font-weight: 600;
+
         }
 
 
         .step-number {
+
             width: 28px;
+
             height: 28px;
 
             display: flex;
+
             align-items: center;
+
             justify-content: center;
 
             border-radius: 50%;
@@ -212,33 +299,46 @@
             background: #f2f4f7;
 
             font-size: 12px;
+
             font-weight: 700;
+
         }
 
 
         .step.completed {
+
             color: #12b76a;
+
         }
 
 
         .step.completed .step-number {
+
             background: #ecfdf3;
+
             color: #12b76a;
+
         }
 
 
         .step.active {
+
             color: #2f6df6;
+
         }
 
 
         .step.active .step-number {
+
             background: #eaf1ff;
+
             color: #2f6df6;
+
         }
 
 
         .step-line {
+
             flex: 1;
 
             height: 2px;
@@ -246,19 +346,25 @@
             background: #e4e7ec;
 
             margin: 0 20px;
+
         }
 
 
         .step-line.completed {
+
             background: #12b76a;
+
         }
 
 
         /* ===================================================== */
+
         /* ATS HERO                                              */
+
         /* ===================================================== */
 
         .score-section {
+
             background:
                 linear-gradient(
                     120deg,
@@ -273,33 +379,44 @@
             padding: 38px 42px;
 
             display: flex;
+
             justify-content: space-between;
+
             align-items: center;
 
             gap: 30px;
 
             margin-bottom: 25px;
+
         }
 
 
         .score-info h2 {
+
             font-size: 25px;
+
             margin-bottom: 10px;
+
         }
 
 
         .score-info p {
+
             color: #dbe6ff;
 
             max-width: 580px;
 
             line-height: 1.6;
+
         }
 
 
         .score-circle {
+
             width: 145px;
+
             height: 145px;
+
             min-width: 145px;
 
             border-radius: 50%;
@@ -309,43 +426,60 @@
                 rgba(255,255,255,.25);
 
             display: flex;
+
             flex-direction: column;
+
             align-items: center;
+
             justify-content: center;
 
             background:
                 rgba(255,255,255,.08);
+
         }
 
 
         .score-number {
+
             font-size: 42px;
+
             font-weight: 800;
+
         }
 
 
         .score-label {
+
             font-size: 11px;
+
             opacity: .85;
+
             margin-top: 4px;
+
         }
 
 
         /* ===================================================== */
+
         /* SUMMARY                                               */
+
         /* ===================================================== */
 
         .summary-grid {
+
             display: grid;
+
             grid-template-columns: repeat(3, 1fr);
 
             gap: 20px;
 
             margin-bottom: 25px;
+
         }
 
 
         .summary-card {
+
             background: white;
 
             border: 1px solid #e4e8f0;
@@ -353,41 +487,53 @@
             border-radius: 16px;
 
             padding: 24px;
+
         }
 
 
         .summary-title {
+
             color: #667085;
 
             font-size: 13px;
+
             font-weight: 600;
 
             text-transform: uppercase;
 
             margin-bottom: 12px;
+
         }
 
 
         .summary-value {
+
             font-size: 30px;
+
             font-weight: 800;
+
         }
 
 
         .summary-subtitle {
+
             color: #667085;
 
             font-size: 13px;
 
             margin-top: 6px;
+
         }
 
 
         /* ===================================================== */
+
         /* JOB MATCH                                             */
+
         /* ===================================================== */
 
         .match-card {
+
             background: white;
 
             border: 1px solid #dbe5f5;
@@ -397,24 +543,31 @@
             padding: 30px;
 
             margin-bottom: 25px;
+
         }
 
 
         .match-header {
+
             display: flex;
+
             justify-content: space-between;
+
             align-items: flex-start;
 
             gap: 25px;
 
             margin-bottom: 28px;
+
         }
 
 
         .match-eyebrow {
+
             color: #2f6df6;
 
             font-size: 11px;
+
             font-weight: 800;
 
             letter-spacing: .8px;
@@ -422,26 +575,34 @@
             text-transform: uppercase;
 
             margin-bottom: 8px;
+
         }
 
 
         .match-header h2 {
+
             font-size: 22px;
+
             margin-bottom: 7px;
+
         }
 
 
         .match-header p {
+
             color: #667085;
 
             font-size: 13px;
+
             line-height: 1.6;
 
             max-width: 650px;
+
         }
 
 
         .match-score-box {
+
             min-width: 115px;
 
             background: #eef4ff;
@@ -453,30 +614,38 @@
             padding: 18px;
 
             text-align: center;
+
         }
 
 
         .match-score-number {
+
             color: #2f6df6;
 
             font-size: 35px;
+
             font-weight: 800;
+
         }
 
 
         .match-score-label {
+
             color: #667085;
 
             font-size: 10px;
+
             font-weight: 700;
 
             text-transform: uppercase;
 
             margin-top: 4px;
+
         }
 
 
         .target-job-box {
+
             background: #f8faff;
 
             border: 1px solid #e3eaff;
@@ -486,38 +655,49 @@
             padding: 16px 18px;
 
             margin-bottom: 22px;
+
         }
 
 
         .target-job-label {
+
             color: #667085;
 
             font-size: 11px;
+
             font-weight: 700;
 
             text-transform: uppercase;
 
             margin-bottom: 6px;
+
         }
 
 
         .target-job-name {
+
             font-size: 17px;
+
             font-weight: 800;
+
         }
 
 
         .match-breakdown {
+
             display: grid;
+
             grid-template-columns: repeat(4, 1fr);
 
             gap: 14px;
 
             margin-bottom: 24px;
+
         }
 
 
         .match-metric {
+
             background: #f8fafc;
 
             border: 1px solid #e4e8f0;
@@ -525,65 +705,86 @@
             border-radius: 12px;
 
             padding: 17px;
+
         }
 
 
         .metric-label {
+
             color: #667085;
 
             font-size: 11px;
+
             font-weight: 700;
 
             text-transform: uppercase;
 
             margin-bottom: 7px;
+
         }
 
 
         .metric-value {
+
             font-size: 22px;
+
             font-weight: 800;
+
         }
 
 
         .job-skills-grid {
+
             display: grid;
+
             grid-template-columns: 1fr 1fr;
 
             gap: 20px;
+
         }
 
 
         .job-skills-box {
+
             border: 1px solid #e4e8f0;
 
             border-radius: 13px;
 
             padding: 20px;
+
         }
 
 
         .job-skills-box h3 {
+
             font-size: 15px;
+
             margin-bottom: 14px;
+
         }
 
 
         /* ===================================================== */
+
         /* GENERAL CARDS                                         */
+
         /* ===================================================== */
 
         .content-grid {
+
             display: grid;
+
             grid-template-columns: 1fr 1fr;
 
             gap: 24px;
 
             margin-bottom: 25px;
+
         }
 
 
         .card {
+
             background: white;
 
             border: 1px solid #e4e8f0;
@@ -591,67 +792,92 @@
             border-radius: 18px;
 
             padding: 28px;
+
         }
 
 
         .card h2 {
+
             font-size: 20px;
+
             margin-bottom: 7px;
+
         }
 
 
         .card-description {
+
             color: #667085;
 
             font-size: 14px;
+
             line-height: 1.6;
 
             margin-bottom: 22px;
+
         }
 
 
         /* ===================================================== */
+
         /* TAGS                                                  */
+
         /* ===================================================== */
 
         .tags {
+
             display: flex;
+
             flex-wrap: wrap;
+
             gap: 10px;
+
         }
 
 
         .tag {
+
             padding: 9px 13px;
 
             border-radius: 8px;
 
             font-size: 13px;
+
             font-weight: 600;
+
         }
 
 
         .detected-tag {
+
             background: #ecfdf3;
+
             color: #027a48;
 
             border: 1px solid #abefc6;
+
         }
 
 
         .missing-tag {
+
             background: #fff4ed;
+
             color: #b93815;
 
             border: 1px solid #ffd6ae;
+
         }
 
 
         /* ===================================================== */
+
         /* CAREER ANALYSIS                                       */
+
         /* ===================================================== */
 
         .ai-card {
+
             background:
                 linear-gradient(
                     135deg,
@@ -666,59 +892,79 @@
             padding: 30px;
 
             margin-bottom: 25px;
+
         }
 
 
         .ai-header {
+
             display: flex;
+
             align-items: center;
 
             gap: 12px;
 
             margin-bottom: 25px;
+
         }
 
 
         .ai-icon {
+
             width: 42px;
+
             height: 42px;
 
             border-radius: 11px;
 
             background: #2f6df6;
+
             color: white;
 
             display: flex;
+
             justify-content: center;
+
             align-items: center;
 
             font-size: 20px;
+
         }
 
 
         .ai-header h2 {
+
             font-size: 20px;
+
             margin-bottom: 3px;
+
         }
 
 
         .ai-header p {
+
             color: #667085;
+
             font-size: 13px;
+
         }
 
 
         .ai-summary-grid {
+
             display: grid;
+
             grid-template-columns: 1fr 1fr;
 
             gap: 18px;
 
             margin-bottom: 20px;
+
         }
 
 
         .ai-summary-box {
+
             background: white;
 
             border: 1px solid #e4e8f0;
@@ -726,34 +972,44 @@
             border-radius: 12px;
 
             padding: 20px;
+
         }
 
 
         .ai-summary-label {
+
             color: #667085;
 
             font-size: 12px;
+
             font-weight: 700;
 
             text-transform: uppercase;
 
             margin-bottom: 8px;
+
         }
 
 
         .ai-summary-value {
+
             font-size: 21px;
+
             font-weight: 800;
 
             line-height: 1.4;
+
         }
 
 
         /* ===================================================== */
+
         /* STRENGTHS                                             */
+
         /* ===================================================== */
 
         .strength-box {
+
             background: white;
 
             border: 1px solid #e4e8f0;
@@ -761,17 +1017,23 @@
             border-radius: 12px;
 
             padding: 22px;
+
         }
 
 
         .strength-box h3 {
+
             font-size: 17px;
+
             margin-bottom: 17px;
+
         }
 
 
         .strength-item {
+
             display: flex;
+
             gap: 10px;
 
             margin-bottom: 12px;
@@ -779,33 +1041,45 @@
             line-height: 1.6;
 
             font-size: 14px;
+
         }
 
 
         .strength-item:last-child {
+
             margin-bottom: 0;
+
         }
 
 
         .strength-check {
+
             color: #027a48;
+
             font-weight: bold;
+
         }
 
 
         /* ===================================================== */
+
         /* RECOMMENDATIONS                                       */
+
         /* ===================================================== */
 
         .recommendation-list {
+
             display: flex;
+
             flex-direction: column;
 
             gap: 12px;
+
         }
 
 
         .recommendation {
+
             display: flex;
 
             gap: 14px;
@@ -817,39 +1091,54 @@
             background: #f8faff;
 
             border-radius: 11px;
+
         }
 
 
         .recommendation-number {
+
             width: 29px;
+
             height: 29px;
+
             min-width: 29px;
 
             background: #e8f0ff;
+
             color: #2f6df6;
 
             border-radius: 8px;
 
             display: flex;
+
             align-items: center;
+
             justify-content: center;
 
             font-size: 12px;
+
             font-weight: 700;
+
         }
 
 
         .recommendation-text {
+
             font-size: 14px;
+
             line-height: 1.6;
+
         }
 
 
         /* ===================================================== */
+
         /* RAW CV                                                */
+
         /* ===================================================== */
 
         details {
+
             background: white;
 
             border: 1px solid #e4e8f0;
@@ -859,18 +1148,23 @@
             padding: 22px 25px;
 
             margin-bottom: 25px;
+
         }
 
 
         summary {
+
             cursor: pointer;
 
             font-weight: 700;
+
             font-size: 16px;
+
         }
 
 
         .cv-text {
+
             margin-top: 20px;
 
             padding: 20px;
@@ -890,14 +1184,18 @@
             max-height: 450px;
 
             overflow-y: auto;
+
         }
 
 
         /* ===================================================== */
-        /* OPTIMIZE CTA                                          */
+
+        /* APPLICATION TOOLS                                     */
+
         /* ===================================================== */
 
         .optimize-card {
+
             background:
                 linear-gradient(
                     135deg,
@@ -914,36 +1212,64 @@
             margin-bottom: 25px;
 
             display: flex;
+
             align-items: center;
+
             justify-content: space-between;
 
             gap: 25px;
+
         }
 
 
         .optimize-card h2 {
+
             font-size: 20px;
+
             margin-bottom: 7px;
+
         }
 
 
         .optimize-card p {
+
             color: #d0d5dd;
 
             font-size: 13px;
+
             line-height: 1.6;
 
             max-width: 650px;
+
         }
 
 
-        .optimize-card form {
-            margin: 0;
+        .application-tools {
+
+            display: flex;
+
+            align-items: center;
+
+            justify-content: flex-end;
+
+            flex-wrap: wrap;
+
+            gap: 12px;
+
             flex-shrink: 0;
+
+        }
+
+
+        .application-tools form {
+
+            margin: 0;
+
         }
 
 
         .no-job-card {
+
             background: #fffaeb;
 
             border: 1px solid #fedf89;
@@ -953,52 +1279,66 @@
             padding: 22px 25px;
 
             margin-bottom: 25px;
+
         }
 
 
         .no-job-card h3 {
+
             color: #93370d;
 
             font-size: 17px;
 
             margin-bottom: 7px;
+
         }
 
 
         .no-job-card p {
+
             color: #b54708;
 
             font-size: 13px;
+
             line-height: 1.6;
 
             margin-bottom: 15px;
+
         }
 
 
         /* ===================================================== */
+
         /* ACTION BUTTONS                                        */
+
         /* ===================================================== */
 
         .actions {
+
             display: flex;
 
             gap: 14px;
 
             justify-content: flex-end;
+
             align-items: center;
 
             flex-wrap: wrap;
 
             margin-top: 25px;
+
         }
 
 
         .actions form {
+
             margin: 0;
+
         }
 
 
         .btn {
+
             display: inline-block;
 
             text-decoration: none;
@@ -1008,6 +1348,7 @@
             border-radius: 10px;
 
             font-size: 14px;
+
             font-weight: 700;
 
             cursor: pointer;
@@ -1015,61 +1356,102 @@
             font-family: inherit;
 
             transition: .2s;
+
         }
 
 
         .btn-secondary {
+
             background: white;
+
             color: #344054;
 
             border: 1px solid #d0d5dd;
+
         }
 
 
         .btn-primary {
+
             background: #2f6df6;
+
             color: white;
 
             border: 1px solid #2f6df6;
+
         }
 
 
         .btn-ai {
+
             background: white;
+
             color: #101828;
 
             border: 1px solid white;
+
         }
 
 
         .btn-ai:hover {
+
             background: #f2f4f7;
+
+        }
+
+
+        .btn-cover {
+
+            background: #2f6df6;
+
+            color: white;
+
+            border: 1px solid #2f6df6;
+
+        }
+
+
+        .btn-cover:hover {
+
+            background: #1f5ce0;
+
         }
 
 
         .btn:hover {
+
             transform: translateY(-1px);
+
         }
 
 
         /* ===================================================== */
+
         /* EMPTY                                                 */
+
         /* ===================================================== */
 
         .empty-message {
+
             color: #98a2b3;
+
             font-size: 14px;
+
         }
 
 
         /* ===================================================== */
+
         /* RESPONSIVE                                            */
+
         /* ===================================================== */
 
         @media (max-width: 1050px) {
 
             .match-breakdown {
+
                 grid-template-columns: 1fr 1fr;
+
             }
 
         }
@@ -1078,35 +1460,58 @@
         @media (max-width: 950px) {
 
             .sidebar {
+
                 display: none;
+
             }
 
 
             .main {
+
                 margin-left: 0;
+
                 width: 100%;
 
                 padding: 30px 20px;
+
             }
 
 
             .summary-grid,
+
             .content-grid,
+
             .ai-summary-grid,
+
             .job-skills-grid {
+
                 grid-template-columns: 1fr;
+
             }
 
 
             .score-section,
+
             .optimize-card {
+
                 flex-direction: column;
+
                 align-items: flex-start;
+
+            }
+
+
+            .application-tools {
+
+                justify-content: flex-start;
+
             }
 
 
             .actions {
+
                 justify-content: flex-start;
+
             }
 
         }
@@ -1115,38 +1520,78 @@
         @media (max-width: 650px) {
 
             .header {
+
                 align-items: flex-start;
+
                 flex-direction: column;
+
             }
 
 
             .steps {
+
                 padding: 15px;
+
             }
 
 
             .step span {
+
                 display: none;
+
             }
 
 
             .step-line {
+
                 margin: 0 10px;
+
             }
 
 
             .score-section {
+
                 padding: 28px 25px;
+
             }
 
 
             .match-header {
+
                 flex-direction: column;
+
             }
 
 
             .match-breakdown {
+
                 grid-template-columns: 1fr;
+
+            }
+
+
+            .application-tools {
+
+                width: 100%;
+
+                flex-direction: column;
+
+                align-items: stretch;
+
+            }
+
+
+            .application-tools form {
+
+                width: 100%;
+
+            }
+
+
+            .application-tools .btn {
+
+                width: 100%;
+
             }
 
         }
@@ -1163,31 +1608,41 @@
 
 
     <!-- ===================================================== -->
+
     <!-- SIDEBAR                                               -->
+
     <!-- ===================================================== -->
 
     <aside class="sidebar">
 
 
         <div class="logo">
+
             CareerIn<span>De</span>
+
         </div>
 
 
         <div class="menu-label">
+
             WORKSPACE
+
         </div>
 
 
         <nav class="menu">
 
             <a th:href="@{/dashboard}">
+
                 ▣ &nbsp; Dashboard
+
             </a>
 
 
             <a th:href="@{/profile}">
+
                 ○ &nbsp; Profile
+
             </a>
 
 
@@ -1201,17 +1656,23 @@
 
 
             <a th:href="@{/job-match}">
+
                 ◎ &nbsp; Job Matches
+
             </a>
 
 
             <a th:href="@{/skill-gap}">
+
                 ◇ &nbsp; Skill Gap
+
             </a>
 
 
             <a th:href="@{/applications}">
+
                 ▤ &nbsp; Applications
+
             </a>
 
         </nav>
@@ -1220,7 +1681,9 @@
 
 
     <!-- ===================================================== -->
+
     <!-- MAIN                                                  -->
+
     <!-- ===================================================== -->
 
     <main class="main">
@@ -1230,7 +1693,9 @@
 
 
             <!-- ================================================= -->
+
             <!-- HEADER                                            -->
+
             <!-- ================================================= -->
 
             <div class="header">
@@ -1239,27 +1704,35 @@
                 <div>
 
                     <h1>
+
                         CV Analysis
+
                     </h1>
 
 
                     <p>
+
                         CareerInDe analysis for your CV
                         and target job.
+
                     </p>
 
                 </div>
 
 
                 <div class="completed-badge">
+
                     ✓ Analysis Complete
+
                 </div>
 
             </div>
 
 
             <!-- ================================================= -->
+
             <!-- PROGRESS                                          -->
+
             <!-- ================================================= -->
 
             <div class="steps">
@@ -1268,45 +1741,59 @@
                 <div class="step completed">
 
                     <div class="step-number">
+
                         ✓
+
                     </div>
 
                     <span>
+
                         Upload CV
+
                     </span>
 
                 </div>
 
 
                 <div class="step-line completed">
+
                 </div>
 
 
                 <div class="step completed">
 
                     <div class="step-number">
+
                         ✓
+
                     </div>
 
                     <span>
+
                         Analysis
+
                     </span>
 
                 </div>
 
 
                 <div class="step-line completed">
+
                 </div>
 
 
                 <div class="step active">
 
                     <div class="step-number">
+
                         3
+
                     </div>
 
                     <span>
+
                         Career Report
+
                     </span>
 
                 </div>
@@ -1315,7 +1802,9 @@
 
 
             <!-- ================================================= -->
+
             <!-- ATS SCORE                                         -->
+
             <!-- ================================================= -->
 
             <section class="score-section">
@@ -1325,15 +1814,19 @@
 
 
                     <h2>
+
                         Your CV is on the right track.
+
                     </h2>
 
 
                     <p>
+
                         We've analyzed your CV structure,
                         detected skills and ATS readiness.
                         Review the results below before
                         preparing your next application.
+
                     </p>
 
                 </div>
@@ -1352,7 +1845,9 @@
 
 
                     <div class="score-label">
+
                         ATS SCORE
+
                     </div>
 
                 </div>
@@ -1361,7 +1856,9 @@
 
 
             <!-- ================================================= -->
+
             <!-- SUMMARY                                           -->
+
             <!-- ================================================= -->
 
             <div class="summary-grid">
@@ -1371,7 +1868,9 @@
 
 
                     <div class="summary-title">
+
                         ATS Score
+
                     </div>
 
 
@@ -1385,7 +1884,9 @@
 
 
                     <div class="summary-subtitle">
+
                         General CV readiness
+
                     </div>
 
                 </div>
@@ -1395,7 +1896,9 @@
 
 
                     <div class="summary-title">
+
                         Detected Skills
+
                     </div>
 
 
@@ -1409,7 +1912,9 @@
 
 
                     <div class="summary-subtitle">
+
                         Skills found in your CV
+
                     </div>
 
                 </div>
@@ -1419,7 +1924,9 @@
 
 
                     <div class="summary-title">
+
                         Skills to Improve
+
                     </div>
 
 
@@ -1433,7 +1940,9 @@
 
 
                     <div class="summary-subtitle">
+
                         General skill opportunities
+
                     </div>
 
                 </div>
@@ -1442,8 +1951,9 @@
 
 
             <!-- ================================================= -->
+
             <!-- CAREERINDE JOB MATCH                              -->
-            <!-- ONLY WHEN JOB DESCRIPTION EXISTS                 -->
+
             <!-- ================================================= -->
 
             <section
@@ -1458,19 +1968,25 @@
 
 
                         <div class="match-eyebrow">
+
                             CareerInDe Match Engine
+
                         </div>
 
 
                         <h2>
+
                             Job Match Analysis
+
                         </h2>
 
 
                         <p>
+
                             Your CV was compared with the
                             target job description using
                             CareerInDe's job matching engine.
+
                         </p>
 
                     </div>
@@ -1489,7 +2005,9 @@
 
 
                         <div class="match-score-label">
+
                             Match Score
+
                         </div>
 
                     </div>
@@ -1497,15 +2015,15 @@
                 </div>
 
 
-                <!-- TARGET JOB -->
-
                 <div
                     class="target-job-box"
                     th:if="${jobTitle != null}">
 
 
                     <div class="target-job-label">
+
                         Target Position
+
                     </div>
 
 
@@ -1520,15 +2038,15 @@
                 </div>
 
 
-                <!-- SCORE BREAKDOWN -->
-
                 <div class="match-breakdown">
 
 
                     <div class="match-metric">
 
                         <div class="metric-label">
+
                             Skills
+
                         </div>
 
                         <div
@@ -1545,7 +2063,9 @@
                     <div class="match-metric">
 
                         <div class="metric-label">
+
                             Keywords
+
                         </div>
 
                         <div
@@ -1562,7 +2082,9 @@
                     <div class="match-metric">
 
                         <div class="metric-label">
+
                             Experience
+
                         </div>
 
                         <div
@@ -1579,7 +2101,9 @@
                     <div class="match-metric">
 
                         <div class="metric-label">
+
                             Education
+
                         </div>
 
                         <div
@@ -1595,8 +2119,6 @@
                 </div>
 
 
-                <!-- MATCHED / MISSING JOB SKILLS -->
-
                 <div class="job-skills-grid">
 
 
@@ -1604,7 +2126,9 @@
 
 
                         <h3>
+
                             ✓ Matched Job Skills
+
                         </h3>
 
 
@@ -1640,7 +2164,9 @@
 
 
                         <h3>
+
                             Skills Missing for This Job
+
                         </h3>
 
 
@@ -1677,7 +2203,9 @@
 
 
             <!-- ================================================= -->
+
             <!-- CAREER ANALYSIS                                   -->
+
             <!-- ================================================= -->
 
             <section class="ai-card">
@@ -1687,19 +2215,25 @@
 
 
                     <div class="ai-icon">
+
                         ✦
+
                     </div>
 
 
                     <div>
 
                         <h2>
+
                             Career Analysis
+
                         </h2>
 
 
                         <p>
+
                             Insights based on your current CV.
+
                         </p>
 
                     </div>
@@ -1714,7 +2248,9 @@
 
 
                         <div class="ai-summary-label">
+
                             Profile Level
+
                         </div>
 
 
@@ -1735,11 +2271,15 @@
                         <div class="ai-summary-label">
 
                             <span th:if="${jobTitle == null}">
+
                                 Best Job Match
+
                             </span>
 
                             <span th:if="${jobTitle != null}">
+
                                 Target Job
+
                             </span>
 
                         </div>
@@ -1758,13 +2298,13 @@
                 </div>
 
 
-                <!-- STRENGTHS -->
-
                 <div class="strength-box">
 
 
                     <h3>
+
                         Key Strengths
+
                     </h3>
 
 
@@ -1778,12 +2318,16 @@
 
 
                             <span class="strength-check">
+
                                 ✓
+
                             </span>
 
 
                             <span th:text="${strength}">
+
                                 Java
+
                             </span>
 
                         </div>
@@ -1805,24 +2349,28 @@
 
 
             <!-- ================================================= -->
+
             <!-- GENERAL SKILLS                                    -->
+
             <!-- ================================================= -->
 
             <div class="content-grid">
 
 
-                <!-- DETECTED -->
-
                 <div class="card">
 
 
                     <h2>
+
                         ✓ Detected Skills
+
                     </h2>
 
 
                     <p class="card-description">
+
                         Skills identified from your CV.
+
                     </p>
 
 
@@ -1854,18 +2402,20 @@
                 </div>
 
 
-                <!-- MISSING -->
-
                 <div class="card">
 
 
                     <h2>
+
                         Skills to Improve
+
                     </h2>
 
 
                     <p class="card-description">
+
                         General skills that may strengthen your profile.
+
                     </p>
 
 
@@ -1900,7 +2450,9 @@
 
 
             <!-- ================================================= -->
+
             <!-- RECOMMENDATIONS                                   -->
+
             <!-- ================================================= -->
 
             <div
@@ -1909,13 +2461,17 @@
 
 
                 <h2>
+
                     Recommendations
+
                 </h2>
 
 
                 <p class="card-description">
+
                     Recommended next steps to strengthen
                     your CV and career readiness.
+
                 </p>
 
 
@@ -1963,28 +2519,34 @@
 
 
             <!-- ================================================= -->
+
             <!-- RAW CV                                            -->
+
             <!-- ================================================= -->
 
             <details>
 
 
                 <summary>
+
                     View extracted CV text
+
                 </summary>
 
 
                 <div
                     class="cv-text"
                     th:text="${cvText}">
+
                 </div>
 
             </details>
 
 
             <!-- ================================================= -->
-            <!-- OPTIMIZE                                         -->
-            <!-- JOB DESCRIPTION EXISTS                           -->
+
+            <!-- APPLICATION TOOLS                                 -->
+
             <!-- ================================================= -->
 
             <section
@@ -1996,56 +2558,112 @@
 
 
                     <h2>
+
                         Ready to improve your application?
+
                     </h2>
 
 
                     <p>
-                        Optimize your CV specifically for
-                        this target job while preserving
+
+                        Optimize your CV specifically for this target job
+                        or generate a personalized cover letter using
                         your real experience, education and skills.
+
                     </p>
 
                 </div>
 
 
-                <form
-                    th:action="@{/resume/optimize-for-job}"
-                    method="post">
+                <div class="application-tools">
 
 
-                    <!-- CSRF -->
+                    <!-- ========================================= -->
+                    <!-- OPTIMIZE CV                               -->
+                    <!-- ========================================= -->
 
-                    <input
-                        type="hidden"
-                        th:if="${_csrf != null}"
-                        th:name="${_csrf.parameterName}"
-                        th:value="${_csrf.token}">
-
-
-                    <!-- JOB DESCRIPTION -->
-
-                    <input
-                        type="hidden"
-                        name="jobDescription"
-                        th:value="${jobDescription}">
+                    <form
+                        th:action="@{/resume/optimize-for-job}"
+                        method="post">
 
 
-                    <button
-                        type="submit"
-                        class="btn btn-ai">
+                        <input
+                            type="hidden"
+                            th:if="${_csrf != null}"
+                            th:name="${_csrf.parameterName}"
+                            th:value="${_csrf.token}">
 
-                        ✦ Optimize CV for This Job
 
-                    </button>
+                        <input
+                            type="hidden"
+                            name="jobDescription"
+                            th:value="${jobDescription}">
 
-                </form>
+
+                        <button
+                            type="submit"
+                            class="btn btn-ai">
+
+                            ✦ Optimize CV
+
+                        </button>
+
+                    </form>
+
+
+                    <!-- ========================================= -->
+                    <!-- GENERATE COVER LETTER                     -->
+                    <!-- ========================================= -->
+
+                    <form
+                        th:action="@{/cover-letter/generate}"
+                        method="post">
+
+
+                        <input
+                            type="hidden"
+                            th:if="${_csrf != null}"
+                            th:name="${_csrf.parameterName}"
+                            th:value="${_csrf.token}">
+
+
+                        <input
+                            type="hidden"
+                            name="jobDescription"
+                            th:value="${jobDescription}">
+
+
+                        <input
+                            type="hidden"
+                            name="jobTitle"
+                            th:value="${jobTitle}">
+
+
+                        <input
+                            type="hidden"
+                            name="companyName"
+                            th:value="${companyName}">
+
+
+                        <button
+                            type="submit"
+                            class="btn btn-cover">
+
+                            ✉ Generate Cover Letter
+
+                        </button>
+
+                    </form>
+
+                </div>
 
             </section>
 
 
             <!-- ================================================= -->
+
             <!-- NO TARGET JOB                                    -->
+
             <!-- ================================================= -->
 
             <section
@@ -2054,14 +2672,19 @@
 
 
                 <h3>
+
                     Want a job-specific Match Score?
+
                 </h3>
 
 
                 <p>
+
                     Add a target job description to compare
                     your CV with the role and unlock
-                    job-specific resume optimization.
+                    job-specific resume optimization and
+                    AI cover letter generation.
+
                 </p>
 
 
@@ -2077,7 +2700,9 @@
 
 
             <!-- ================================================= -->
+
             <!-- ACTIONS                                          -->
+
             <!-- ================================================= -->
 
             <div class="actions">

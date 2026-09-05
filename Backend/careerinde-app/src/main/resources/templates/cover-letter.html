@@ -1,0 +1,1216 @@
+<!DOCTYPE html>
+
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+            name="viewport"
+            content="width=device-width, initial-scale=1.0">
+
+    <title>AI Cover Letter | CareerInDe</title>
+
+
+    <style>
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+
+        :root {
+            --blue: #2563eb;
+            --blue-dark: #1d4ed8;
+            --blue-light: #eff6ff;
+            --dark: #0f172a;
+            --text: #334155;
+            --muted: #64748b;
+            --border: #e2e8f0;
+            --background: #f8fafc;
+            --white: #ffffff;
+            --green: #16a34a;
+            --red: #dc2626;
+        }
+
+
+        body {
+            font-family: Arial, sans-serif;
+            background: var(--background);
+            color: var(--dark);
+        }
+
+
+        /* ===================================================== */
+        /* LAYOUT                                                */
+        /* ===================================================== */
+
+        .layout {
+            display: flex;
+            min-height: 100vh;
+        }
+
+
+        /* ===================================================== */
+        /* SIDEBAR                                               */
+        /* ===================================================== */
+
+        .sidebar {
+            width: 245px;
+            background: #0b1220;
+            color: white;
+            padding: 32px 20px;
+            position: fixed;
+            top: 0;
+            bottom: 0;
+            left: 0;
+        }
+
+
+        .logo {
+            font-size: 25px;
+            font-weight: 800;
+            padding: 0 12px;
+            margin-bottom: 42px;
+        }
+
+
+        .logo span {
+            color: #3b82f6;
+        }
+
+
+        .menu-label {
+            font-size: 11px;
+            color: #64748b;
+            text-transform: uppercase;
+            letter-spacing: 1.2px;
+            margin: 25px 12px 10px;
+        }
+
+
+        .menu {
+            display: flex;
+            flex-direction: column;
+            gap: 5px;
+        }
+
+
+        .menu a {
+            color: #cbd5e1;
+            text-decoration: none;
+            padding: 13px 14px;
+            border-radius: 9px;
+            font-size: 14px;
+            transition: 0.2s;
+        }
+
+
+        .menu a:hover {
+            background: #172033;
+            color: white;
+        }
+
+
+        .menu a.active {
+            background: #2563eb;
+            color: white;
+            font-weight: 600;
+        }
+
+
+        /* ===================================================== */
+        /* MAIN                                                  */
+        /* ===================================================== */
+
+        .main {
+            flex: 1;
+            margin-left: 245px;
+            padding: 40px 45px 70px;
+        }
+
+
+        .container {
+            max-width: 1100px;
+            margin: auto;
+        }
+
+
+        /* ===================================================== */
+        /* HEADER                                                */
+        /* ===================================================== */
+
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            gap: 25px;
+            margin-bottom: 28px;
+        }
+
+
+        .header h1 {
+            font-size: 30px;
+            margin-bottom: 8px;
+        }
+
+
+        .header p {
+            color: var(--muted);
+            line-height: 1.6;
+            font-size: 14px;
+            max-width: 650px;
+        }
+
+
+        .ai-badge {
+            background: var(--blue-light);
+            color: var(--blue);
+            border: 1px solid #bfdbfe;
+            padding: 9px 14px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 700;
+            white-space: nowrap;
+        }
+
+
+        /* ===================================================== */
+        /* MESSAGES                                              */
+        /* ===================================================== */
+
+        .info-box {
+            background: #eff6ff;
+            border: 1px solid #bfdbfe;
+            color: #1e40af;
+            border-radius: 13px;
+            padding: 16px 18px;
+            font-size: 13px;
+            line-height: 1.6;
+            margin-bottom: 22px;
+        }
+
+
+        .error-box {
+            background: #fef2f2;
+            border: 1px solid #fecaca;
+            color: #b91c1c;
+            border-radius: 13px;
+            padding: 16px 18px;
+            margin-bottom: 22px;
+            font-size: 13px;
+            line-height: 1.6;
+        }
+
+
+        .success-box {
+            background: #f0fdf4;
+            border: 1px solid #bbf7d0;
+            color: #166534;
+            border-radius: 13px;
+            padding: 16px 18px;
+            margin-bottom: 22px;
+            font-size: 13px;
+            line-height: 1.6;
+        }
+
+
+        /* ===================================================== */
+        /* EDITOR                                                */
+        /* ===================================================== */
+
+        .editor-card {
+            background: white;
+            border: 1px solid var(--border);
+            border-radius: 18px;
+            overflow: hidden;
+            margin-bottom: 24px;
+        }
+
+
+        .editor-header {
+            padding: 24px 28px;
+            border-bottom: 1px solid var(--border);
+            background: #ffffff;
+        }
+
+
+        .editor-header h2 {
+            font-size: 20px;
+            margin-bottom: 7px;
+        }
+
+
+        .editor-header p {
+            color: var(--muted);
+            font-size: 13px;
+            line-height: 1.6;
+        }
+
+
+        .editor-body {
+            padding: 28px;
+        }
+
+
+        .form-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 18px;
+            margin-bottom: 18px;
+        }
+
+
+        .field {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+
+        .field.full {
+            grid-column: 1 / -1;
+        }
+
+
+        .field label {
+            font-size: 12px;
+            font-weight: 700;
+            color: #475569;
+            text-transform: uppercase;
+            letter-spacing: .4px;
+        }
+
+
+        .input,
+        .textarea {
+            width: 100%;
+            border: 1px solid #cbd5e1;
+            background: white;
+            border-radius: 10px;
+            padding: 13px 14px;
+            font-family: Arial, sans-serif;
+            font-size: 14px;
+            color: var(--dark);
+            outline: none;
+            transition: .2s;
+        }
+
+
+        .input:focus,
+        .textarea:focus {
+            border-color: var(--blue);
+            box-shadow: 0 0 0 3px rgba(37, 99, 235, .10);
+        }
+
+
+        .textarea {
+            min-height: 360px;
+            resize: vertical;
+            line-height: 1.75;
+        }
+
+
+        /* ===================================================== */
+        /* WORD COUNT                                            */
+        /* ===================================================== */
+
+        .body-meta {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 15px;
+            margin-top: 8px;
+            color: var(--muted);
+            font-size: 12px;
+        }
+
+
+        .body-meta strong {
+            color: var(--dark);
+        }
+
+
+        /* ===================================================== */
+        /* ACTION BAR                                            */
+        /* ===================================================== */
+
+        .actions {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 15px;
+            flex-wrap: wrap;
+            padding-top: 10px;
+        }
+
+
+        .actions-left,
+        .actions-right {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            flex-wrap: wrap;
+        }
+
+
+        .btn {
+            border-radius: 10px;
+            padding: 12px 19px;
+            font-family: inherit;
+            font-size: 13px;
+            font-weight: 700;
+            cursor: pointer;
+            text-decoration: none;
+            transition: .2s;
+            border: 1px solid transparent;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 7px;
+        }
+
+
+        .btn:hover {
+            transform: translateY(-1px);
+        }
+
+
+        .btn-primary {
+            background: var(--blue);
+            border-color: var(--blue);
+            color: white;
+        }
+
+
+        .btn-primary:hover {
+            background: var(--blue-dark);
+        }
+
+
+        .btn-secondary {
+            background: white;
+            border-color: #cbd5e1;
+            color: #334155;
+        }
+
+
+        .btn-secondary:hover {
+            background: #f8fafc;
+        }
+
+
+        .btn-dark {
+            background: #0f172a;
+            border-color: #0f172a;
+            color: white;
+        }
+
+
+        .btn-dark:hover {
+            background: #1e293b;
+        }
+
+
+        /* ===================================================== */
+        /* EMPTY STATE                                           */
+        /* ===================================================== */
+
+        .empty-state {
+            background: white;
+            border: 1px solid var(--border);
+            border-radius: 18px;
+            padding: 50px 30px;
+            text-align: center;
+        }
+
+
+        .empty-state h2 {
+            font-size: 21px;
+            margin-bottom: 10px;
+        }
+
+
+        .empty-state p {
+            color: var(--muted);
+            font-size: 14px;
+            line-height: 1.7;
+            margin-bottom: 20px;
+        }
+
+
+        /* ===================================================== */
+        /* RESPONSIVE                                            */
+        /* ===================================================== */
+
+        @media (max-width: 850px) {
+
+            .sidebar {
+                display: none;
+            }
+
+
+            .main {
+                margin-left: 0;
+                padding: 28px 20px 60px;
+            }
+
+
+            .form-grid {
+                grid-template-columns: 1fr;
+            }
+
+
+            .field.full {
+                grid-column: auto;
+            }
+
+
+            .header {
+                flex-direction: column;
+            }
+
+
+            .actions {
+                align-items: stretch;
+                flex-direction: column;
+            }
+
+
+            .actions-left,
+            .actions-right {
+                width: 100%;
+            }
+
+
+            .actions-left .btn,
+            .actions-right .btn {
+                width: 100%;
+            }
+
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+
+<div class="layout">
+
+
+    <!-- ===================================================== -->
+    <!-- SIDEBAR                                               -->
+    <!-- ===================================================== -->
+
+    <aside class="sidebar">
+
+
+        <div class="logo">
+            Career<span>InDe</span>
+        </div>
+
+
+        <div class="menu-label">
+            Workspace
+        </div>
+
+
+        <nav class="menu">
+
+
+            <a th:href="@{/dashboard}">
+                ▣ &nbsp; Dashboard
+            </a>
+
+
+            <a th:href="@{/profile}">
+                ◯ &nbsp; Profile
+            </a>
+
+
+            <a
+                    th:href="@{/resume/upload}"
+                    class="active">
+
+                ↑ &nbsp; My CV
+
+            </a>
+
+
+            <a th:href="@{/jobs}">
+                ⌕ &nbsp; Find Jobs
+            </a>
+
+
+            <a th:href="@{/recommended-jobs}">
+                ◎ &nbsp; Job Matches
+            </a>
+
+
+            <a th:href="@{/skill-gap}">
+                ◇ &nbsp; Skill Gap
+            </a>
+
+
+            <a th:href="@{/applications}">
+                ▤ &nbsp; Applications
+            </a>
+
+        </nav>
+
+    </aside>
+
+
+    <!-- ===================================================== -->
+    <!-- MAIN                                                  -->
+    <!-- ===================================================== -->
+
+    <main class="main">
+
+
+        <div class="container">
+
+
+            <!-- ================================================= -->
+            <!-- HEADER                                            -->
+            <!-- ================================================= -->
+
+            <div class="header">
+
+
+                <div>
+
+
+                    <h1>
+                        AI Cover Letter
+                    </h1>
+
+
+                    <p>
+                        Review and edit your generated cover letter before
+                        saving or downloading it. CareerInDe generates the
+                        initial draft from your CV and target job.
+                    </p>
+
+                </div>
+
+
+                <div class="ai-badge">
+                    ✦ AI Generated
+                </div>
+
+            </div>
+
+
+            <!-- ================================================= -->
+            <!-- ERROR                                             -->
+            <!-- ================================================= -->
+
+            <div
+                    class="error-box"
+                    th:if="${error != null}"
+                    th:text="${error}">
+
+                Something went wrong.
+
+            </div>
+
+
+            <!-- ================================================= -->
+            <!-- SUCCESS                                           -->
+            <!-- ================================================= -->
+
+            <div
+                    class="success-box"
+                    th:if="${success != null}"
+                    th:text="${success}">
+
+                Changes saved successfully.
+
+            </div>
+
+
+            <!-- ================================================= -->
+            <!-- COVER LETTER EXISTS                               -->
+            <!-- ================================================= -->
+
+            <div th:if="${coverLetter != null}">
+
+
+                <div class="info-box">
+
+                    You can edit every field below.
+                    Save your changes before downloading the final PDF.
+
+                </div>
+
+
+                <!-- ============================================= -->
+                <!-- EDITOR FORM                                   -->
+                <!-- ============================================= -->
+
+                <form
+                        id="coverLetterForm"
+                        th:action="@{/cover-letter/save}"
+                        method="post">
+
+
+                    <input
+                            type="hidden"
+                            th:if="${_csrf != null}"
+                            th:name="${_csrf.parameterName}"
+                            th:value="${_csrf.token}">
+
+
+                    <div class="editor-card">
+
+
+                        <div class="editor-header">
+
+
+                            <h2>
+                                Edit Cover Letter
+                            </h2>
+
+
+                            <p>
+                                Make any changes you want before saving
+                                the final version.
+                            </p>
+
+                        </div>
+
+
+                        <div class="editor-body">
+
+
+                            <div class="form-grid">
+
+
+                                <!-- ================================= -->
+                                <!-- JOB TITLE                         -->
+                                <!-- ================================= -->
+
+                                <div class="field">
+
+
+                                    <label for="jobTitle">
+                                        Job Title
+                                    </label>
+
+
+                                    <input
+                                            id="jobTitle"
+                                            class="input"
+                                            type="text"
+                                            name="jobTitle"
+                                            th:value="${coverLetter.jobTitle}"
+                                            placeholder="Java Backend Developer">
+
+                                </div>
+
+
+                                <!-- ================================= -->
+                                <!-- COMPANY                           -->
+                                <!-- ================================= -->
+
+                                <div class="field">
+
+
+                                    <label for="companyName">
+                                        Company
+                                    </label>
+
+
+                                    <input
+                                            id="companyName"
+                                            class="input"
+                                            type="text"
+                                            name="companyName"
+                                            th:value="${coverLetter.companyName}"
+                                            placeholder="Company name">
+
+                                </div>
+
+
+                                <!-- ================================= -->
+                                <!-- SUBJECT                           -->
+                                <!-- ================================= -->
+
+                                <div class="field full">
+
+
+                                    <label for="subject">
+                                        Subject
+                                    </label>
+
+
+                                    <input
+                                            id="subject"
+                                            class="input"
+                                            type="text"
+                                            name="subject"
+                                            th:value="${coverLetter.subject}"
+                                            placeholder="Application for Java Backend Developer">
+
+                                </div>
+
+
+                                <!-- ================================= -->
+                                <!-- GREETING                          -->
+                                <!-- ================================= -->
+
+                                <div class="field full">
+
+
+                                    <label for="greeting">
+                                        Greeting
+                                    </label>
+
+
+                                    <input
+                                            id="greeting"
+                                            class="input"
+                                            type="text"
+                                            name="greeting"
+                                            th:value="${coverLetter.greeting}"
+                                            placeholder="Dear Hiring Manager,">
+
+                                </div>
+
+
+                                <!-- ================================= -->
+                                <!-- BODY                              -->
+                                <!-- ================================= -->
+
+                                <div class="field full">
+
+
+                                    <label for="body">
+                                        Cover Letter
+                                    </label>
+
+
+                                    <textarea
+                                            id="body"
+                                            class="textarea"
+                                            name="body"
+                                            placeholder="Your cover letter..."
+                                            th:text="${coverLetter.body}"></textarea>
+
+
+                                    <div class="body-meta">
+
+
+                                        <span>
+                                            You can freely edit the AI-generated text.
+                                        </span>
+
+
+                                        <span>
+                                            <strong id="wordCount">0</strong>
+                                            words
+                                        </span>
+
+                                    </div>
+
+                                </div>
+
+
+                                <!-- ================================= -->
+                                <!-- CLOSING                           -->
+                                <!-- ================================= -->
+
+                                <div class="field">
+
+
+                                    <label for="closing">
+                                        Closing
+                                    </label>
+
+
+                                    <input
+                                            id="closing"
+                                            class="input"
+                                            type="text"
+                                            name="closing"
+                                            th:value="${coverLetter.closing}"
+                                            placeholder="Kind regards,">
+
+                                </div>
+
+
+                                <!-- ================================= -->
+                                <!-- CANDIDATE NAME                    -->
+                                <!-- ================================= -->
+
+                                <div class="field">
+
+
+                                    <label for="candidateName">
+                                        Your Name
+                                    </label>
+
+
+                                    <input
+                                            id="candidateName"
+                                            class="input"
+                                            type="text"
+                                            name="candidateName"
+                                            th:value="${coverLetter.candidateName}"
+                                            placeholder="Your full name">
+
+                                </div>
+
+                            </div>
+
+
+                            <!-- ===================================== -->
+                            <!-- ACTIONS                               -->
+                            <!-- ===================================== -->
+
+                            <div class="actions">
+
+
+                                <div class="actions-left">
+
+
+                                    <a
+                                            th:href="@{/resume/upload}"
+                                            class="btn btn-secondary">
+
+                                        ← Back to CV
+
+                                    </a>
+
+
+                                    <button
+                                            type="button"
+                                            class="btn btn-secondary"
+                                            onclick="copyCoverLetter()">
+
+                                        ⧉ Copy Text
+
+                                    </button>
+
+                                </div>
+
+
+                                <div class="actions-right">
+
+
+                                    <!-- ============================= -->
+                                    <!-- REGENERATE                    -->
+                                    <!-- ============================= -->
+
+                                    <button
+                                            type="button"
+                                            class="btn btn-secondary"
+                                            onclick="regenerateCoverLetter()">
+
+                                        ✦ Regenerate
+
+                                    </button>
+
+
+                                    <!-- ============================= -->
+                                    <!-- SAVE                          -->
+                                    <!-- ============================= -->
+
+                                    <button
+                                            type="submit"
+                                            class="btn btn-primary">
+
+                                        ✓ Save Changes
+
+                                    </button>
+
+
+                                    <!-- ============================= -->
+                                    <!-- DOWNLOAD                      -->
+                                    <!-- ============================= -->
+
+                                    <a
+                                            th:href="@{/cover-letter/download}"
+                                            class="btn btn-dark">
+
+                                        ↓ Download PDF
+
+                                    </a>
+
+                                </div>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                </form>
+
+
+                <!-- ============================================= -->
+                <!-- REGENERATE FORM                               -->
+                <!-- ============================================= -->
+
+                <form
+                        id="regenerateForm"
+                        th:action="@{/cover-letter/generate}"
+                        method="post"
+                        style="display:none;">
+
+
+                    <input
+                            type="hidden"
+                            th:if="${_csrf != null}"
+                            th:name="${_csrf.parameterName}"
+                            th:value="${_csrf.token}">
+
+
+                    <input
+                            id="regenerateJobTitle"
+                            type="hidden"
+                            name="jobTitle"
+                            th:value="${coverLetter.jobTitle}">
+
+
+                    <input
+                            id="regenerateCompanyName"
+                            type="hidden"
+                            name="companyName"
+                            th:value="${coverLetter.companyName}">
+
+
+                    <input
+                            type="hidden"
+                            name="jobDescription"
+                            th:value="${jobDescription}">
+
+                </form>
+
+            </div>
+
+
+            <!-- ================================================= -->
+            <!-- EMPTY STATE                                       -->
+            <!-- ================================================= -->
+
+            <div
+                    class="empty-state"
+                    th:if="${coverLetter == null and error == null}">
+
+
+                <h2>
+                    No cover letter generated yet
+                </h2>
+
+
+                <p>
+                    Upload your CV and add a target job description
+                    to generate a personalized cover letter.
+                </p>
+
+
+                <a
+                        th:href="@{/resume/upload}"
+                        class="btn btn-primary">
+
+                    Upload CV →
+
+                </a>
+
+            </div>
+
+        </div>
+
+    </main>
+
+</div>
+
+
+<script>
+
+    // =========================================================
+    // WORD COUNT
+    // =========================================================
+
+    const bodyField =
+        document.getElementById("body");
+
+    const wordCount =
+        document.getElementById("wordCount");
+
+
+    function updateWordCount() {
+
+        if (!bodyField || !wordCount) {
+            return;
+        }
+
+
+        const text =
+            bodyField.value.trim();
+
+
+        if (text.length === 0) {
+
+            wordCount.textContent = "0";
+
+            return;
+
+        }
+
+
+        const words =
+            text
+                .split(/\s+/)
+                .filter(word => word.length > 0);
+
+
+        wordCount.textContent =
+            words.length;
+
+    }
+
+
+    if (bodyField) {
+
+        bodyField.addEventListener(
+            "input",
+            updateWordCount
+        );
+
+
+        updateWordCount();
+
+    }
+
+
+    // =========================================================
+    // COPY COVER LETTER
+    // =========================================================
+
+    function copyCoverLetter() {
+
+
+        const subject =
+            document.getElementById("subject")?.value || "";
+
+
+        const greeting =
+            document.getElementById("greeting")?.value || "";
+
+
+        const body =
+            document.getElementById("body")?.value || "";
+
+
+        const closing =
+            document.getElementById("closing")?.value || "";
+
+
+        const candidateName =
+            document.getElementById("candidateName")?.value || "";
+
+
+        const fullText =
+            [
+                subject,
+                "",
+                greeting,
+                "",
+                body,
+                "",
+                closing,
+                candidateName
+            ]
+                .join("\n");
+
+
+        navigator.clipboard
+            .writeText(fullText)
+
+            .then(() => {
+
+                alert(
+                    "Cover letter copied."
+                );
+
+            })
+
+            .catch(() => {
+
+                alert(
+                    "Could not copy the cover letter."
+                );
+
+            });
+
+    }
+
+
+    // =========================================================
+    // REGENERATE COVER LETTER
+    // =========================================================
+
+    function regenerateCoverLetter() {
+
+
+        const jobTitle =
+            document.getElementById("jobTitle")?.value || "";
+
+
+        const companyName =
+            document.getElementById("companyName")?.value || "";
+
+
+        const regenerateJobTitle =
+            document.getElementById(
+                "regenerateJobTitle"
+            );
+
+
+        const regenerateCompanyName =
+            document.getElementById(
+                "regenerateCompanyName"
+            );
+
+
+        const regenerateForm =
+            document.getElementById(
+                "regenerateForm"
+            );
+
+
+        if (
+            regenerateJobTitle &&
+            regenerateCompanyName &&
+            regenerateForm
+        ) {
+
+            regenerateJobTitle.value =
+                jobTitle;
+
+
+            regenerateCompanyName.value =
+                companyName;
+
+
+            regenerateForm.submit();
+
+        }
+
+    }
+
+</script>
+
+
+</body>
+
+</html>
