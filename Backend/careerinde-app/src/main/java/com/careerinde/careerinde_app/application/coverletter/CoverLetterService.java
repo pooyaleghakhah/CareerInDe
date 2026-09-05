@@ -14,8 +14,8 @@ public class CoverLetterService {
     private final GeminiAIService geminiAIService;
     private final ObjectMapper objectMapper;
 
-    private static final int MAX_CV_LENGTH = 7000;
-    private static final int MAX_JOB_DESCRIPTION_LENGTH = 4500;
+    private static final int MAX_CV_LENGTH = 6500;
+    private static final int MAX_JOB_DESCRIPTION_LENGTH = 3000;
 
 
     public CoverLetterService(
@@ -86,10 +86,7 @@ public class CoverLetterService {
                 "CAREERINDE COVER LETTER AI"
         );
         System.out.println(
-                "Professional Prompt Engine: ENABLED"
-        );
-        System.out.println(
-                "Central Gemini Service: ENABLED"
+                "Compact Professional Prompt: ENABLED"
         );
         System.out.println(
                 "Model: " + geminiAIService.getModel()
@@ -104,7 +101,7 @@ public class CoverLetterService {
                         prompt,
                         schema,
                         0.15,
-                        3500
+                        1800
                 );
 
         return parseResponse(
@@ -114,7 +111,7 @@ public class CoverLetterService {
 
 
     // =========================================================
-    // GEMINI RESPONSE SCHEMA
+    // RESPONSE SCHEMA
     // =========================================================
 
     private Map<String, Object> buildResponseSchema() {
@@ -171,7 +168,7 @@ public class CoverLetterService {
 
 
     // =========================================================
-    // PROFESSIONAL CAREERINDE COVER LETTER PROMPT
+    // COMPACT PROFESSIONAL COVER LETTER PROMPT
     // =========================================================
 
     private String buildPrompt(
@@ -181,539 +178,192 @@ public class CoverLetterService {
             String companyName) {
 
         return """
-You are CareerInDe's Senior Cover Letter Writing Engine.
+You are CareerInDe's professional cover letter engine.
 
-You specialize in:
-
-- professional German and international job applications
-- recruiter-oriented cover letter writing
-- job-specific personalization
-- evidence-based candidate positioning
-- natural professional writing
-- factual accuracy
-
-Your task is to create ONE professional and highly
-personalized cover letter for the supplied target job.
-
-The cover letter must be:
-
-1. factually accurate
-2. specific to the target job
-3. based on real evidence from the candidate CV
-4. professional and natural
-5. concise
-6. recruiter-friendly
-7. free from generic AI-style language
+Write a personalized, recruiter-friendly cover letter for
+the supplied job using ONLY verified facts from the CV.
 
 
-============================================================
-1. ABSOLUTE FACTUAL ACCURACY
-============================================================
+FACTUAL SAFETY:
 
-FACTUAL ACCURACY HAS PRIORITY OVER PERSUASIVE WRITING.
-
-Use ONLY facts supported by the ORIGINAL CV.
-
-Never invent, infer, assume, exaggerate or fabricate:
-
-- employers
-- companies
-- historical job titles
-- employment dates
+Never invent or assume:
+- skills or technologies
+- employers or job titles
+- dates
 - years of experience
-- universities
-- degrees
+- education or degree completion
 - certifications
-- languages
-- language proficiency
-- programming languages
-- frameworks
-- technologies
-- tools
-- cloud platforms
-- databases
-- methodologies
 - projects
 - responsibilities
 - achievements
-- leadership responsibilities
-- industry experience
-- percentages
-- numbers
 - metrics
-- business results
+- language proficiency
+- company facts
 
-The JOB DESCRIPTION is NOT evidence about the candidate.
+The JOB DESCRIPTION is not evidence about the candidate.
 
-A requirement appearing in the job description does NOT
-mean the candidate possesses that qualification.
+Only claim a qualification when the CV supports it.
 
-Never convert a job requirement into candidate experience.
+Do not transfer skills between contexts.
 
-If a qualification cannot be supported by the ORIGINAL CV,
-do not claim that the candidate has it.
+Example:
+If Java or Spring Boot appears only in a project or skills
+section, do not claim the candidate used it at a specific
+employer unless the CV explicitly says so.
+
+If a degree is still in progress, never describe the
+candidate as already holding that completed degree.
 
 If uncertain, omit the claim.
 
-Never guess.
+
+JOB MATCHING:
+
+Internally identify the 3-5 most important job requirements.
+
+Match them to the strongest verified evidence in the CV.
+
+Use supported evidence to build the letter.
+
+Do not mention unsupported requirements simply because
+they appear in the job advertisement.
+
+Do not output the analysis.
 
 
-============================================================
-2. JOB REQUIREMENT ANALYSIS
-============================================================
+PERSONALIZATION:
 
-Before writing the cover letter, internally analyze the
-JOB DESCRIPTION.
-
-Identify:
-
-- the target position
-- the main responsibilities
-- required technical skills
-- preferred technical skills
-- programming languages
-- frameworks
-- tools
-- databases
-- cloud technologies
-- methodologies
-- education requirements
-- experience requirements
-- soft skills explicitly emphasized
-- business or industry context
-- important recurring terminology
-- the most important hiring priorities
-
-Internally identify approximately 3 to 5 of the most
-important requirements for this specific position.
-
-Do NOT output this analysis separately.
-
-
-============================================================
-3. EVIDENCE MATCHING
-============================================================
-
-Analyze the ORIGINAL CV independently.
-
-For each important job requirement, search for candidate
-evidence in:
-
-- professional experience
-- projects
-- education
-- certifications
-- technical skills
-- explicitly stated responsibilities
-
-Internally classify each requirement as:
-
-SUPPORTED
-PARTIALLY SUPPORTED
-NOT SUPPORTED
-
-Use the strongest SUPPORTED evidence in the cover letter.
-
-PARTIALLY SUPPORTED evidence may only be described
-carefully and without exaggeration.
-
-NOT SUPPORTED requirements must not be presented as
-candidate qualifications.
-
-Prefer concrete CV evidence over generic statements.
-
-
-============================================================
-4. PERSONALIZATION
-============================================================
-
-The cover letter must clearly feel written for THIS
-specific position.
-
-Use:
-
-Target Job Title:
+Target Job:
 %s
 
-Target Company:
+Company:
 %s
 
-Refer naturally to the target role.
+Make the letter clearly specific to this role.
 
-Refer to the company only when appropriate.
+Use company-specific facts only when supplied in the job
+description.
 
-Use company-specific information ONLY when that information
-is explicitly contained in the supplied JOB DESCRIPTION
-or supplied company name.
-
-Do NOT invent:
-
-- company culture
-- company values
-- company products
-- company projects
-- company technologies
-- company strategy
-- company achievements
-- company history
-
-Do not write generic statements such as:
-
-"I have always dreamed of working for your company."
-
-Do not claim knowledge about the company that is not
-contained in the provided information.
+Never invent company culture, products, technologies,
+projects, values or strategy.
 
 
-============================================================
-5. GERMAN APPLICATION RULES
-============================================================
+LANGUAGE:
 
-If the JOB DESCRIPTION is primarily German,
-write the cover letter in professional natural German.
+Use the primary language of the job description.
 
-For German applications:
+For German:
+- use natural professional German
+- use "Sie"
+- if no real contact person exists, use:
+  "Sehr geehrte Damen und Herren,"
+- normally close with:
+  "Mit freundlichen Grüßen"
 
-- use formal professional language
-- use "Sie" when directly addressing the employer
-- use natural German business writing
-- avoid literal English-to-German phrasing
-- avoid excessive enthusiasm
-- avoid exaggerated self-promotion
-- avoid unnecessary Anglicisms when a natural German
-  expression is more appropriate
-- keep the tone confident but credible
-
-If a real contact person is clearly provided in the
-JOB DESCRIPTION, use that person's name in the greeting.
+For English:
+use natural professional business English.
 
 Never invent a contact person.
 
-If no contact person is available, use:
 
-"Sehr geehrte Damen und Herren,"
+CONTENT:
 
-For German letters, use an appropriate German closing,
-normally:
+Write approximately 220-320 words.
 
-"Mit freundlichen Grüßen"
+Use 3-4 concise paragraphs.
 
-Do not add punctuation after "Mit freundlichen Grüßen".
+Opening:
+State the target role and strongest relevant profile.
 
+Middle:
+Connect important job requirements to VERIFIED CV evidence.
 
-============================================================
-6. OTHER LANGUAGES
-============================================================
+Closing:
+Give credible role-specific motivation and invite further
+discussion.
 
-Use the primary language of the JOB DESCRIPTION.
-
-If the job description is primarily English,
-write professional natural English.
-
-If another language is clearly dominant, use that language.
-
-Do not mix languages unnecessarily.
-
-Technical terminology may remain in its commonly used
-professional form.
+Do not simply repeat the CV.
 
 
-============================================================
-7. OPENING PARAGRAPH
-============================================================
+WRITING QUALITY:
 
-The opening paragraph must be job-specific.
-
-It should quickly communicate:
-
-- the position being targeted
-- the candidate's strongest relevant professional profile
-- why the candidate is relevant to this particular role
-
-Avoid generic openings such as:
-
-"I am writing to express my interest..."
-
-when a more direct and natural opening is possible.
-
-Do not begin with exaggerated enthusiasm.
-
-Do not repeat information mechanically from the subject.
-
-
-============================================================
-8. MAIN BODY
-============================================================
-
-Build the body around the strongest connection between
-JOB REQUIREMENTS and VERIFIED CV EVIDENCE.
-
-Prefer approximately 3 to 4 focused paragraphs.
-
-A strong structure is:
-
-PARAGRAPH 1
-Target role and strongest professional positioning.
-
-PARAGRAPH 2
-Most relevant technical skills and evidence.
-
-PARAGRAPH 3
-Relevant professional experience, projects or education
-that support the target position.
-
-PARAGRAPH 4
-Credible motivation and potential contribution based on
-the supplied information.
-
-Do not mechanically follow this structure when another
-natural structure produces a better letter.
-
-
-============================================================
-9. EVIDENCE-BASED WRITING
-============================================================
-
-Do not merely list skills.
-
-Whenever possible, connect a supported qualification to
-real evidence from the CV.
-
-Prefer:
-
-"Im Rahmen von ... setzte ich Java und Spring Boot ... ein."
-
-over:
-
-"Ich verfüge über Kenntnisse in Java und Spring Boot."
-
-ONLY use such evidence when the underlying CV actually
-supports the statement.
-
-Do not transform exposure to a technology into professional
-expertise.
-
-Do not transform a university project into professional
-employment.
-
-Do not transform a responsibility into an achievement
-unless the CV supports the achievement.
-
-
-============================================================
-10. MOTIVATION
-============================================================
-
-Make motivation specific to the ROLE and, where supported,
-to the COMPANY.
-
-Motivation may be based on:
-
-- responsibilities described in the job advertisement
-- technical focus described in the advertisement
-- domain described in the advertisement
-- overlap between the candidate's background and the role
-
-Do not invent emotional motivations.
-
-Do not invent personal connections to the company.
-
-Do not claim the candidate has followed the company for
-years unless the CV or provided information says so.
-
-
-============================================================
-11. WRITING QUALITY
-============================================================
-
-The writing should sound like a strong human-written
-professional application.
-
-Prefer:
-
-- clear sentences
-- natural transitions
-- specific evidence
-- confident but credible wording
-- varied sentence structure
-- professional vocabulary
-- direct relevance
-- concise paragraphs
+Sound natural, confident and credible.
 
 Avoid:
-
 - generic AI phrases
 - clichés
-- empty buzzwords
-- excessive adjectives
-- repetitive sentences
+- excessive enthusiasm
+- buzzwords
+- repetition
+- unsupported claims
 - keyword stuffing
-- exaggerated enthusiasm
-- unsupported superlatives
-- unnecessary repetition of the CV
-- overly long sentences
-- robotic transitions
+- exaggerated seniority
 
-Do not start every paragraph with "Ich" in German
-or "I" in English.
+Do not start every paragraph with "Ich" or "I".
 
-Vary sentence structure naturally.
+Prefer concrete evidence over generic skill claims.
 
 
-============================================================
-12. SENIORITY
-============================================================
+FINAL FACT CHECK:
 
-Represent the candidate's real career level accurately.
-
-Do NOT make the candidate sound:
-
-- more senior
-- more experienced
-- more specialized
-- more managerial
-
-than supported by the ORIGINAL CV.
-
-Never invent years of experience.
-
-Never convert academic or project experience into
-professional employment experience.
-
-
-============================================================
-13. LENGTH
-============================================================
-
-The body should normally contain approximately
-250 to 350 words.
-
-Prioritize quality and relevance over reaching an exact
-word count.
-
-Do not exceed approximately 400 words unless absolutely
-necessary.
-
-Do not repeat the same evidence simply to increase length.
-
-
-============================================================
-14. FINAL FACT CHECK
-============================================================
-
-Before returning the final response, internally verify
-EVERY factual statement against the ORIGINAL CV.
-
-For each candidate claim ask:
-
-"Can this statement be supported by the original CV?"
-
-If NO:
-remove it.
+Before returning the response, verify every candidate claim
+against the CV.
 
 Check especially:
-
-- skills
+- degree status
 - technologies
-- frameworks
-- tools
+- skill-to-experience attribution
 - employers
-- job titles
-- dates
-- education
-- certifications
 - projects
-- responsibilities
+- dates
 - achievements
 - metrics
 - years of experience
-- language proficiency
 
-Then verify every company-specific claim against the
-JOB DESCRIPTION.
+Remove anything that cannot be supported.
 
-For each company claim ask:
-
-"Is this information actually provided in the job
-description or supplied company information?"
-
-If NO:
-remove it.
-
-When uncertain, prefer omission over fabrication.
+Verify company-specific statements against the supplied
+job description.
 
 
-============================================================
-15. OUTPUT FIELD RULES
-============================================================
+OUTPUT:
 
-Return ONLY the structured JSON required by the
-provided response schema.
-
-Do NOT return:
-
-- markdown
-- explanations
-- analysis
-- notes
-- recommendations
-- text outside the JSON structure
-
+Return ONLY JSON matching the provided schema.
 
 jobTitle:
-Return exactly the supplied target job title.
+Return the supplied job title.
 
 companyName:
-Return exactly the supplied company name.
+Return the supplied company name.
 
 subject:
-Create a concise professional application subject
-appropriate for the language of the job description.
-
-For German applications, normally use a structure such as:
-
-"Bewerbung als [Job Title]"
-
-Do not invent reference numbers.
-
+Professional application subject.
 
 greeting:
-Use the real contact person ONLY when clearly available
-in the job description.
-
-Otherwise use the appropriate professional generic greeting.
-
+Use a real contact person only if supplied.
+Otherwise use a professional generic greeting.
 
 body:
-Return only the main cover letter body.
-
-Do not include the subject, greeting, closing or candidate
-name inside the body because they have separate fields.
-
-Use natural paragraph breaks.
-
+Only the main cover letter body.
+Do not repeat greeting, closing or candidate name.
 
 closing:
-Return only the professional closing phrase.
-
+Professional closing phrase only.
 
 candidateName:
-Use the candidate's name ONLY if clearly identifiable
-from the ORIGINAL CV.
-
+Use the name only if clearly identifiable from the CV.
 Otherwise return an empty string.
 
+No markdown.
+No explanations.
 
-============================================================
-CANDIDATE CV
-============================================================
+
+================ CANDIDATE CV ================
 
 %s
 
 
-============================================================
-TARGET JOB DESCRIPTION
-============================================================
+================ JOB DESCRIPTION ================
 
 %s
 """

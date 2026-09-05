@@ -17,20 +17,16 @@ import org.springframework.web.bind.annotation.RequestParam;
 @Controller
 public class CoverLetterController {
 
-
     private final CoverLetterService coverLetterService;
-
     private final CoverLetterPdfService coverLetterPdfService;
 
 
     public CoverLetterController(
             CoverLetterService coverLetterService,
-            CoverLetterPdfService coverLetterPdfService
-    ) {
+            CoverLetterPdfService coverLetterPdfService) {
 
         this.coverLetterService = coverLetterService;
         this.coverLetterPdfService = coverLetterPdfService;
-
     }
 
 
@@ -60,13 +56,9 @@ public class CoverLetterController {
             String jobDescription,
 
             HttpSession session,
-
-            Model model
-    ) {
-
+            Model model) {
 
         try {
-
 
             // =================================================
             // GET CV FROM SESSION
@@ -78,10 +70,7 @@ public class CoverLetterController {
                     );
 
 
-            if (
-                    cvText == null ||
-                    cvText.isBlank()
-            ) {
+            if (cvText == null || cvText.isBlank()) {
 
                 model.addAttribute(
                         "error",
@@ -89,35 +78,28 @@ public class CoverLetterController {
                 );
 
                 return "cover-letter";
-
             }
 
 
             // =================================================
-            // JOB DESCRIPTION
+            // GET JOB DESCRIPTION
             // =================================================
 
             String effectiveJobDescription =
-                    jobDescription;
+                    cleanOptional(jobDescription);
 
 
-            if (
-                    effectiveJobDescription == null ||
-                    effectiveJobDescription.isBlank()
-            ) {
+            if (effectiveJobDescription == null) {
 
                 effectiveJobDescription =
                         (String) session.getAttribute(
                                 "latestJobDescription"
                         );
-
             }
 
 
-            if (
-                    effectiveJobDescription == null ||
-                    effectiveJobDescription.isBlank()
-            ) {
+            if (effectiveJobDescription == null
+                    || effectiveJobDescription.isBlank()) {
 
                 model.addAttribute(
                         "error",
@@ -125,76 +107,75 @@ public class CoverLetterController {
                 );
 
                 return "cover-letter";
-
             }
 
 
             // =================================================
-            // JOB TITLE
+            // GET JOB TITLE
             // =================================================
 
             String effectiveJobTitle =
-                    jobTitle;
+                    cleanOptional(jobTitle);
 
 
-            if (
-                    effectiveJobTitle == null ||
-                    effectiveJobTitle.isBlank()
-            ) {
+            if (effectiveJobTitle == null) {
 
                 effectiveJobTitle =
                         (String) session.getAttribute(
                                 "latestTargetJobTitle"
                         );
-
             }
 
 
-            if (
-                    effectiveJobTitle == null ||
-                    effectiveJobTitle.isBlank()
-            ) {
+            if (effectiveJobTitle == null
+                    || effectiveJobTitle.isBlank()) {
 
                 effectiveJobTitle =
                         "Advertised Position";
-
             }
 
 
             // =================================================
-            // COMPANY NAME
+            // GET COMPANY NAME
             // =================================================
 
             String effectiveCompanyName =
-                    companyName;
+                    cleanOptional(companyName);
 
 
-            if (
-                    effectiveCompanyName == null ||
-                    effectiveCompanyName.isBlank()
-            ) {
+            if (effectiveCompanyName == null) {
 
                 effectiveCompanyName =
                         (String) session.getAttribute(
                                 "latestTargetCompanyName"
                         );
-
             }
 
 
-            if (
-                    effectiveCompanyName == null ||
-                    effectiveCompanyName.isBlank()
-            ) {
+            if (effectiveCompanyName == null
+                    || effectiveCompanyName.isBlank()) {
 
                 effectiveCompanyName =
                         "Company";
-
             }
 
 
             // =================================================
-            // SAVE JOB CONTEXT IN SESSION
+            // CLEAN VALUES
+            // =================================================
+
+            effectiveJobDescription =
+                    effectiveJobDescription.trim();
+
+            effectiveJobTitle =
+                    effectiveJobTitle.trim();
+
+            effectiveCompanyName =
+                    effectiveCompanyName.trim();
+
+
+            // =================================================
+            // SAVE JOB CONTEXT
             // =================================================
 
             session.setAttribute(
@@ -202,12 +183,10 @@ public class CoverLetterController {
                     effectiveJobDescription
             );
 
-
             session.setAttribute(
                     "latestTargetJobTitle",
                     effectiveJobTitle
             );
-
 
             session.setAttribute(
                     "latestTargetCompanyName",
@@ -216,25 +195,46 @@ public class CoverLetterController {
 
 
             // =================================================
-            // GENERATE WITH GEMINI
+            // GENERATE COVER LETTER WITH AI
             // =================================================
+
+            long startTime =
+                    System.currentTimeMillis();
+
 
             CoverLetter coverLetter =
                     coverLetterService.generateCoverLetter(
-
                             cvText,
-
                             effectiveJobDescription,
-
                             effectiveJobTitle,
-
                             effectiveCompanyName
-
                     );
 
 
+            long generationTime =
+                    System.currentTimeMillis()
+                            - startTime;
+
+
+            System.out.println();
+            System.out.println(
+                    "=========================================="
+            );
+            System.out.println(
+                    "CAREERINDE COVER LETTER GENERATED"
+            );
+            System.out.println(
+                    "Generation Time: "
+                            + generationTime
+                            + " ms"
+            );
+            System.out.println(
+                    "=========================================="
+            );
+
+
             // =================================================
-            // SAVE GENERATED COVER LETTER IN SESSION
+            // SAVE GENERATED COVER LETTER
             // =================================================
 
             session.setAttribute(
@@ -252,18 +252,15 @@ public class CoverLetterController {
                     coverLetter
             );
 
-
             model.addAttribute(
                     "jobTitle",
                     effectiveJobTitle
             );
 
-
             model.addAttribute(
                     "companyName",
                     effectiveCompanyName
             );
-
 
             model.addAttribute(
                     "jobDescription",
@@ -274,22 +271,39 @@ public class CoverLetterController {
             return "cover-letter";
 
 
-        } catch (Exception e) {
+        } catch (IllegalArgumentException exception) {
+
+            exception.printStackTrace();
+
+            model.addAttribute(
+                    "error",
+                    exception.getMessage()
+            );
+
+            addExistingSessionData(
+                    session,
+                    model
+            );
+
+            return "cover-letter";
 
 
-            e.printStackTrace();
+        } catch (Exception exception) {
 
+            exception.printStackTrace();
 
             model.addAttribute(
                     "error",
                     "Could not generate your cover letter. Please try again."
             );
 
+            addExistingSessionData(
+                    session,
+                    model
+            );
 
             return "cover-letter";
-
         }
-
     }
 
 
@@ -343,52 +357,27 @@ public class CoverLetterController {
             String candidateName,
 
             HttpSession session,
-
-            Model model
-    ) {
-
+            Model model) {
 
         try {
-
 
             // =================================================
             // VALIDATE BODY
             // =================================================
 
-            if (
-                    body == null ||
-                    body.isBlank()
-            ) {
-
+            if (body == null || body.isBlank()) {
 
                 model.addAttribute(
                         "error",
                         "Cover letter body cannot be empty."
                 );
 
-
-                CoverLetter existingCoverLetter =
-                        (CoverLetter) session.getAttribute(
-                                "latestCoverLetter"
-                        );
-
-
-                model.addAttribute(
-                        "coverLetter",
-                        existingCoverLetter
+                addExistingSessionData(
+                        session,
+                        model
                 );
-
-
-                model.addAttribute(
-                        "jobDescription",
-                        session.getAttribute(
-                                "latestJobDescription"
-                        )
-                );
-
 
                 return "cover-letter";
-
             }
 
 
@@ -454,7 +443,7 @@ public class CoverLetterController {
 
 
             // =================================================
-            // SAVE EDITED VERSION IN SESSION
+            // SAVE EDITED VERSION
             // =================================================
 
             session.setAttribute(
@@ -480,7 +469,7 @@ public class CoverLetterController {
 
 
             // =================================================
-            // SEND UPDATED DATA BACK TO VIEW
+            // SEND DATA TO VIEW
             // =================================================
 
             model.addAttribute(
@@ -518,38 +507,22 @@ public class CoverLetterController {
             return "cover-letter";
 
 
-        } catch (Exception e) {
+        } catch (Exception exception) {
 
-
-            e.printStackTrace();
-
+            exception.printStackTrace();
 
             model.addAttribute(
                     "error",
                     "Could not save your cover letter. Please try again."
             );
 
-
-            model.addAttribute(
-                    "coverLetter",
-                    session.getAttribute(
-                            "latestCoverLetter"
-                    )
+            addExistingSessionData(
+                    session,
+                    model
             );
-
-
-            model.addAttribute(
-                    "jobDescription",
-                    session.getAttribute(
-                            "latestJobDescription"
-                    )
-            );
-
 
             return "cover-letter";
-
         }
-
     }
 
 
@@ -559,12 +532,10 @@ public class CoverLetterController {
 
     @GetMapping("/cover-letter/download")
     public ResponseEntity<byte[]> downloadCoverLetter(
-            HttpSession session
-    ) {
-
+            HttpSession session) {
 
         // =====================================================
-        // GET EDITED COVER LETTER FROM SESSION
+        // GET COVER LETTER
         // =====================================================
 
         CoverLetter coverLetter =
@@ -573,16 +544,11 @@ public class CoverLetterController {
                 );
 
 
-        // =====================================================
-        // COVER LETTER MUST EXIST
-        // =====================================================
-
         if (coverLetter == null) {
 
             return ResponseEntity
                     .notFound()
                     .build();
-
         }
 
 
@@ -597,7 +563,7 @@ public class CoverLetterController {
 
 
         // =====================================================
-        // BUILD SAFE FILE NAME
+        // BUILD FILE NAME
         // =====================================================
 
         String jobTitle =
@@ -623,7 +589,6 @@ public class CoverLetterController {
             fileName
                     .append("_")
                     .append(jobTitle);
-
         }
 
 
@@ -632,15 +597,16 @@ public class CoverLetterController {
             fileName
                     .append("_")
                     .append(companyName);
-
         }
 
 
-        fileName.append(".pdf");
+        fileName.append(
+                ".pdf"
+        );
 
 
         // =====================================================
-        // RETURN PDF AS DOWNLOAD
+        // RETURN PDF
         // =====================================================
 
         return ResponseEntity
@@ -648,9 +614,9 @@ public class CoverLetterController {
 
                 .header(
                         HttpHeaders.CONTENT_DISPOSITION,
-                        "attachment; filename=\"" +
-                                fileName +
-                                "\""
+                        "attachment; filename=\""
+                                + fileName
+                                + "\""
                 )
 
                 .contentType(
@@ -664,7 +630,61 @@ public class CoverLetterController {
                 .body(
                         pdf
                 );
+    }
 
+
+    // =========================================================
+    // ADD EXISTING SESSION DATA TO VIEW
+    // =========================================================
+
+    private void addExistingSessionData(
+            HttpSession session,
+            Model model) {
+
+        model.addAttribute(
+                "coverLetter",
+                session.getAttribute(
+                        "latestCoverLetter"
+                )
+        );
+
+        model.addAttribute(
+                "jobTitle",
+                session.getAttribute(
+                        "latestTargetJobTitle"
+                )
+        );
+
+        model.addAttribute(
+                "companyName",
+                session.getAttribute(
+                        "latestTargetCompanyName"
+                )
+        );
+
+        model.addAttribute(
+                "jobDescription",
+                session.getAttribute(
+                        "latestJobDescription"
+                )
+        );
+    }
+
+
+    // =========================================================
+    // CLEAN OPTIONAL VALUE
+    // =========================================================
+
+    private String cleanOptional(
+            String value) {
+
+        if (value == null
+                || value.isBlank()) {
+
+            return null;
+        }
+
+        return value.trim();
     }
 
 
@@ -674,22 +694,15 @@ public class CoverLetterController {
 
     private String cleanValue(
             String value,
-            String fallback
-    ) {
+            String fallback) {
 
-
-        if (
-                value == null ||
-                value.isBlank()
-        ) {
+        if (value == null
+                || value.isBlank()) {
 
             return fallback;
-
         }
 
-
         return value.trim();
-
     }
 
 
@@ -698,19 +711,13 @@ public class CoverLetterController {
     // =========================================================
 
     private String sanitizeFileName(
-            String value
-    ) {
+            String value) {
 
-
-        if (
-                value == null ||
-                value.isBlank()
-        ) {
+        if (value == null
+                || value.isBlank()) {
 
             return "";
-
         }
-
 
         return value
                 .trim()
@@ -727,8 +734,7 @@ public class CoverLetterController {
 
                 .replaceAll(
                         "^_+|_+$",
-                        "");
-
+                        ""
+                );
     }
-
 }
